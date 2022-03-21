@@ -44,7 +44,7 @@ export const loginController = async (req: RequestAuthInterface, res: Response) 
     logger.error(`@loginServices Error ${error}`);
     handleError(res, 500, {
       success: false,
-      message: `Login error: ${error.message}`,
+      message: `Login error`,
       error: error,
     });
   }

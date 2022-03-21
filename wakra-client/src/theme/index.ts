@@ -83,6 +83,7 @@ export const theme = createTheme({
           flexDirection: 'column',
           minHeight: '100%',
           width: '100%',
+          margin: 0,
         },
         body: {
           display: 'flex',
@@ -90,6 +91,7 @@ export const theme = createTheme({
           flexDirection: 'column',
           minHeight: '100%',
           width: '100%',
+          margin: '0',
         },
         '#__next': {
           display: 'flex',
@@ -97,6 +99,7 @@ export const theme = createTheme({
           flexDirection: 'column',
           height: '100%',
           width: '100%',
+          margin: '0',
         },
       },
     },

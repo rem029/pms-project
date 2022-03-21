@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Buffer } from 'buffer';
 import {
   Container,
@@ -10,11 +11,24 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { useAxios } from '../hooks/useAxios';
-import {UserInfo} from 'utils/interface'
+import { Token } from 'types/interface';
+import { saveToken } from 'utilities/storage';
 
+// ADD SHOW PASSWORD TO TEXT
 export const Login = (): JSX.Element => {
   const [fields, setFields] = useState({ username: '', password: '' });
-  const { data, fetch, loading } = useAxios<UserInfo>('http://localhost:6060/login');
+  const [helpText, setHelperText] = useState('');
+  const { data, fetch, loading, success, message } = useAxios<Token>(
+    'http://10.9.46.144:6060/login'
+  );
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && success && data) {
+      saveToken(data.token);
+      navigate('/');
+    }
+  }, [data, loading, success, navigate]);
 
   const handlChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setFields((currentFields) => ({
@@ -25,7 +39,14 @@ export const Login = (): JSX.Element => {
 
   const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    console.log('handleSubmit', fields);
+
+    setHelperText('');
+
+    if (!fields.username || !fields.password) {
+      setHelperText('All fields are required.');
+      return;
+    }
+
     fetch({
       headers: {
         Authorization: `Basic ${Buffer.from(
@@ -38,9 +59,10 @@ export const Login = (): JSX.Element => {
   return (
     <Container maxWidth="xs">
       <Box
+        component="form"
         sx={{
           bgcolor: '#fff',
-          height: '100vh',
+          minHeight: '90vh',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
@@ -75,8 +97,10 @@ export const Login = (): JSX.Element => {
 
           <Grid item container alignItems="center" justifyContent="center" xs={12}>
             <Button
+              size="large"
               variant="contained"
               fullWidth
+              type="submit"
               onClick={handleSubmit}
               disabled={loading}
             >
@@ -85,23 +109,30 @@ export const Login = (): JSX.Element => {
           </Grid>
           <Grid item container alignItems="center" justifyContent="center" xs={12}>
             <Typography
-              variant="subtitle1"
-              color={data.success ? 'blue' : 'red'}
+              variant="caption"
+              color={success ? 'blue' : 'red'}
               align="center"
+              fontSize={12}
             >
-              {data.message}
+              {message}
+            </Typography>
+          </Grid>
+          <Grid item container alignItems="center" justifyContent="center" xs={12}>
+            <Typography variant="caption" color="red" align="center" fontSize={12}>
+              {helpText}
             </Typography>
           </Grid>
 
-          {data.data && <Grid item container alignItems="center" justifyContent="center" xs={12}>
-            <Typography
-              variant="subtitle1"
-              color="gray"
-              align="center"
-            >
-              UserId: {data.Usr_Id}
-            </Typography>
-          </Grid>}
+          {data && (
+            <Grid item container alignItems="center" justifyContent="center" xs={12}>
+              <Typography variant="subtitle2" color="gray" align="center">
+                Token: {data.token}
+              </Typography>
+              <Typography variant="subtitle2" color="gray" align="center">
+                Expires In: {data.expiresIn}
+              </Typography>
+            </Grid>
+          )}
         </Grid>
       </Box>
     </Container>
