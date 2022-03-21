@@ -1,30 +1,30 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { useState } from 'react';
 
-export const useAxios = (url: string) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState({
-    success: false,
-    message: '',
-    data: null,
-    error: null,
-  });
+
+export const useAxios = <T>(url: string) => {
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState(null);
+  const [success,setSuccess] = useState(false)
 
   const fetch = (config: AxiosRequestConfig): void => {
-    setIsLoading(true);
+    setLoading(true);
     axios
       .get(url, config)
       .then((res) => {
-        setData(res.data);
-        setIsLoading(false);
+        setData(res.data.data);
+        setSuccess(res.data.success);
+        setLoading(false);
       })
       .catch((error) => {
-        setData(error.response.data);
+        setData(error.response.data.data);
+        setSuccess(error.response.data.success);
         setError(error);
-        setIsLoading(false);
+        setLoading(false);
+        
       });
   };
 
-  return { isLoading, data, error, fetch };
+  return { success,loading, data, error, fetch };
 };

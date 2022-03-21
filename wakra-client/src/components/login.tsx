@@ -10,10 +10,11 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { useAxios } from '../hooks/useAxios';
+import {UserInfo} from 'utils/interface'
 
 export const Login = (): JSX.Element => {
   const [fields, setFields] = useState({ username: '', password: '' });
-  const { data, fetch, isLoading } = useAxios('http://localhost:6060/login');
+  const { data, fetch, loading } = useAxios<UserInfo>('http://localhost:6060/login');
 
   const handlChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setFields((currentFields) => ({
@@ -77,9 +78,9 @@ export const Login = (): JSX.Element => {
               variant="contained"
               fullWidth
               onClick={handleSubmit}
-              disabled={isLoading}
+              disabled={loading}
             >
-              {isLoading ? <CircularProgress size={36} /> : 'Login'}
+              {loading ? <CircularProgress size={36} /> : 'Login'}
             </Button>
           </Grid>
           <Grid item container alignItems="center" justifyContent="center" xs={12}>
@@ -91,6 +92,16 @@ export const Login = (): JSX.Element => {
               {data.message}
             </Typography>
           </Grid>
+
+          {data.data && <Grid item container alignItems="center" justifyContent="center" xs={12}>
+            <Typography
+              variant="subtitle1"
+              color="gray"
+              align="center"
+            >
+              UserId: {data.Usr_Id}
+            </Typography>
+          </Grid>}
         </Grid>
       </Box>
     </Container>

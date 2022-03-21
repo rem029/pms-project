@@ -1,7 +1,7 @@
 {
-  "name": "aconex-get-statistics",
-  "version": "1.0.0",
-  "description": "Get statistics from Aconex API",
+  "name": "wakra-server",
+  "version": "0.0.1",
+  "description": "Back end for wakra project",
   "main": "index.js",
   "private": true,
   "scripts": {

@@ -1,7 +1,8 @@
-# Welcome to wakra-client 👋
+# Welcome to wakra-server 👋
 ![Version](https://img.shields.io/badge/version-0.0.1-blue.svg?cacheSeconds=2592000)
+[![License: ISC](https://img.shields.io/badge/License-ISC-yellow.svg)](#)
 
-> Front end for wakra project
+> Back end for wakra project
 
 ## Install
 
@@ -15,17 +16,8 @@ npm install
 npm run start
 ```
 
-## Run tests
-
-```sh
-npm run test
-```
-
 ## Author
 
-👤 **rem029**
-
-* Website: github.com/rem029
 * Github: [@rem029](https://github.com/rem029)
 
 ## Show your support
