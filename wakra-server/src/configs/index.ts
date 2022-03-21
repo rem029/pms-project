@@ -1,4 +1,4 @@
-const configs = {
+export const configs = {
   isProduction: process.env.NODE_ENV === 'production',
 
   port: process.env.PORT || 6060,
@@ -8,5 +8,3 @@ const configs = {
     online: process.env.DB_URL_ONLINE,
   },
 };
-
-module.exports = configs;

@@ -1,2 +1,15 @@
+\\acct tests
+sahar   789
+law     123
+
+@username = sahar
+@password = 789
+
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc3JfSWQiOiJzYWhhciIsIlVzcl9OYW1lIjoiU2FoYXIgVGFoYSIsIlVzcl9FbWFpbCI6Im4vYUBnbWFpbC5jb20iLCJVc3JfUGgiOiIrOTc0IDExMjIzMzQ0IiwiSXNBZG1pbiI6MCwiSXNBY3RpdmUiOjEsIklzQWRkIjowLCJJc0VkaXQiOjAsIklzQ2FuY2VsIjowLCJJc0RlbGV0ZSI6MCwiaWF0IjoxNjQ3ODU2Mjk1LCJleHAiOjE2NDc5NDI2OTV9.zzz
+
+### LOGIN
 GET http://localhost:6060/login/
-Authorization: Basic law:123
+Authorization: Basic {{username}}:{{password}}
+### GET USER INFO BY TOKEN
+GET http://localhost:6060/user/
+Authorization: Token {{token}}
