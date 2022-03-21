@@ -1,6 +1,6 @@
 # Welcome to wakra-project 👋
 
-> ReactTs + NodeJs (soon to be migrated to TS)
+> ReactTS + NodeTS
 
 ## Install
 
