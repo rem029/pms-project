@@ -4,6 +4,12 @@
 
 ## Install
 
+Apps required (skip if already installed in your workstation)
+1. NodeJS
+2. Git Bash
+3. Hyper
+4. VSCode
+
 ```sh
 cd .\wakra-client\; npm i; cd ../; cd .\wakra-server\; npm i;
 ```
