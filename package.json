@@ -1,5 +1,6 @@
 {
   "name": "wakra-project",
+  "description": "Project Management System",
   "private": true,
   "scripts": {
     "bootstrap": "lerna bootstrap",
@@ -7,5 +8,12 @@
   },
   "devDependencies": {
     "lerna": "^4.0.0"
+  },
+  "changelog": {
+    "labels": {
+      "feat": "New Features",
+      "fix": "Bug Fix",
+      "tech": "Tech"
+    }
   }
 }

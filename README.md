@@ -13,13 +13,13 @@ Apps required (skip if already installed in your workstation)
 
 6. on root folder run:
 ```sh
-npm i; npm bootstrap
+yarn bootstrap
 ```
 
 ## Usage
 
 ```sh
-npm run start
+yarn start
 ```
 
 ## Author
