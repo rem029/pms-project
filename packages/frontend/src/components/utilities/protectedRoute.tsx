@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { getToken } from 'utilities/storage';
 
 interface ProtectedRoutesProps {
-  children: JSX.Element;
+  children?: JSX.Element;
 }
 
 export const ProtectedRoutes = ({ children }: ProtectedRoutesProps): JSX.Element => {

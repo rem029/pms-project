@@ -1,7 +1,16 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import { useState } from 'react';
 
-export const useAxios = <T>(url: string) => {
+export const useAxios = <T>(
+  url: string
+): {
+  success: boolean;
+  loading: boolean;
+  data: T | undefined;
+  error: AxiosError | undefined;
+  message: string;
+  fetch: (config: AxiosRequestConfig) => void;
+} => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<T | undefined>(undefined);
   const [message, setMessage] = useState('');

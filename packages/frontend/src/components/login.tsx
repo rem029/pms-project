@@ -19,7 +19,7 @@ export const Login = (): JSX.Element => {
   const [fields, setFields] = useState({ username: '', password: '' });
   const [helpText, setHelperText] = useState('');
   const { data, fetch, loading, success, message } = useAxios<Token>(
-    'http://10.9.46.144:6060/login'
+    'http://localhost:6060/login'
   );
   const navigate = useNavigate();
 
@@ -37,7 +37,7 @@ export const Login = (): JSX.Element => {
     }));
   };
 
-  const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>): void => {
     event.preventDefault();
 
     setHelperText('');

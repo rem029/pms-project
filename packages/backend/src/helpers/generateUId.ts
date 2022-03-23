@@ -1,6 +1,6 @@
-export const generateUId = (maxNumRand, prefix = '', suffix = '') => {
-  const time = Date.now();
-  const rnd = Math.floor(Math.random() * maxNumRand);
+export const generateUId = (maxNumRand, prefix = "", suffix = ""): string => {
+	const time = Date.now();
+	const rnd = Math.floor(Math.random() * maxNumRand);
 
-  return `${prefix}${Math.floor(time + rnd)}${suffix}`;
+	return `${prefix}${Math.floor(time + rnd)}${suffix}`;
 };

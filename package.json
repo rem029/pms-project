@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "start": "lerna run start"
+    "start": "lerna run start",
+    "eslint": "lerna eslint"
   },
   "devDependencies": {
     "lerna": "^4.0.0"

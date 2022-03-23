@@ -1,13 +1,13 @@
-import express from 'express';
-import { loginController } from 'controllers/loginController';
-import { authenticateLogin } from 'middlewares/authUser';
+import express, { Router } from "express";
+import { loginController } from "controllers/loginController";
+import { authenticateLogin } from "middlewares/authUser";
 
-const initializeRouter = () => {
-  const router = express.Router();
+const initializeRouter = (): Router => {
+	const router = express.Router();
 
-  router.get('/', authenticateLogin, loginController);
+	router.get("/", authenticateLogin, loginController);
 
-  return router;
+	return router;
 };
 
 export const loginRoute = initializeRouter();
