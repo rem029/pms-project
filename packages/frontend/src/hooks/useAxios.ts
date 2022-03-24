@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
+import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { useState } from "react";
 import { userLogout } from "utilities/userLogout";
 
@@ -18,9 +18,7 @@ export const useAxios = <T>(
 	const [message, setMessage] = useState("");
 	const [error, setError] = useState<AxiosError | undefined>(undefined);
 	const [success, setSuccess] = useState(false);
-	const [axiosInstance, setAxiosInstance] = useState<AxiosInstance | undefined>(
-		undefined
-	);
+
 	const [axiosController, setAxiosController] = useState<AbortController>();
 
 	const resetState = (): void => {

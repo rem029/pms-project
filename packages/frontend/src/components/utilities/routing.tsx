@@ -20,10 +20,13 @@ export const Routing = (): JSX.Element => {
 					<Route path={"dashboard"} element={<Dashboard />} />
 					<Route path={"master"} element={<Master />} />
 					<Route path={"projects"} element={<Project />} />
-					<Route path={"reportingA"} element={<Reporting title="A" />} />
-					<Route path={"reportingB"} element={<Reporting title="B" />} />
-					<Route path={"reportingC"} element={<Reporting title="C" />} />
-					<Route path={"reportingD"} element={<Reporting title="D" />} />
+					<Route path={"reportingA"} element={<Reporting title="Progress" />} />
+					<Route path={"reportingB"} element={<Reporting title="Statistics" />} />
+					<Route
+						path={"reportingC"}
+						element={<Reporting title="Testing and Commissioning" />}
+					/>
+					<Route path={"reportingD"} element={<Reporting title="Inspection" />} />
 				</Route>
 
 				<Route path="*" element={<NotFound />} />

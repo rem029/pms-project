@@ -68,8 +68,15 @@ export const Login = (): JSX.Element => {
 				}}
 			>
 				<Grid container alignItems="center" justifyContent="center" spacing={1}>
-					<Grid item>
-						<Typography variant="h6">Login Page</Typography>
+					<Grid item xs={12}>
+						<Typography variant="h5" align="center" color="primary">
+							Project Management System
+						</Typography>
+					</Grid>
+					<Grid item xs={12}>
+						<Typography variant="h6" align="center">
+							Login Page
+						</Typography>
 					</Grid>
 
 					<Grid item container alignItems="center" justifyContent="center" xs={12}>
