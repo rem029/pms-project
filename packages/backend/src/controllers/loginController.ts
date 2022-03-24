@@ -10,7 +10,7 @@ export const loginController = async (
 	res: Response
 ): Promise<void> => {
 	try {
-		logger.info("@loginServices");
+		logger.info("@loginControllers");
 		const { userId, password } = req.user ? req.user : { userId: "", password: "" };
 
 		const results = await knexMySQL.raw(
@@ -44,7 +44,7 @@ export const loginController = async (
 			data: generateAccessToken(returnUser),
 		});
 	} catch (error) {
-		logger.error(`@loginServices Error ${error}`);
+		logger.error(`@loginControllers Error ${error}`);
 		handleError(res, 500, {
 			success: false,
 			message: "Login error",

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect, useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Drawer from "@mui/material/Drawer";
 import { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
@@ -11,15 +11,27 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { grey, yellow } from "@mui/material/colors";
-import { Tooltip } from "@mui/material";
-import { LogoutOutlined, Summarize, Assessment, WbSunny } from "@mui/icons-material";
-import { deleteToken } from "utilities/storage";
-
+import { yellow, grey } from "@mui/material/colors";
+import { CircularProgress, Collapse, Link, ListItemButton, Tooltip } from "@mui/material";
+import {
+	Summarize,
+	Assessment,
+	WbSunny,
+	ExitToApp,
+	ExpandLess,
+	ExpandMore,
+	StarBorder,
+} from "@mui/icons-material";
+import { userLogout } from "utilities/userLogout";
+import { useAxios } from "hooks/useAxios";
+import { UserInfo } from "types/interface";
+import { useNavigate } from "react-router-dom";
+import { baseUrl } from "utilities/constant";
+import { getToken } from "utilities/storage";
 interface AppDrawerProps extends MuiAppBarProps {
 	open?: boolean;
 	setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
-	drawerWidth: number;
+	width: number;
 }
 
 const DrawerHeader = styled("div")(({ theme }) => ({
@@ -31,29 +43,63 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 	justifyContent: "flex-end",
 }));
 
-export const AppDrawer = ({
-	open,
-	setOpen,
-	drawerWidth,
-}: AppDrawerProps): JSX.Element => {
+export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element => {
 	const theme = useTheme();
+	const navigate = useNavigate();
+	const [userName, setUserName] = useState("");
+	const [subMenuOpenReporting, setSubMenuOpenReporting] = useState<boolean>(false);
+
+	const {
+		data: userData,
+		fetch: userFetch,
+		loading: userLoading,
+		success: userSuccess,
+		error: userError,
+	} = useAxios<UserInfo>(baseUrl + "/user");
+
+	useEffect(() => {
+		const token = getToken();
+
+		if (token)
+			userFetch({
+				headers: {
+					Authorization: `Token ${token}`,
+				},
+			});
+	}, []);
+
+	useEffect(() => {
+		if (userError) setUserName("Error");
+
+		if (!userLoading && userSuccess && userData) {
+			setUserName(userData.Usr_Name);
+		}
+	}, [userData, userLoading, userSuccess]);
 
 	const handleDrawerClose = (): void => {
 		if (setOpen) setOpen(false);
 	};
 
 	const handleLogout = (): void => {
-		deleteToken();
-		window.location.reload();
+		userLogout();
+	};
+
+	const handleChangePage = (link: string): void => {
+		if (setOpen) setOpen(false);
+		navigate("/" + link.toLowerCase());
+	};
+
+	const handleSubMenuOpen = (): void => {
+		setSubMenuOpenReporting((currentValue) => !currentValue);
 	};
 
 	return (
 		<Drawer
 			sx={{
-				width: drawerWidth,
+				width: width,
 				flexShrink: 0,
 				"& .MuiDrawer-paper": {
-					width: drawerWidth,
+					width: width,
 					boxSizing: "border-box",
 				},
 			}}
@@ -71,14 +117,15 @@ export const AppDrawer = ({
 				<ListItem>
 					<ListItemText>
 						<Typography variant="body1" noWrap letterSpacing={1}>
-							Hello, User
+							Hello,
+							{userLoading ? <CircularProgress size={24} /> : userName}
 						</Typography>
 					</ListItemText>
 
 					<ListItemIcon>
 						<Tooltip title="Would you like to logout?">
 							<IconButton onClick={handleLogout}>
-								<LogoutOutlined />
+								<ExitToApp />
 							</IconButton>
 						</Tooltip>
 					</ListItemIcon>
@@ -101,20 +148,60 @@ export const AppDrawer = ({
 			</List>
 			<Divider />
 			<List>
-				{["Reporting A", "Reporting B", "Reporting C", "Reporting D"].map(
-					(text, index) => (
-						<ListItem button key={text}>
+				{["Dashboard", "Master", "Projects", "Reporting"].map((text, index) => (
+					<ListItem
+						button
+						key={text}
+						onClick={() =>
+							text === "Reporting" ? handleSubMenuOpen() : handleChangePage(text)
+						}
+					>
+						<ListItemIcon>
+							{index % 2 === 0 ? (
+								<Summarize color="primary" />
+							) : (
+								<Assessment color="secondary" />
+							)}
+						</ListItemIcon>
+						<ListItemText>
+							<Link sx={{ textDecoration: "none", color: grey[600] }}>{text}</Link>
+						</ListItemText>
+						{text === "Reporting" ? (
+							subMenuOpenReporting ? (
+								<ExpandLess />
+							) : (
+								<ExpandMore />
+							)
+						) : (
+							<></>
+						)}
+					</ListItem>
+				))}
+
+				<Collapse in={subMenuOpenReporting} timeout="auto" unmountOnExit>
+					<List component="div" disablePadding>
+						<ListItemButton sx={{ pl: 4 }} onClick={() => handleChangePage("reportingA")}>
 							<ListItemIcon>
-								{index % 2 === 0 ? (
-									<Summarize color="primary" />
-								) : (
-									<Assessment color="secondary" />
-								)}
+								<StarBorder />
 							</ListItemIcon>
-							<ListItemText primary={text} color={grey[50]} />
-						</ListItem>
-					)
-				)}
+							<ListItemText primary="Reporting for A" />
+						</ListItemButton>
+
+						<ListItemButton sx={{ pl: 4 }} onClick={() => handleChangePage("reportingB")}>
+							<ListItemIcon>
+								<StarBorder />
+							</ListItemIcon>
+							<ListItemText primary="Reporting for B" />
+						</ListItemButton>
+
+						<ListItemButton sx={{ pl: 4 }} onClick={() => handleChangePage("reportingC")}>
+							<ListItemIcon>
+								<StarBorder />
+							</ListItemIcon>
+							<ListItemText primary="Reporting for C" />
+						</ListItemButton>
+					</List>
+				</Collapse>
 			</List>
 			<Divider />
 		</Drawer>

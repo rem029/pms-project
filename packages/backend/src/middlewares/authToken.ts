@@ -54,7 +54,7 @@ export const authenticateToken = (
 
 	try {
 		const decodedUser = decodeToken(token) as UserInfo;
-		console.log(decodedUser);
+		logger.info(`@middleware authenticateToken decoded userId: ${decodedUser.Usr_Id}`);
 		req.user = { userId: decodedUser.Usr_Id };
 	} catch (error) {
 		logger.error(`@middleware authenticateToken error: ${JSON.stringify(error)}`);
