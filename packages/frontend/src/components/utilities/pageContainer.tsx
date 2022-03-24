@@ -10,13 +10,7 @@ export const PageContainer = ({
 }: PageContainerInterface): JSX.Element => {
 	return (
 		<Container maxWidth="xl" sx={{ flexGrow: 1, padding: 1, mt: 0.5 }}>
-			<Typography
-				color="primary"
-				variant="h5"
-				noWrap
-				component="div"
-				sx={{ flexGrow: 1 }}
-			>
+			<Typography color="primary" variant="h5" component="div">
 				{title}
 			</Typography>
 			{children}
