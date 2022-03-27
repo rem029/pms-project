@@ -14,3 +14,5 @@ export { Routing } from "./utilities/routing";
 export { LineChart } from "./charts/lineChart";
 export { HistogramChart } from "./charts/histogramChart";
 export { BarChart } from "./charts/barChart";
+
+export { ProgressCards } from "./cards/progressCards";

@@ -1,5 +1,5 @@
 import { Divider, Grid, Paper, Typography } from "@mui/material";
-import { LineChart, BarChart, HistogramChart } from "components";
+import { LineChart, BarChart, HistogramChart, ProgressCards } from "components";
 import { Options } from "./options";
 import { PageContainer } from "./utilities/pageContainer";
 
@@ -14,6 +14,13 @@ export const Dashboard = (): JSX.Element => {
 				flexDirection="column"
 			>
 				<Options />
+
+				<Grid container spacing={1} justifyContent="center" sx={{ p: 1 }}>
+					<ProgressCards theme="primary" />
+					<ProgressCards theme="secondary" />
+					<ProgressCards theme="primary" />
+					<ProgressCards theme="secondary" />
+				</Grid>
 
 				<Paper sx={{ flexGrow: 1, padding: 1, mt: 0.5 }} elevation={3}>
 					<Grid container spacing={1} justifyContent="center">

@@ -45,17 +45,18 @@ export const useAxios = <T>(
 			.get(url)
 			.then((response) => {
 				setLoading(false);
-				if (response.status === 401 || response.status === 403) {
-					resetState();
-					userLogout();
-					return;
-				}
+
 				setData(response.data.data);
 				setMessage(response.data.message);
 				setSuccess(response.data.success);
 			})
 			.catch((error: AxiosError) => {
 				if (error) {
+					if (error.response?.status === 401 || error.response?.status === 403) {
+						resetState();
+						userLogout();
+						return;
+					}
 					setData(error.response?.data?.data || undefined);
 					setSuccess(error.response?.data.success);
 					setMessage(error.response?.data.message || error.message);

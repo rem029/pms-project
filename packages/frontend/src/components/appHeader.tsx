@@ -49,7 +49,7 @@ export const AppHeader = ({ open, setOpen, width }: AppBarProps): JSX.Element =>
 				</Typography>
 
 				<IconButton color="inherit">
-					<RadioButtonUnchecked />
+					<RadioButtonUnchecked fontSize="large" />
 				</IconButton>
 			</Toolbar>
 		</AppBar>

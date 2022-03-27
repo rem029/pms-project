@@ -10,7 +10,7 @@ export const LineChart = (): JSX.Element => {
 	const highchartsRef = useRef<HighchartsReact.RefObject>(null);
 	const options: Highcharts.Options = {
 		title: { text: "Line chart" },
-		series: [{ type: "line", data: [1, 2, 3] }],
+		series: [{ type: "areaspline", data: [0, 1, 3, 0, 3, 1, 2, 3, 1, 0] }],
 	};
 
 	return (

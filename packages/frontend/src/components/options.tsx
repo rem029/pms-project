@@ -15,16 +15,12 @@ export const Options = (): JSX.Element => {
 						Filter
 					</Typography>
 				</Grid>
-
 				<Divider sx={{ width: "99%" }} />
 				<Grid item xs={12}>
-					<TextField label="Option 1" fullWidth sx={{ p: 1, maxWidth: 480 }} />
-					<TextField label="Option 2" fullWidth sx={{ p: 1, maxWidth: 480 }} />
-					<TextField label="Option 3" fullWidth sx={{ p: 1, maxWidth: 480 }} />
+					<TextField label="Option 1" sx={{ p: 1 }} />
+					<TextField label="Option 2" sx={{ p: 1 }} />
 				</Grid>
-
 				<Divider sx={{ width: "99%" }} />
-
 				<Grid item xs={12}>
 					<Button variant="contained" size="large" fullWidth sx={{ p: 1, maxWidth: 720 }}>
 						Apply
