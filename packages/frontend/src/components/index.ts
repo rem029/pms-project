@@ -10,3 +10,7 @@ export { Project } from "./project";
 export { ProtectedRoute } from "./utilities/protectedRoute";
 export { PageContainer } from "./utilities/pageContainer";
 export { Routing } from "./utilities/routing";
+
+export { LineChart } from "./charts/lineChart";
+export { HistogramChart } from "./charts/histogramChart";
+export { BarChart } from "./charts/barChart";
