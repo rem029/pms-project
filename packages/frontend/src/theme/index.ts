@@ -19,6 +19,13 @@ export const theme = createTheme({
 				},
 			},
 		},
+		MuiGrid: {
+			styleOverrides: {
+				root: {
+					paddingLeft: 0,
+				},
+			},
+		},
 		MuiButton: {
 			defaultProps: {
 				disableElevation: true,

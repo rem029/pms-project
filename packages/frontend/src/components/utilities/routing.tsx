@@ -1,5 +1,13 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Dashboard, ProtectedRoute, Reporting, Login, Master, Project } from "components";
+import {
+	Dashboard,
+	ProtectedRoute,
+	Reporting,
+	Login,
+	Master,
+	Project,
+	ReportDetailProgress,
+} from "components";
 import { Main } from "pages/main";
 import { NotFound } from "pages/notFound";
 
@@ -20,7 +28,7 @@ export const Routing = (): JSX.Element => {
 					<Route path={"dashboard"} element={<Dashboard />} />
 					<Route path={"master"} element={<Master />} />
 					<Route path={"projects"} element={<Project />} />
-					<Route path={"reportingA"} element={<Reporting title="Progress" />} />
+					<Route path={"report-detail-progress"} element={<ReportDetailProgress />} />
 					<Route path={"reportingB"} element={<Reporting title="Statistics" />} />
 					<Route
 						path={"reportingC"}

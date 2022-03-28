@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
 import { logger } from "utilities/logger";
 import { RequestAuthInterface } from "types";
-import { handleError } from "helpers/serverResponse";
+import { handleServerError } from "helpers/serverResponse";
 
 const verifyBodyCreateUser = (reqBody: any): { isAccepted: boolean; message: string } => {
 	const hasEmail = reqBody.email && reqBody.email;
@@ -32,7 +32,7 @@ export const authenticateLogin = async (
 			: "";
 
 	if (!user)
-		return handleError(res, 400, {
+		return handleServerError(res, 400, {
 			success: false,
 			message: "Credentials are required",
 		});
@@ -55,7 +55,7 @@ export const authenticateCreateUser = async (
 	const verifyBodyCreateUserResponse = verifyBodyCreateUser(req.body);
 
 	if (!verifyBodyCreateUserResponse.isAccepted)
-		return handleError(res, 400, {
+		return handleServerError(res, 400, {
 			success: false,
 			message: verifyBodyCreateUserResponse.message,
 		});

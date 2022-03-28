@@ -10,7 +10,7 @@ export const useAxios = <T>(
 	data: T | undefined;
 	error: AxiosError | undefined;
 	message: string;
-	fetch: (config: AxiosRequestConfig) => void;
+	fetch: (config?: AxiosRequestConfig) => void;
 	fetchCancel: () => void;
 } => {
 	const [loading, setLoading] = useState(false);

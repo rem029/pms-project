@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { knexMySQL } from "services/database";
 import { logger } from "utilities/logger";
-import { handleResponse, handleError } from "helpers/serverResponse";
+import { handleServerResponse, handleServerError } from "helpers/serverResponse";
 import { RequestAuthInterface, UserInfo } from "types";
 import { generateAccessToken } from "middlewares/authToken";
 
@@ -15,21 +15,21 @@ export const loginController = async (
 
 		const results = await knexMySQL.raw(
 			`
-    SELECT 
-      Usr_Id,
-      Usr_Name,
-      Usr_Email,
-      Usr_Ph,
-      IsAdmin,
-      IsActive,
-      IsAdd,
-      IsEdit,
-      IsCancel,
-      IsDelete
-    FROM 
-        userm
-    WHERE
-        Usr_Id=? AND Usr_pwd=?;`,
+			SELECT 
+				Usr_Id,
+				Usr_Name,
+				Usr_Email,
+				Usr_Ph,
+				IsAdmin,
+				IsActive,
+				IsAdd,
+				IsEdit,
+				IsCancel,
+				IsDelete
+			FROM 
+				userm
+			WHERE
+				Usr_Id=? AND Usr_pwd=?;`,
 			[userId, password ? password : ""]
 		);
 
@@ -38,14 +38,14 @@ export const loginController = async (
 
 		const returnUser = { ...results[0][0] } as UserInfo;
 
-		handleResponse(res, 200, {
+		handleServerResponse(res, 200, {
 			success: true,
 			message: "Login success",
 			data: generateAccessToken(returnUser),
 		});
 	} catch (error) {
 		logger.error(`@loginControllers Error ${error}`);
-		handleError(res, 500, {
+		handleServerError(res, 500, {
 			success: false,
 			message: "Login error",
 			error: error as Error,

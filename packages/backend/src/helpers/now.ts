@@ -14,11 +14,6 @@ const msToMinutesAndHour = (ms: number): string => {
 
 export const get = (): moment.Moment => moment().utc().tz(moment.tz.guess());
 
-export const elapsedTime = (
-	startDateTimeString: string,
-	endDateTimeString: string
-): string => {
-	const start = new Date(startDateTimeString);
-	const end = new Date(endDateTimeString);
-	return msToMinutesAndHour(end.getTime() - start.getTime());
+export const elapsedTime = (startTime: number, endTime: number): string => {
+	return msToMinutesAndHour(endTime - startTime);
 };

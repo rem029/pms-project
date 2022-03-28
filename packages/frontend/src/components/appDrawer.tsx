@@ -180,11 +180,14 @@ export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element
 
 				<Collapse in={subMenuOpenReporting} timeout="auto" unmountOnExit>
 					<List component="div" disablePadding>
-						<ListItemButton sx={{ pl: 4 }} onClick={() => handleChangePage("reportingA")}>
+						<ListItemButton
+							sx={{ pl: 4 }}
+							onClick={() => handleChangePage("report-detail-progress")}
+						>
 							<ListItemIcon>
 								<StarBorder />
 							</ListItemIcon>
-							<ListItemText primary="Reporting for A" />
+							<ListItemText primary="Progress Detail Report" />
 						</ListItemButton>
 
 						<ListItemButton sx={{ pl: 4 }} onClick={() => handleChangePage("reportingB")}>

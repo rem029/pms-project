@@ -2,7 +2,8 @@ export { AppHeader } from "./appHeader";
 export { AppDrawer } from "./appDrawer";
 
 export { Login } from "./login";
-export { Reporting } from "./reporting";
+export { Reporting } from "./reportingTemplate";
+export { ReportDetailProgress } from "./reportingDetailProgress";
 export { Dashboard } from "./dashboard";
 export { Master } from "./master";
 export { Project } from "./project";
