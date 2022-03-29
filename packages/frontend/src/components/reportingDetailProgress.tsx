@@ -16,7 +16,7 @@ export const ReportDetailProgress = (): JSX.Element => {
 				<Options />
 
 				<Grid container spacing={1} justifyContent="center" padding={0.5}>
-					<Grid item xs={12}>
+					<Grid item xs={12} sx={{ width: "100%", overflowX: "auto" }}>
 						<ReportingDetailProgressTable />
 					</Grid>
 				</Grid>

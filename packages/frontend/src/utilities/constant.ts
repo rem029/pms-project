@@ -19,9 +19,9 @@ export const TABLE_HEADER_REPORTING_DETAIL_PROGRESS = {
 	Unt: "Units",
 	Mdl: "Modules",
 	Cancel: "Is cancelled?",
-	id: "Activity Id",
-	cd: "Activity Code",
-	nm: "Activity Name",
+	id: "ID",
+	cd: "Code",
+	nm: "Name",
 	prg: "Progress",
 	com: "Comments",
 };

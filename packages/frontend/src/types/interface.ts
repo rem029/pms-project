@@ -17,6 +17,13 @@ export interface Token {
 	expiresIn: string;
 }
 
+export type Activity = {
+	id: number;
+	code: number;
+	name: string;
+	progress: number;
+	comment: string;
+};
 export interface ReportProgressDetailInterface {
 	DocNo: number;
 	DocDt: string;
@@ -29,16 +36,17 @@ export interface ReportProgressDetailInterface {
 	Bld: string;
 	Own: string;
 	Mst: string;
+	Mdl: number;
 	Zon: string;
 	Sec: string;
 	Typ: string;
 	Cns: string;
 	Unt: number;
-	Mdl: number;
 	Cancel: number;
 	id: number;
 	cd: string;
 	nm: string;
 	prg: number;
 	com: string;
+	activities: Activity[];
 }

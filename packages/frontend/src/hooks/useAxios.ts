@@ -45,7 +45,6 @@ export const useAxios = <T>(
 			.get(url)
 			.then((response) => {
 				setLoading(false);
-
 				setData(response.data.data);
 				setMessage(response.data.message);
 				setSuccess(response.data.success);

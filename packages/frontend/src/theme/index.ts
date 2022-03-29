@@ -132,9 +132,9 @@ export const theme = createTheme({
 					".MuiTableCell-root": {
 						color: "#374151",
 					},
-					borderBottom: "none",
 					"& .MuiTableCell-root": {
-						borderBottom: "none",
+						borderBottom: "2px solid",
+						borderColor: grey[200],
 						fontSize: "12px",
 						fontWeight: 600,
 						lineHeight: 1,
@@ -147,6 +147,9 @@ export const theme = createTheme({
 					},
 				},
 			},
+		},
+		MuiTableCell: {
+			styleOverrides: { root: { borderBottom: "1px solid", borderColor: grey[100] } },
 		},
 	},
 	palette: {
