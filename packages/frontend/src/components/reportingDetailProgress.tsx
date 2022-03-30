@@ -1,7 +1,8 @@
 import { Grid } from "@mui/material";
 import { PageContainer } from "./utilities/pageContainer";
-import { Options } from "./options";
+
 import { ReportingDetailProgressTable } from "./tables/reportingDetailProgressTable";
+import { ReportFilters } from "./filters/reportFilters";
 
 export const ReportDetailProgress = (): JSX.Element => {
 	return (
@@ -13,7 +14,7 @@ export const ReportDetailProgress = (): JSX.Element => {
 				sx={{ p: 1 }}
 				flexDirection="column"
 			>
-				<Options />
+				<ReportFilters />
 
 				<Grid container spacing={1} justifyContent="center" padding={0.5}>
 					<Grid item xs={12} sx={{ width: "100%", overflowX: "auto" }}>

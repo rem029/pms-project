@@ -4,7 +4,7 @@ import { knexMySQL } from "services/database";
 import { logger } from "utilities/logger";
 import { handleServerResponse, handleServerError } from "helpers/serverResponse";
 import { ReportProgressDetailInterface, RequestAuthInterface } from "types";
-// import { DUMMY_PROGRESSIVE_DETAIL } from "../dummy/progressiveDetail";
+import { DUMMY_PROGRESSIVE_DETAIL } from "../dummy/progressiveDetail";
 
 const formatTeportProgressDetailController = (response: any): any => {
 	let returnArray: any = [];
@@ -66,37 +66,38 @@ export const reportProgressDetailController = async (
 
 		logger.info("@reportProgressDetailController");
 
-		const results = await knexMySQL.raw(
-			`CALL UDSP_ProgDetailRpt(
-				'2022-03-03',
-				'06C',
-				'TP',
-				'B01020',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'',
-				'0',
-				'Bld,
-				DocEdt'
-				)
-		`
-		);
+		// const results = await knexMySQL.raw(
+		// 	`CALL UDSP_ProgDetailRpt(
+		// 		'2022-03-03',
+		// 		'06C',
+		// 		'TP',
+		// 		'B01020',
+		// 		'',
+		// 		'',
+		// 		'',
+		// 		'',
+		// 		'',
+		// 		'',
+		// 		'0',
+		// 		'Bld,
+		// 		DocEdt'
+		// 		)
+		// `
+		// );
 
-		const response = results[0][0] as ReportProgressDetailInterface[];
-
-		const formattedResponse = formatTeportProgressDetailController(
-			groupBy(
-				response,
-				(item) => `${item.DocNo} ${new Date(item.DocDt).toLocaleDateString()}`
-			)
-		);
+		// const response = results[0][0] as ReportProgressDetailInterface[];
 
 		// const formattedResponse = formatTeportProgressDetailController(
-		// 	DUMMY_PROGRESSIVE_DETAIL
+		// 	groupBy(
+		// 		response,
+		// 		(item) => `${item.DocNo} ${new Date(item.DocDt).toLocaleDateString()}`
+		// 	)
 		// );
+
+		// DUMMY
+		const formattedResponse = formatTeportProgressDetailController(
+			DUMMY_PROGRESSIVE_DETAIL
+		);
 
 		handleServerResponse(res, 200, {
 			success: true,

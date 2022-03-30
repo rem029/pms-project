@@ -1,4 +1,4 @@
-import { useMemo, useState, Fragment, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
@@ -16,107 +16,33 @@ import { baseUrl, TABLE_HEADER_REPORTING_DETAIL_PROGRESS } from "utilities/const
 import { useAxios } from "hooks/useAxios";
 import { ReportProgressDetailInterface } from "types/interface";
 import { getToken } from "utilities/storage";
-import { CircularProgress, TablePagination, Typography } from "@mui/material";
+import {
+	Button,
+	CircularProgress,
+	Modal,
+	TablePagination,
+	Typography,
+} from "@mui/material";
 import TablePaginationActions from "@mui/material/TablePagination/TablePaginationActions";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
 import { red } from "@mui/material/colors";
 
 import { ReportingDetailProgressActivityTable } from "./reportingDetailProgressActivityTable";
+import { getDocumentCSS } from "helper/documentCSSHelper";
+import { formatDate } from "helper/dateHelper";
+import { Preview, PrintOutlined } from "@mui/icons-material";
+import { ReportingPrintPreviewModal } from "components/utilities/reportingPrintPreviewModal";
 
-const Row = (props: {
-	openAll: boolean;
-	row: ReportProgressDetailInterface;
-}): JSX.Element => {
-	const { row, openAll } = props;
-	const [open, setOpen] = useState(openAll);
-
-	useEffect(() => {
-		setOpen(openAll);
-	}, [openAll]);
-
-	return (
-		<Fragment>
-			<TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-				<TableCell align="center" padding="checkbox">
-					<IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-						{open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-					</IconButton>
-				</TableCell>
-				<TableCell component="th" scope="row" align="center">
-					{row.DocNo}
-				</TableCell>
-				<TableCell align="center">
-					{new Date(row.DocDt).toLocaleDateString("en-US", {
-						day: "2-digit",
-						month: "2-digit",
-						year: "numeric",
-					})}
-				</TableCell>
-				<TableCell align="center">{row.Bld}</TableCell>
-				<TableCell align="center">{row.Own}</TableCell>
-				<TableCell align="center">{row.Typ}</TableCell>
-				<TableCell align="center">{row.Cns}</TableCell>
-				<TableCell align="center">{row.Mst}</TableCell>
-				<TableCell align="center">{row.Unt}</TableCell>
-				<TableCell align="center">{row.Mdl}</TableCell>
-				<TableCell align="center">{row.PhsName}</TableCell>
-				<TableCell align="center">{row.ClsName}</TableCell>
-			</TableRow>
-			<TableRow>
-				<TableCell style={{ padding: 0 }} colSpan={12}>
-					<Collapse in={open} timeout="auto" unmountOnExit>
-						<ReportingDetailProgressActivityTable activities={row.activities} />
-					</Collapse>
-				</TableCell>
-			</TableRow>
-		</Fragment>
-	);
-};
-
-const extractCSS = (styleSheetList: StyleSheetList): string => {
-	let allCSSStyle = "";
-
-	for (const styleSheet in styleSheetList) {
-		try {
-			for (const cssRules in styleSheetList[styleSheet].cssRules) {
-				const cssString = styleSheetList[styleSheet].cssRules[cssRules].cssText;
-
-				if (cssString) allCSSStyle = `${allCSSStyle}\n${cssString}`;
-			}
-		} catch (error) {
-			console.log("No access error with styleSheet");
-		}
-	}
-	// const allCSS = [...styleSheetList]
-	// 	.map((styleSheet) => {
-	// 		try {
-	// 			return [...styleSheet.cssRules].map((rule) => rule.cssText).join("");
-	// 		} catch (e) {
-	// 			console.log("Access to stylesheet %s is denied. Ignoring...", styleSheet.href);
-	// 		}
-	// 	})
-	// 	.filter(Boolean)
-	// 	.join("");
-
-	return allCSSStyle;
-};
 export const ReportingDetailProgressTable = (): JSX.Element => {
 	const [report, setReport] = useState<ReportProgressDetailInterface[]>([]);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [openAll, setOpenAll] = useState(true);
-
+	const [isModalExportOpen, setIsModalExportOpen] = useState(false);
+	const [reportHTMLCSSString, setReportHTMLCSSString] = useState("");
 	const { width } = useWindowDimensions();
 	const tableRef = useRef<HTMLDivElement>(null);
-	useEffect(() => {
-		// if (report?.length > 0) {
-		// 	console.log("@tableRef\n", tableRef.current?.innerHTML);
-		// 	console.log("@tableRef extractCSS", extractCSS(document.styleSheets));
-		// }
 
-		console.log("@tableRef\n", tableRef.current?.innerHTML);
-		console.log("@tableRef extractCSS", extractCSS(document.styleSheets));
-	}, [tableRef, report]);
 	const {
 		data: reportData,
 		fetch: reportFetch,
@@ -159,9 +85,33 @@ export const ReportingDetailProgressTable = (): JSX.Element => {
 		setPage(0);
 	};
 
+	const handleButtonExportClick = (): void => {
+		setReportHTMLCSSString(
+			`<style>${getDocumentCSS()}</style> ${tableRef.current?.innerHTML}`
+		);
+		setIsModalExportOpen(true);
+	};
+
+	const handleModalClose = (): void => {
+		setIsModalExportOpen(false);
+	};
+
 	return (
 		<>
-			{reportLoading ? (
+			<Button
+				onClick={handleButtonExportClick}
+				endIcon={<Preview />}
+				disabled={report.length <= 0}
+			>
+				Print Preview
+			</Button>
+			<ReportingPrintPreviewModal
+				open={isModalExportOpen}
+				handleModalClose={handleModalClose}
+				reportElementInString={reportHTMLCSSString}
+			/>
+
+			{reportLoading && (
 				<>
 					<CircularProgress
 						sx={{
@@ -177,7 +127,9 @@ export const ReportingDetailProgressTable = (): JSX.Element => {
 						Generating Report... Please wait...
 					</Typography>
 				</>
-			) : (
+			)}
+
+			{!reportLoading && (
 				<>
 					<TableContainer
 						ref={tableRef}
@@ -285,6 +237,54 @@ export const ReportingDetailProgressTable = (): JSX.Element => {
 					/>
 				</>
 			)}
+		</>
+	);
+};
+
+const Row = (props: {
+	openAll: boolean;
+	row: ReportProgressDetailInterface;
+}): JSX.Element => {
+	const { row, openAll } = props;
+	const [open, setOpen] = useState(openAll);
+
+	useEffect(() => {
+		setOpen(openAll);
+	}, [openAll]);
+
+	return (
+		<>
+			<TableRow>
+				<TableCell align="center" padding="checkbox">
+					<IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+						{open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+					</IconButton>
+				</TableCell>
+				<TableCell component="th" scope="row" align="center">
+					{row.DocNo}
+				</TableCell>
+				<TableCell align="center">{formatDate(new Date(row.DocDt))}</TableCell>
+				<TableCell align="center">{row.Bld}</TableCell>
+				<TableCell align="center">{row.Own}</TableCell>
+				<TableCell align="center">{row.Typ}</TableCell>
+				<TableCell align="center">{row.Cns}</TableCell>
+				<TableCell align="center">{row.Mst}</TableCell>
+				<TableCell align="center">{row.Unt}</TableCell>
+				<TableCell align="center">{row.Mdl}</TableCell>
+				<TableCell align="center">{row.PhsName}</TableCell>
+				<TableCell align="center">{row.ClsName}</TableCell>
+			</TableRow>
+			<TableRow>
+				<TableCell sx={{ p: 0 }} colSpan={12}>
+					<Collapse in={open} timeout="auto" unmountOnExit>
+						<ReportingDetailProgressActivityTable activities={row.activities} />
+						<Box
+							component="div"
+							sx={{ pageBreakBefore: "always", displayPrint: "block" }}
+						></Box>
+					</Collapse>
+				</TableCell>
+			</TableRow>
 		</>
 	);
 };
