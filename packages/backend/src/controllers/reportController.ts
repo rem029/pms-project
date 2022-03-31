@@ -6,52 +6,16 @@ import { handleServerResponse, handleServerError } from "helpers/serverResponse"
 import { ReportProgressDetailInterface, RequestAuthInterface } from "types";
 import { DUMMY_PROGRESSIVE_DETAIL } from "../dummy/progressiveDetail";
 
-const formatTeportProgressDetailController = (response: any): any => {
-	let returnArray: any = [];
+const formatReportProgressDetailController = (
+	response: ReportProgressDetailInterface[]
+): ReportProgressDetailInterface[] => {
+	let returnArray: ReportProgressDetailInterface[] = [];
 
-	for (const items in response) {
-		//initial object
-		let newData: any = {};
-		let activity: any = {};
-		for (let index = 0; index < response[items].length; index++) {
-			activity = {
-				id: response[items][index].id,
-				code: response[items][index].cd,
-				name: response[items][index].nm,
-				progress: response[items][index].prg,
-				comment: response[items][index].com,
-			};
-			if (index === 0) {
-				newData = {
-					DocNo: response[items][index].DocNo,
-					DocDt: response[items][index].DocDt,
-					DocEdt: response[items][index].DocEdt,
-					Prj: response[items][index].Prj,
-					Phs: response[items][index].Phs,
-					PhsName: response[items][index].PhsName,
-					Cls: response[items][index].Cls,
-					ClsName: response[items][index].ClsName,
-					Bld: response[items][index].Bld,
-					Own: response[items][index].Own,
-					Mst: response[items][index].Mst,
-					Mdl: response[items][index].Mdl,
-					Zon: response[items][index].Zon,
-					Sec: response[items][index].Sec,
-					Typ: response[items][index].Typ,
-					Cns: response[items][index].Cns,
-					Unt: response[items][index].Unt,
-					Cancel: response[items][index].Cancel,
-					activities: [activity],
-				};
-			}
-
-			//update object activities
-			if (index > 0) {
-				// console.log(newData);
-				newData = { ...newData, activities: [...newData.activities, activity] };
-			}
-		}
-		returnArray = [...returnArray, newData];
+	for (const items of response) {
+		returnArray = [
+			...returnArray,
+			{ ...items, activities: JSON.parse(items.activities.toString()) },
+		];
 	}
 
 	return returnArray;
@@ -66,43 +30,70 @@ export const reportProgressDetailController = async (
 
 		logger.info("@reportProgressDetailController");
 
-		// const results = await knexMySQL.raw(
-		// 	`CALL UDSP_ProgDetailRpt(
-		// 		'2022-03-03',
-		// 		'06C',
-		// 		'TP',
-		// 		'B01020',
-		// 		'',
-		// 		'',
-		// 		'',
-		// 		'',
-		// 		'',
-		// 		'',
-		// 		'0',
-		// 		'Bld,
-		// 		DocEdt'
-		// 		)
-		// `
-		// );
+		const results = await knexMySQL.raw(
+			`
+				SELECT 
+					InsH_No as inspectionNumber,
+					InsH_Dt as inspectionDate,
+					InsH_Bld as bldgCode,
+					pmsysdb.ownm.Own_Name as ownerName,
+					pmsysdb.buildm.Typ_Cd as typeCode,
+					pmsysdb.consysm.Cns_Name as constructionMethodName,
+					pmsysdb.buildm.Prj_Cd as projectCode,
+					pmsysdb.buildm.Mst_Cd as milestoneCode,
+					pmsysdb.buildm.Unit,
+					pmsysdb.buildm.Mode as module,
+					pmsysdb.phasem.Phs_Name as phaseName,
+					pmsysdb.classm.Cls_Cd as classificationName,
+					InsH_Cancelled as isCancelled,
+					JSON_ARRAYAGG(
+						JSON_OBJECT(
+							'id',InsD_Id,
+							'code',InsD_Code,
+							'name',InsD_Name,
+							'progress',InsD_Prg,
+							'comments',InsD_Com
+						)
+					) as activities    
+				FROM 
+					pmsysdb.insentryh
+				LEFT JOIN
+					pmsysdb.insentryd
+				ON  
+					pmsysdb.insentryd.InsD_No = pmsysdb.insentryh.InsH_No
+				LEFT JOIN
+					pmsysdb.buildm
+				ON  
+					pmsysdb.buildm.Bld_Cd = pmsysdb.insentryh.InsH_Bld
+				LEFT JOIN
+					pmsysdb.ownm
+				ON  
+					pmsysdb.ownm.Own_Cd = pmsysdb.insentryh.InsH_Own
+				LEFT JOIN
+					pmsysdb.phasem
+				ON  
+					pmsysdb.phasem.Phs_Cd = pmsysdb.insentryh.Phs_Cd
+				LEFT JOIN
+					pmsysdb.classm
+				ON  
+					pmsysdb.classm.Cls_Cd = pmsysdb.insentryh.Cls_Cd
+				LEFT JOIN
+					pmsysdb.consysm
+				ON  
+					pmsysdb.consysm.Cns_Cd = pmsysdb.buildm.Cns_Cd    
+				GROUP BY
+					InsH_No;
+			`
+		);
 
-		// const response = results[0][0] as ReportProgressDetailInterface[];
-
-		// const formattedResponse = formatTeportProgressDetailController(
-		// 	groupBy(
-		// 		response,
-		// 		(item) => `${item.DocNo} ${new Date(item.DocDt).toLocaleDateString()}`
-		// 	)
-		// );
-
-		// DUMMY
-		const formattedResponse = formatTeportProgressDetailController(
-			DUMMY_PROGRESSIVE_DETAIL
+		const response = formatReportProgressDetailController(
+			results[0] as ReportProgressDetailInterface[]
 		);
 
 		handleServerResponse(res, 200, {
 			success: true,
 			message: "Generate Report Progress Detail Success",
-			data: formattedResponse,
+			data: response,
 		});
 	} catch (error) {
 		logger.error(`@reportProgressDetailController Error ${error}`);

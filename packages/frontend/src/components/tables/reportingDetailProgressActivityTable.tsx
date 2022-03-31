@@ -1,10 +1,10 @@
 import { Box, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import { LinearProgressWithLabel } from "components/utilities/linearProgressWithLabel";
-import { Activity } from "types/interface";
+import { ReportProgressDetailActivity } from "types/interface";
 import { TABLE_HEADER_REPORTING_DETAIL_PROGRESS } from "utilities/constant";
 
 export const ReportingDetailProgressActivityTable = (props: {
-	activities: Activity[];
+	activities: ReportProgressDetailActivity[];
 }): JSX.Element => {
 	const { activities } = props;
 
@@ -43,7 +43,7 @@ export const ReportingDetailProgressActivityTable = (props: {
 							<TableCell align="left">
 								<LinearProgressWithLabel value={activity.progress} />
 							</TableCell>
-							<TableCell align="left">{activity.comment}</TableCell>
+							<TableCell align="left">{activity.comments}</TableCell>
 						</TableRow>
 					))}
 				</TableBody>

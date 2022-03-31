@@ -23,24 +23,6 @@ import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import { useEffect, useState } from "react";
 import { FilterAlt, RestartAlt } from "@mui/icons-material";
 
-//Date						DatePicker *
-//Phase						Dropdown *
-//Classification			Dropdown *
-//Project					Dropdown
-//Milestone					Dropdown
-//Zone						Dropdown
-//Section					Dropdown
-//Type						Dropdown
-//Owner						Dropdown
-//Building 					Dropdown
-//Show cancelled documents 	Checkbox
-//Sort By 					Radio
-//		Date
-//		Building
-//		Owner
-//		Milestone
-//		Zone
-
 type ReportFilterType = {
 	date: Date | null;
 	phase: string;
@@ -53,7 +35,7 @@ type ReportFilterType = {
 	owner: string;
 	building: string;
 	showCancelledDocs: boolean;
-	sortBy: string;
+	sortBy: "Date" | "Building" | "Owner" | "Milestone" | "Zone";
 };
 
 interface ReportFiltersInterface {
@@ -73,7 +55,7 @@ const defaultReportFilters = (): ReportFilterType =>
 		owner: "",
 		building: "",
 		showCancelledDocs: false,
-		sortBy: "",
+		sortBy: "Date",
 	} as ReportFilterType);
 
 export const ReportFilters = ({ filter }: ReportFiltersInterface): JSX.Element => {
@@ -181,7 +163,7 @@ export const ReportFilters = ({ filter }: ReportFiltersInterface): JSX.Element =
 								<InputLabel id="classification">Classification</InputLabel>
 								<Select
 									id="classification"
-									name="phase"
+									name="classification"
 									value={reportFilters.classification}
 									label="Classification"
 									onChange={handleReportFilterSelectChange}
@@ -329,16 +311,25 @@ export const ReportFilters = ({ filter }: ReportFiltersInterface): JSX.Element =
 
 						<Grid item xs={6} md={12}>
 							<FormControl>
-								<FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
+								<FormLabel id="sortBy">Sort By</FormLabel>
 								<RadioGroup
 									row
-									aria-labelledby="demo-radio-buttons-group-label"
-									defaultValue="female"
+									defaultValue={reportFilters.sortBy}
 									name="radio-buttons-group"
 								>
-									<FormControlLabel value="female" control={<Radio />} label="Female" />
-									<FormControlLabel value="male" control={<Radio />} label="Male" />
-									<FormControlLabel value="other" control={<Radio />} label="Other" />
+									<FormControlLabel value="Date" control={<Radio />} label="Date" />
+									<FormControlLabel
+										value="Building"
+										control={<Radio />}
+										label="Building"
+									/>
+									<FormControlLabel value="Owner" control={<Radio />} label="Owner" />
+									<FormControlLabel
+										value="Milestone"
+										control={<Radio />}
+										label="Milestone"
+									/>
+									<FormControlLabel value="Zone" control={<Radio />} label="Zone" />
 								</RadioGroup>
 							</FormControl>
 						</Grid>

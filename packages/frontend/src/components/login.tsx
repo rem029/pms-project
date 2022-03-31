@@ -13,13 +13,13 @@ import {
 import { useAxios } from "../hooks/useAxios";
 import { Token } from "types/interface";
 import { saveToken } from "utilities/storage";
-import { baseUrl } from "utilities/constant";
+import { URL_LOGIN } from "utilities/constant";
 
 // ADD SHOW PASSWORD TO TEXT
 export const Login = (): JSX.Element => {
 	const [fields, setFields] = useState({ username: "", password: "" });
 	const [helpText, setHelperText] = useState("");
-	const { data, fetch, loading, success, message } = useAxios<Token>(baseUrl + "/login");
+	const { data, fetch, loading, success, message } = useAxios<Token>(URL_LOGIN);
 	const navigate = useNavigate();
 
 	useEffect(() => {

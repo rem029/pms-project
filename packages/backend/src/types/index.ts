@@ -24,28 +24,26 @@ export interface UserInfo {
 	IsDelete: number;
 }
 
-export interface ReportProgressDetailInterface {
-	DocNo: number;
-	DocDt: string;
-	DocEdt: string;
-	Prj: string;
-	Phs: string;
-	PhsName: string;
-	Cls: string;
-	ClsName: string;
-	Bld: string;
-	Own: string;
-	Mst: string;
-	Zon: string;
-	Sec: string;
-	Typ: string;
-	Cns: string;
-	Unt: number;
-	Mdl: number;
-	Cancel: number;
+type ReportProgressDetailActivity = {
 	id: number;
-	cd: string;
-	nm: string;
-	prg: number;
-	com: string;
+	code: string;
+	name: string;
+	comments: string;
+	progress: number;
+};
+export interface ReportProgressDetailInterface {
+	inspectionNumber: number;
+	inspectionDate: string;
+	bldgCode: string;
+	ownerName: string;
+	typeCode: string;
+	constructionMethodName: string;
+	projectCode: string;
+	milestoneCode: string;
+	Unit: number;
+	module: number;
+	phaseName: string;
+	classificationName: string;
+	activities: ReportProgressDetailActivity[];
+	isCancelled: number;
 }

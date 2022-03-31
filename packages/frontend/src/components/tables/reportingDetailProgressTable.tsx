@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import Box from "@mui/material/Box";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
@@ -12,17 +12,14 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { baseUrl, TABLE_HEADER_REPORTING_DETAIL_PROGRESS } from "utilities/constant";
+import {
+	TABLE_HEADER_REPORTING_DETAIL_PROGRESS,
+	URL_REPORTING_DETAIL_PROGRESS,
+} from "utilities/constant";
 import { useAxios } from "hooks/useAxios";
 import { ReportProgressDetailInterface } from "types/interface";
 import { getToken } from "utilities/storage";
-import {
-	Button,
-	CircularProgress,
-	Modal,
-	TablePagination,
-	Typography,
-} from "@mui/material";
+import { Button, CircularProgress, TablePagination, Typography } from "@mui/material";
 import TablePaginationActions from "@mui/material/TablePagination/TablePaginationActions";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
 import { red } from "@mui/material/colors";
@@ -30,16 +27,36 @@ import { red } from "@mui/material/colors";
 import { ReportingDetailProgressActivityTable } from "./reportingDetailProgressActivityTable";
 import { getDocumentCSS } from "helper/documentCSSHelper";
 import { formatDate } from "helper/dateHelper";
-import { Preview, PrintOutlined } from "@mui/icons-material";
+import { Preview } from "@mui/icons-material";
 import { ReportingPrintPreviewModal } from "components/utilities/reportingPrintPreviewModal";
+
+type TableSortBy =
+	| "inspectionNumber"
+	| "inspectionDate"
+	| "bldgCode"
+	| "ownerName"
+	| "typeCode"
+	| "constructionMethodName"
+	| "projectCode"
+	| "milestoneCode"
+	| "Unit"
+	| "module"
+	| "phaseName"
+	| "classificationName";
+
+type TableOrderBy = "asc" | "desc";
 
 export const ReportingDetailProgressTable = (): JSX.Element => {
 	const [report, setReport] = useState<ReportProgressDetailInterface[]>([]);
+	const [reportHTMLCSSString, setReportHTMLCSSString] = useState("");
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [openAll, setOpenAll] = useState(true);
 	const [isModalExportOpen, setIsModalExportOpen] = useState(false);
-	const [reportHTMLCSSString, setReportHTMLCSSString] = useState("");
+
+	const [sortBy, setSortBy] = useState<TableSortBy>("inspectionNumber");
+	const [orderBy, setOrderBy] = useState<TableOrderBy>("desc");
+
 	const { width } = useWindowDimensions();
 	const tableRef = useRef<HTMLDivElement>(null);
 
@@ -49,13 +66,26 @@ export const ReportingDetailProgressTable = (): JSX.Element => {
 		loading: reportLoading,
 		success: reportSuccess,
 		message: reportMessage,
-	} = useAxios<ReportProgressDetailInterface[]>(baseUrl + "/report/progressive-detail");
+	} = useAxios<ReportProgressDetailInterface[]>(URL_REPORTING_DETAIL_PROGRESS);
+
+	const reportSorted = useMemo(() => {
+		if (report.length > 0) {
+			return [...report].sort((compareReportA, compareReportB) => {
+				const compareA = compareReportA[sortBy];
+				const compareB = compareReportB[sortBy];
+
+				if (orderBy === "desc" && compareA > compareB) return -1;
+				if (orderBy === "asc" && compareB < compareA) return 1;
+
+				return 0;
+			});
+		}
+
+		return [] as ReportProgressDetailInterface[];
+	}, [report, orderBy]);
 
 	useEffect(() => {
 		if (!reportLoading && reportSuccess && reportData) {
-			reportData.sort(
-				(compareReportA, compareReportB) => compareReportA.DocNo - compareReportB.DocNo
-			);
 			setReport(reportData);
 		} else setReport([]);
 	}, [reportData, reportSuccess, reportLoading]);
@@ -90,6 +120,11 @@ export const ReportingDetailProgressTable = (): JSX.Element => {
 			`<style>${getDocumentCSS()}</style> ${tableRef.current?.innerHTML}`
 		);
 		setIsModalExportOpen(true);
+	};
+
+	const handleHeaderSort = (headerName: TableSortBy): void => {
+		setSortBy(headerName);
+		setOrderBy((currentOrderBy) => (currentOrderBy === "asc" ? "desc" : "asc"));
 	};
 
 	const handleModalClose = (): void => {
@@ -155,19 +190,49 @@ export const ReportingDetailProgressTable = (): JSX.Element => {
 											{openAll ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
 										</IconButton>
 									</TableCell>
-									<TableCell align="center">
+									<TableCell
+										align="center"
+										onClick={() => {
+											handleHeaderSort("inspectionNumber");
+										}}
+										sortDirection={sortBy === "inspectionNumber" ? orderBy : false}
+									>
 										{TABLE_HEADER_REPORTING_DETAIL_PROGRESS.DocNo}
 									</TableCell>
-									<TableCell align="center">
+									<TableCell
+										align="center"
+										onClick={() => {
+											handleHeaderSort("inspectionDate");
+										}}
+										sortDirection={sortBy === "inspectionDate" ? orderBy : false}
+									>
 										{TABLE_HEADER_REPORTING_DETAIL_PROGRESS.DocDt}
 									</TableCell>
-									<TableCell align="center">
+									<TableCell
+										align="center"
+										onClick={() => {
+											handleHeaderSort("bldgCode");
+										}}
+										sortDirection={sortBy === "bldgCode" ? orderBy : false}
+									>
 										{TABLE_HEADER_REPORTING_DETAIL_PROGRESS.Bld}
 									</TableCell>
-									<TableCell align="center">
+									<TableCell
+										align="center"
+										onClick={() => {
+											handleHeaderSort("ownerName");
+										}}
+										sortDirection={sortBy === "ownerName" ? orderBy : false}
+									>
 										{TABLE_HEADER_REPORTING_DETAIL_PROGRESS.Own}
 									</TableCell>
-									<TableCell align="center">
+									<TableCell
+										align="center"
+										onClick={() => {
+											handleHeaderSort("typeCode");
+										}}
+										sortDirection={sortBy === "typeCode" ? orderBy : false}
+									>
 										{TABLE_HEADER_REPORTING_DETAIL_PROGRESS.Typ}
 									</TableCell>
 									<TableCell align="center" sx={{ maxWidth: 110 }}>
@@ -200,16 +265,17 @@ export const ReportingDetailProgressTable = (): JSX.Element => {
 										</TableCell>
 									</TableRow>
 								)}
-								{report.length > 0 &&
-									report
+								{reportSorted.length > 0 &&
+									reportSorted
 										?.slice(
 											page * rowsPerPage,
-											page * rowsPerPage + (rowsPerPage < 0 ? report.length : rowsPerPage)
+											page * rowsPerPage +
+												(rowsPerPage < 0 ? reportSorted.length : rowsPerPage)
 										)
 										.map((item) => {
 											return (
 												<Row
-													key={`${item.id} ${item.DocNo}`}
+													key={`${item.inspectionDate} ${item.inspectionNumber}`}
 													row={item}
 													openAll={openAll}
 												/>
@@ -222,7 +288,7 @@ export const ReportingDetailProgressTable = (): JSX.Element => {
 					<TablePagination
 						labelRowsPerPage="Item(s) shown:"
 						rowsPerPageOptions={[10, 25, 50, { label: "All", value: -1 }]}
-						count={reportData?.length || 0}
+						count={reportSorted?.length || 0}
 						rowsPerPage={rowsPerPage}
 						page={page}
 						SelectProps={{
@@ -261,18 +327,18 @@ const Row = (props: {
 					</IconButton>
 				</TableCell>
 				<TableCell component="th" scope="row" align="center">
-					{row.DocNo}
+					{row.inspectionNumber}
 				</TableCell>
-				<TableCell align="center">{formatDate(new Date(row.DocDt))}</TableCell>
-				<TableCell align="center">{row.Bld}</TableCell>
-				<TableCell align="center">{row.Own}</TableCell>
-				<TableCell align="center">{row.Typ}</TableCell>
-				<TableCell align="center">{row.Cns}</TableCell>
-				<TableCell align="center">{row.Mst}</TableCell>
-				<TableCell align="center">{row.Unt}</TableCell>
-				<TableCell align="center">{row.Mdl}</TableCell>
-				<TableCell align="center">{row.PhsName}</TableCell>
-				<TableCell align="center">{row.ClsName}</TableCell>
+				<TableCell align="center">{formatDate(new Date(row.inspectionDate))}</TableCell>
+				<TableCell align="center">{row.bldgCode}</TableCell>
+				<TableCell align="center">{row.ownerName}</TableCell>
+				<TableCell align="center">{row.typeCode}</TableCell>
+				<TableCell align="center">{row.constructionMethodName}</TableCell>
+				<TableCell align="center">{row.milestoneCode}</TableCell>
+				<TableCell align="center">{row.Unit}</TableCell>
+				<TableCell align="center">{row.module}</TableCell>
+				<TableCell align="center">{row.phaseName}</TableCell>
+				<TableCell align="center">{row.classificationName}</TableCell>
 			</TableRow>
 			<TableRow>
 				<TableCell sx={{ p: 0 }} colSpan={12}>

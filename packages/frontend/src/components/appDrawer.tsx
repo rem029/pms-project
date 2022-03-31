@@ -26,7 +26,7 @@ import { userLogout } from "utilities/userLogout";
 import { useAxios } from "hooks/useAxios";
 import { UserInfo } from "types/interface";
 import { useNavigate } from "react-router-dom";
-import { baseUrl } from "utilities/constant";
+import { URL_USER } from "utilities/constant";
 import { getToken } from "utilities/storage";
 interface AppDrawerProps extends MuiAppBarProps {
 	open?: boolean;
@@ -55,7 +55,7 @@ export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element
 		loading: userLoading,
 		success: userSuccess,
 		error: userError,
-	} = useAxios<UserInfo>(baseUrl + "/user");
+	} = useAxios<UserInfo>(URL_USER);
 
 	useEffect(() => {
 		const token = getToken();

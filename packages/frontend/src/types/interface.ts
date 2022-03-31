@@ -17,36 +17,26 @@ export interface Token {
 	expiresIn: string;
 }
 
-export type Activity = {
+export type ReportProgressDetailActivity = {
 	id: number;
-	code: number;
+	code: string;
 	name: string;
+	comments: string;
 	progress: number;
-	comment: string;
 };
 export interface ReportProgressDetailInterface {
-	DocNo: number;
-	DocDt: string;
-	DocEdt: string;
-	Prj: string;
-	Phs: string;
-	PhsName: string;
-	Cls: string;
-	ClsName: string;
-	Bld: string;
-	Own: string;
-	Mst: string;
-	Mdl: number;
-	Zon: string;
-	Sec: string;
-	Typ: string;
-	Cns: string;
-	Unt: number;
-	Cancel: number;
-	id: number;
-	cd: string;
-	nm: string;
-	prg: number;
-	com: string;
-	activities: Activity[];
+	inspectionNumber: number;
+	inspectionDate: string;
+	bldgCode: string;
+	ownerName: string;
+	typeCode: string;
+	constructionMethodName: string;
+	projectCode: string;
+	milestoneCode: string;
+	Unit: number;
+	module: number;
+	phaseName: string;
+	classificationName: string;
+	activities: ReportProgressDetailActivity[];
+	isCancelled: number;
 }

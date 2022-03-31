@@ -1,4 +1,8 @@
-export const baseUrl = "http://10.9.46.132:6060";
+export const URL_BASE = "http://10.9.46.132:6060";
+
+export const URL_LOGIN = URL_BASE + "/login";
+export const URL_USER = URL_BASE + "/user";
+export const URL_REPORTING_DETAIL_PROGRESS = URL_BASE + "/report/progressive-detail";
 
 export const TABLE_HEADER_REPORTING_DETAIL_PROGRESS = {
 	DocNo: "Inspection No.",
