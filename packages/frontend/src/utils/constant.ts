@@ -4,6 +4,8 @@ export const URL_LOGIN = URL_BASE + "/login";
 export const URL_USER = URL_BASE + "/user";
 export const URL_REPORTING_DETAIL_PROGRESS = URL_BASE + "/report/progressive-detail";
 
+export const NOTISTACK_AUTO_HIDE_MS = 1500;
+
 export const TABLE_HEADER_REPORTING_DETAIL_PROGRESS = {
 	DocNo: "Inspection No.",
 	DocDt: "Inspection Date",

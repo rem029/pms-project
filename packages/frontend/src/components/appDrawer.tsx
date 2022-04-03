@@ -22,12 +22,12 @@ import {
 	ExpandMore,
 	StarBorder,
 } from "@mui/icons-material";
-import { userLogout } from "utilities/userLogout";
 import { useAxios } from "hooks/useAxios";
 import { UserInfo } from "types/interface";
 import { useNavigate } from "react-router-dom";
-import { URL_USER } from "utilities/constant";
-import { getToken } from "utilities/storage";
+import { URL_USER } from "utils/constant";
+import { getToken } from "utils/storage";
+import { getUserContext } from "store/userProvider";
 interface AppDrawerProps extends MuiAppBarProps {
 	open?: boolean;
 	setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -48,6 +48,7 @@ export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element
 	const navigate = useNavigate();
 	const [userName, setUserName] = useState("");
 	const [subMenuOpenReporting, setSubMenuOpenReporting] = useState<boolean>(false);
+	const { logout } = getUserContext();
 
 	const {
 		data: userData,
@@ -61,7 +62,7 @@ export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element
 		const token = getToken();
 
 		if (token)
-			userFetch({
+			userFetch("get", {
 				headers: {
 					Authorization: `Token ${token}`,
 				},
@@ -81,7 +82,7 @@ export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element
 	};
 
 	const handleLogout = (): void => {
-		userLogout();
+		logout();
 	};
 
 	const handleChangePage = (link: string): void => {

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getToken } from "utilities/storage";
+import { getToken } from "utils/storage";
 
 interface ProtectedRoutesProps {
 	children?: JSX.Element;

@@ -1,7 +1,7 @@
 import { Box, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import { LinearProgressWithLabel } from "components/utilities/linearProgressWithLabel";
 import { ReportProgressDetailActivity } from "types/interface";
-import { TABLE_HEADER_REPORTING_DETAIL_PROGRESS } from "utilities/constant";
+import { TABLE_HEADER_REPORTING_DETAIL_PROGRESS } from "utils/constant";
 
 export const ReportingDetailProgressActivityTable = (props: {
 	activities: ReportProgressDetailActivity[];

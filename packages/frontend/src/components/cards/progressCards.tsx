@@ -17,48 +17,34 @@ export const ProgressCards = ({
 		return { backgroundColor: "white", color: "black" };
 	};
 	return (
-		<Grid item xs={12} md={12} xl={3} lg={3}>
-			<Paper
-				sx={{
-					padding: 1,
-					height: 160,
-					backgroundColor: getTheme().backgroundColor,
-					display: "flex",
-					alignItems: "flex-start",
-					justifyContent: "center",
-					flexDirection: "column",
-				}}
-				elevation={3}
-			>
-				<Typography
-					color={getTheme().color}
-					variant="h5"
-					noWrap
-					component="p"
-					align="left"
-				>
-					Summary
-				</Typography>
-				<Typography
-					color={getTheme().color}
-					variant="h4"
-					noWrap
-					component="p"
-					align="left"
-				>
-					100%
-				</Typography>
+		<Paper
+			sx={{
+				padding: 1,
+				height: 160,
+				backgroundColor: getTheme().backgroundColor,
+				display: "flex",
+				alignItems: "flex-start",
+				justifyContent: "center",
+				flexDirection: "column",
+			}}
+			elevation={3}
+		>
+			<Typography color={getTheme().color} variant="h5" noWrap component="p" align="left">
+				Summary
+			</Typography>
+			<Typography color={getTheme().color} variant="h4" noWrap component="p" align="left">
+				100%
+			</Typography>
 
-				<Typography
-					color={getTheme().color}
-					variant="body2"
-					noWrap
-					component="p"
-					align="left"
-				>
-					Progress vs last week
-				</Typography>
-			</Paper>
-		</Grid>
+			<Typography
+				color={getTheme().color}
+				variant="body2"
+				noWrap
+				component="p"
+				align="left"
+			>
+				Progress vs last week
+			</Typography>
+		</Paper>
 	);
 };

@@ -1,16 +1,24 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Highcharts from "highcharts";
 import HighchartsExporting from "highcharts/modules/exporting";
 import HighchartsReact from "highcharts-react-official";
-import { Box } from "@mui/material";
+import { useWindowDimensions } from "hooks/useWindowDimensions";
+import { Paper } from "@mui/material";
 
 HighchartsExporting(Highcharts);
 
 export const BarChart = (): JSX.Element => {
 	const highchartsRef = useRef<HighchartsReact.RefObject>(null);
+	const { width } = useWindowDimensions();
+
+	useEffect(() => {
+		highchartsRef.current?.chart.redraw();
+	}, [width]);
+
 	const options: Highcharts.Options = {
 		chart: {
 			type: "bar",
+			reflow: true,
 		},
 		title: {
 			text: "Bar Chart",
@@ -83,8 +91,8 @@ export const BarChart = (): JSX.Element => {
 	};
 
 	return (
-		<Box component="div">
+		<Paper sx={{ flexGrow: 1, padding: 1, mt: 0.5 }} elevation={3}>
 			<HighchartsReact ref={highchartsRef} highcharts={Highcharts} options={options} />
-		</Box>
+		</Paper>
 	);
 };

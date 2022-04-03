@@ -1,9 +1,10 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Highcharts from "highcharts";
 import HighchartsExporting from "highcharts/modules/exporting";
 import HighchartsHistogram from "highcharts/modules/histogram-bellcurve";
 import HighchartsReact from "highcharts-react-official";
-import { Box } from "@mui/material";
+import { Box, Paper } from "@mui/material";
+import { useWindowDimensions } from "hooks/useWindowDimensions";
 
 const dummyData = [
 	3.5, 3, 3.2, 3.1, 3.6, 3.9, 3.4, 3.4, 2.9, 3.1, 3.7, 3.4, 3, 3, 4, 4.4, 3.9, 3.5, 3.8,
@@ -21,7 +22,14 @@ HighchartsExporting(Highcharts);
 
 export const HistogramChart = (): JSX.Element => {
 	const highchartsRef = useRef<HighchartsReact.RefObject>(null);
+	const { width } = useWindowDimensions();
+
+	useEffect(() => {
+		highchartsRef.current?.chart.redraw();
+	}, [width]);
+
 	const options: Highcharts.Options = {
+		chart: { reflow: true },
 		title: {
 			text: "Histogram Chart",
 		},
@@ -82,8 +90,8 @@ export const HistogramChart = (): JSX.Element => {
 	};
 
 	return (
-		<Box component="div">
+		<Paper sx={{ flexGrow: 1, padding: 1, mt: 0.5 }} elevation={3}>
 			<HighchartsReact ref={highchartsRef} highcharts={Highcharts} options={options} />
-		</Box>
+		</Paper>
 	);
 };

@@ -10,16 +10,18 @@ import {
 	Typography,
 	CircularProgress,
 } from "@mui/material";
+
 import { useAxios } from "../hooks/useAxios";
 import { Token } from "types/interface";
-import { saveToken } from "utilities/storage";
-import { URL_LOGIN } from "utilities/constant";
+import { saveToken } from "utils/storage";
+import { URL_LOGIN } from "utils/constant";
 
 // ADD SHOW PASSWORD TO TEXT
 export const Login = (): JSX.Element => {
 	const [fields, setFields] = useState({ username: "", password: "" });
 	const [helpText, setHelperText] = useState("");
 	const { data, fetch, loading, success, message } = useAxios<Token>(URL_LOGIN);
+
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -46,7 +48,7 @@ export const Login = (): JSX.Element => {
 			return;
 		}
 
-		fetch({
+		fetch("post", {
 			headers: {
 				Authorization: `Basic ${Buffer.from(
 					fields.username + ":" + fields.password

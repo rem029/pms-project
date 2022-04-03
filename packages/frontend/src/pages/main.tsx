@@ -4,20 +4,24 @@ import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import { AppHeader, AppDrawer } from "components";
+import { useWindowDimensions } from "hooks/useWindowDimensions";
 
 const drawerWidth = 240;
 
 const MainContainer = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
 	open?: boolean;
-	width: number;
-}>(({ theme, open, width }) => ({
+	drawer: number;
+	screen: number;
+}>(({ theme, open, drawer, screen }) => ({
 	flexGrow: 1,
 	padding: theme.spacing(2, 1),
+	maxWidth: screen,
+	overflow: "hidden",
 	transition: theme.transitions.create("margin", {
 		easing: theme.transitions.easing.sharp,
 		duration: theme.transitions.duration.leavingScreen,
 	}),
-	marginLeft: `-${width}px`,
+	marginLeft: `-${drawer}px`,
 	...(open && {
 		transition: theme.transitions.create("margin", {
 			easing: theme.transitions.easing.easeOut,
@@ -38,13 +42,18 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 export const Main = (): JSX.Element => {
 	const [open, setOpen] = React.useState(false);
+	const { width: screenWidth } = useWindowDimensions();
+
+	React.useEffect(() => {
+		console.log("screenWidth", screenWidth);
+	}, [screenWidth]);
 
 	return (
 		<Box sx={{ display: "flex" }}>
 			<CssBaseline />
 			<AppHeader open={open} setOpen={setOpen} width={drawerWidth} />
 			<AppDrawer open={open} setOpen={setOpen} width={drawerWidth} />
-			<MainContainer open={open} width={drawerWidth}>
+			<MainContainer open={open} drawer={drawerWidth} screen={screenWidth}>
 				<DrawerHeader />
 				<Outlet />
 			</MainContainer>

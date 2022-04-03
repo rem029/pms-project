@@ -8,7 +8,7 @@ law     123
 @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc3JfSWQiOiJzYWhhciIsIlVzcl9OYW1lIjoiU2FoYXIgVGFoYSIsIlVzcl9FbWFpbCI6Im4vYUBnbWFpbC5jb20iLCJVc3JfUGgiOiIrOTc0IDExMjIzMzQ0IiwiSXNBZG1pbiI6MCwiSXNBY3RpdmUiOjEsIklzQWRkIjowLCJJc0VkaXQiOjAsIklzQ2FuY2VsIjowLCJJc0RlbGV0ZSI6MCwiaWF0IjoxNjQ4NDUzMjI5LCJleHAiOjE2NDg1Mzk2Mjl9.YgNFzEMEb9PwjnmqUj06YY-U16Lc79OJbruyS3IRuTA
 
 ### LOGIN
-GET http://localhost:6060/login/
+POST http://localhost:6060/login/
 Authorization: Basic {{username}}:{{password}}
 ### GET USER INFO BY TOKEN
 GET http://localhost:6060/user/

@@ -5,7 +5,7 @@ import { authenticateLogin } from "middlewares/authUser";
 const initializeRouter = (): Router => {
 	const router = express.Router();
 
-	router.get("/", authenticateLogin, loginController);
+	router.post("/", authenticateLogin, loginController);
 
 	return router;
 };

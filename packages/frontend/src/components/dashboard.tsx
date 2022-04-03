@@ -15,113 +15,73 @@ export const Dashboard = (): JSX.Element => {
 			>
 				<Options />
 
-				<Grid container spacing={1} justifyContent="center" sx={{ p: 1 }}>
-					<ProgressCards theme="primary" />
-					<ProgressCards theme="secondary" />
-					<ProgressCards theme="primary" />
-					<ProgressCards theme="secondary" />
+				<Grid container spacing={1} justifyContent="center" sx={{ pt: 1 }}>
+					<Grid item xs={12} md={12} xl={3} lg={3}>
+						<ProgressCards theme="primary" />
+					</Grid>
+
+					<Grid item xs={12} md={12} xl={3} lg={3}>
+						<ProgressCards theme="secondary" />
+					</Grid>
+
+					<Grid item xs={12} md={12} xl={3} lg={3}>
+						<ProgressCards theme="primary" />
+					</Grid>
+
+					<Grid item xs={12} md={12} xl={3} lg={3}>
+						<ProgressCards theme="secondary" />
+					</Grid>
 				</Grid>
 
-				<Paper sx={{ flexGrow: 1, padding: 1, mt: 0.5 }} elevation={3}>
-					<Grid container spacing={1} justifyContent="center">
-						<Grid item xs={12}>
-							<Typography
-								color="text.secondary"
-								variant="subtitle1"
-								noWrap
-								component="p"
-								align="left"
-								fontSize={24}
-							>
-								Charts 1
-							</Typography>
-						</Grid>
-
-						<Grid item xs={12} md={12} xl={4} lg={4}>
-							<LineChart />
-						</Grid>
-						<Grid item xs={12} md={12} xl={4} lg={4}>
-							<BarChart />
-						</Grid>
-						<Grid item xs={12} md={12} xl={4} lg={4}>
-							<HistogramChart />
-						</Grid>
-
-						<Divider sx={{ width: "99%" }} />
+				<Grid container spacing={1} justifyContent="center">
+					<Grid item xs={12}>
+						<Typography
+							color="text.secondary"
+							variant="subtitle1"
+							noWrap
+							component="p"
+							align="left"
+							fontSize={24}
+						>
+							Charts 1
+						</Typography>
 					</Grid>
-				</Paper>
 
-				<Paper sx={{ flexGrow: 1, padding: 1, mt: 0.5 }} elevation={3}>
-					<Grid container spacing={1} justifyContent="center">
-						<Grid item xs={12}>
-							<Typography
-								color="text.secondary"
-								variant="subtitle1"
-								noWrap
-								component="p"
-								align="left"
-								fontSize={24}
-							>
-								Chart 2
-							</Typography>
-						</Grid>
-
-						<Grid item xs={12}>
-							<BarChart />
-						</Grid>
-
-						<Divider sx={{ width: "99%" }} />
+					<Grid item xs={12} md={12} xl={4} lg={4}>
+						<LineChart />
 					</Grid>
-				</Paper>
-
-				<Paper sx={{ flexGrow: 1, padding: 1, mt: 0.5 }} elevation={3}>
-					<Grid container spacing={1} justifyContent="center">
-						<Grid item xs={12}>
-							<Typography
-								color="text.secondary"
-								variant="subtitle1"
-								noWrap
-								component="p"
-								align="left"
-								fontSize={24}
-							>
-								Chart 3
-							</Typography>
-						</Grid>
-
-						<Grid item xs={12}>
-							<LineChart />
-						</Grid>
-
-						<Divider sx={{ width: "99%" }} />
+					<Grid item xs={12} md={12} xl={4} lg={4}>
+						<BarChart />
 					</Grid>
-				</Paper>
-
-				<Paper sx={{ flexGrow: 1, padding: 1, mt: 0.5 }} elevation={3}>
-					<Grid container spacing={1} justifyContent="center">
-						<Grid item xs={12}>
-							<Typography
-								color="text.secondary"
-								variant="subtitle1"
-								noWrap
-								component="p"
-								align="left"
-								fontSize={24}
-							>
-								Chart 4
-							</Typography>
-						</Grid>
-
-						<Grid item xs={12} md={12} xl={6} lg={6}>
-							<BarChart />
-						</Grid>
-						<Grid item xs={12} md={12} xl={6} lg={6}>
-							<LineChart />
-						</Grid>
-
-						<Divider sx={{ width: "99%" }} />
+					<Grid item xs={12} md={12} xl={4} lg={4}>
+						<HistogramChart />
 					</Grid>
-				</Paper>
+
+					<Divider sx={{ width: "99%" }} />
+
+					<Grid item xs={12}>
+						<Typography
+							color="text.secondary"
+							variant="subtitle1"
+							noWrap
+							component="p"
+							align="left"
+							fontSize={24}
+						>
+							Charts 2
+						</Typography>
+					</Grid>
+
+					<Grid item xs={12} md={12} xl={12} lg={12}>
+						<LineChart />
+					</Grid>
+					<Grid item xs={12} md={12} xl={12} lg={12}>
+						<BarChart />
+					</Grid>
+					<Grid item xs={12} md={12} xl={12} lg={12}>
+						<HistogramChart />
+					</Grid>
+				</Grid>
 			</Grid>
 		</PageContainer>
 	);

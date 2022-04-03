@@ -1,10 +1,8 @@
 import { Response } from "express";
-import { groupBy } from "lodash";
 import { knexMySQL } from "services/database";
 import { logger } from "utilities/logger";
 import { handleServerResponse, handleServerError } from "helpers/serverResponse";
 import { ReportProgressDetailInterface, RequestAuthInterface } from "types";
-import { DUMMY_PROGRESSIVE_DETAIL } from "../dummy/progressiveDetail";
 
 const formatReportProgressDetailController = (
 	response: ReportProgressDetailInterface[]
@@ -21,7 +19,7 @@ const formatReportProgressDetailController = (
 	return returnArray;
 };
 
-export const reportProgressDetailController = async (
+export const getReportProgressDetailController = async (
 	req: RequestAuthInterface,
 	res: Response
 ): Promise<void> => {

@@ -15,10 +15,10 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import {
 	TABLE_HEADER_REPORTING_DETAIL_PROGRESS,
 	URL_REPORTING_DETAIL_PROGRESS,
-} from "utilities/constant";
+} from "utils/constant";
 import { useAxios } from "hooks/useAxios";
 import { ReportProgressDetailInterface } from "types/interface";
-import { getToken } from "utilities/storage";
+import { getToken } from "utils/storage";
 import { Button, CircularProgress, TablePagination, Typography } from "@mui/material";
 import TablePaginationActions from "@mui/material/TablePagination/TablePaginationActions";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
@@ -63,6 +63,7 @@ export const ReportingDetailProgressTable = (): JSX.Element => {
 	const {
 		data: reportData,
 		fetch: reportFetch,
+		fetchCancel: reportFetchCancel,
 		loading: reportLoading,
 		success: reportSuccess,
 		message: reportMessage,
@@ -85,6 +86,10 @@ export const ReportingDetailProgressTable = (): JSX.Element => {
 	}, [report, orderBy]);
 
 	useEffect(() => {
+		console.log("@useEffect width", width);
+	}, [width]);
+
+	useEffect(() => {
 		if (!reportLoading && reportSuccess && reportData) {
 			setReport(reportData);
 		} else setReport([]);
@@ -93,12 +98,15 @@ export const ReportingDetailProgressTable = (): JSX.Element => {
 	useEffect(() => {
 		const token = getToken();
 
-		if (token)
-			reportFetch({
+		if (token) {
+			reportFetch("get", {
 				headers: {
 					Authorization: `Token ${token}`,
 				},
 			});
+		}
+
+		return () => reportFetchCancel();
 	}, []);
 
 	const handleChangePage = (
@@ -287,7 +295,7 @@ export const ReportingDetailProgressTable = (): JSX.Element => {
 
 					<TablePagination
 						labelRowsPerPage="Item(s) shown:"
-						rowsPerPageOptions={[10, 25, 50, { label: "All", value: -1 }]}
+						rowsPerPageOptions={[10, 25, 50]}
 						count={reportSorted?.length || 0}
 						rowsPerPage={rowsPerPage}
 						page={page}
