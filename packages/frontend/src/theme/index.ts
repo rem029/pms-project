@@ -100,6 +100,9 @@ export const theme = createTheme({
 					width: "100%",
 					margin: 0,
 				},
+				":root": {
+					overflowX: "hidden",
+				},
 				body: {
 					display: "flex",
 					flex: "1 1 auto",

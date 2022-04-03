@@ -15,8 +15,8 @@ const MainContainer = styled("main", { shouldForwardProp: (prop) => prop !== "op
 }>(({ theme, open, drawer, screen }) => ({
 	flexGrow: 1,
 	padding: theme.spacing(2, 1),
+	minWidth: screen,
 	maxWidth: screen,
-	overflow: "hidden",
 	transition: theme.transitions.create("margin", {
 		easing: theme.transitions.easing.sharp,
 		duration: theme.transitions.duration.leavingScreen,
@@ -38,6 +38,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 	// necessary for content to be below app bar
 	...theme.mixins.toolbar,
 	justifyContent: "flex-end",
+	overflow: "hidden",
 }));
 
 export const Main = (): JSX.Element => {
