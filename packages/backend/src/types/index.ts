@@ -47,3 +47,8 @@ export interface ReportProgressDetailInterface {
 	activities: ReportProgressDetailActivity[];
 	isCancelled: number;
 }
+
+export interface ReportFilterItem {
+	id: number;
+	name: string;
+}

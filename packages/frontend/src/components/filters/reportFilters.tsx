@@ -16,12 +16,25 @@ import {
 	FormLabel,
 	Radio,
 	RadioGroup,
+	Collapse,
 } from "@mui/material";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { DatePicker } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FilterAlt, RestartAlt } from "@mui/icons-material";
+import { useAxios } from "hooks/useAxios";
+import {
+	URL_REPORTING_FILTER_BUILDING,
+	URL_REPORTING_FILTER_CLASSIFICATION,
+	URL_REPORTING_FILTER_PHASE,
+	URL_REPORTING_FILTER_PROJECT,
+} from "utils/constant";
+import { ReportFilter } from "types/interface";
+import { getToken } from "utils/storage";
+import { AxiosRequestConfig } from "axios";
 
 type ReportFilterType = {
 	date: Date | null;
@@ -62,10 +75,35 @@ export const ReportFilters = ({ filter }: ReportFiltersInterface): JSX.Element =
 	const [reportFilters, setReportFilters] = useState<ReportFilterType>(
 		filter ? filter : defaultReportFilters()
 	);
+	const [showMore, setShowMore] = useState(false);
+
+	const axiosConfigReportFilter: AxiosRequestConfig = useMemo(() => {
+		return {
+			method: "GET",
+			headers: {
+				Authorization: `Token ${getToken()}`,
+			},
+		};
+	}, []);
 
 	useEffect(() => {
 		console.log("@reportFilters", reportFilters);
 	}, [reportFilters]);
+
+	const { data: filterPhaseData } = useAxios<ReportFilter[]>(
+		URL_REPORTING_FILTER_PHASE,
+		axiosConfigReportFilter
+	);
+
+	const { data: filterClassificationData } = useAxios<ReportFilter[]>(
+		URL_REPORTING_FILTER_CLASSIFICATION,
+		axiosConfigReportFilter
+	);
+
+	const { data: filterProjectData } = useAxios<ReportFilter[]>(
+		URL_REPORTING_FILTER_PROJECT,
+		axiosConfigReportFilter
+	);
 
 	const handleReportFilterDateChange = (newValue: Date | null): void => {
 		setReportFilters((currentReportFilters) => ({
@@ -104,6 +142,10 @@ export const ReportFilters = ({ filter }: ReportFiltersInterface): JSX.Element =
 		}));
 	};
 
+	const handleShowMoreChange = (): void => {
+		setShowMore((currentShowMore) => !currentShowMore);
+	};
+
 	return (
 		<LocalizationProvider dateAdapter={AdapterDateFns}>
 			<Paper sx={{ flexGrow: 1, padding: 1, mt: 0.5 }} elevation={3}>
@@ -125,7 +167,7 @@ export const ReportFilters = ({ filter }: ReportFiltersInterface): JSX.Element =
 					<Divider sx={{ width: "99%" }} />
 
 					<Grid container item spacing={1}>
-						<Grid item xs={12}>
+						<Grid item xs={12} md={3} lg={4} xl={4}>
 							<DatePicker
 								disableFuture
 								label="Date"
@@ -134,7 +176,7 @@ export const ReportFilters = ({ filter }: ReportFiltersInterface): JSX.Element =
 								openTo="day"
 								views={["year", "month", "day"]}
 								renderInput={(params) => (
-									<FormControl required>
+									<FormControl required fullWidth>
 										<TextField {...params} required name="date" />
 									</FormControl>
 								)}
@@ -151,13 +193,18 @@ export const ReportFilters = ({ filter }: ReportFiltersInterface): JSX.Element =
 									label="Phase"
 									onChange={handleReportFilterSelectChange}
 								>
-									<MenuItem value="">None</MenuItem>
-									<MenuItem value={10}>Ten</MenuItem>
-									<MenuItem value={20}>Twenty</MenuItem>
-									<MenuItem value={30}>Thirty</MenuItem>
+									<MenuItem key=" none" value="">
+										None
+									</MenuItem>
+									{filterPhaseData?.map((item) => (
+										<MenuItem key={`${item.id}${item.name}`} value={item.id}>
+											{item.name}
+										</MenuItem>
+									))}
 								</Select>
 							</FormControl>
 						</Grid>
+
 						<Grid item xs={12} md={3} lg={4} xl={4}>
 							<FormControl fullWidth required>
 								<InputLabel id="classification">Classification</InputLabel>
@@ -168,175 +215,196 @@ export const ReportFilters = ({ filter }: ReportFiltersInterface): JSX.Element =
 									label="Classification"
 									onChange={handleReportFilterSelectChange}
 								>
-									<MenuItem value="">None</MenuItem>
-									<MenuItem value={10}>Ten</MenuItem>
-									<MenuItem value={20}>Twenty</MenuItem>
-									<MenuItem value={30}>Thirty</MenuItem>
-								</Select>
-							</FormControl>
-						</Grid>
-						<Grid item xs={12} md={3} lg={4} xl={4}>
-							<FormControl fullWidth>
-								<InputLabel id="project">Project</InputLabel>
-								<Select
-									id="project"
-									name="project"
-									value={reportFilters.project}
-									label="Project"
-									onChange={handleReportFilterSelectChange}
-								>
-									<MenuItem value="">None</MenuItem>
-									<MenuItem value={10}>Ten</MenuItem>
-									<MenuItem value={20}>Twenty</MenuItem>
-									<MenuItem value={30}>Thirty</MenuItem>
+									<MenuItem key=" none" value="">
+										None
+									</MenuItem>
+									{filterClassificationData?.map((item) => (
+										<MenuItem key={`${item.id}${item.name}`} value={item.id}>
+											{item.name}
+										</MenuItem>
+									))}
 								</Select>
 							</FormControl>
 						</Grid>
 
-						<Grid item xs={12} md={3} lg={4} xl={4}>
-							<FormControl fullWidth>
-								<InputLabel id="milestone">Milestone</InputLabel>
-								<Select
-									id="milestone"
-									name="milestone"
-									value={reportFilters.milestone}
-									label="Milestone"
-									onChange={handleReportFilterSelectChange}
-								>
-									<MenuItem value="">None</MenuItem>
-									<MenuItem value={10}>Ten</MenuItem>
-									<MenuItem value={20}>Twenty</MenuItem>
-									<MenuItem value={30}>Thirty</MenuItem>
-								</Select>
-							</FormControl>
-						</Grid>
-						<Grid item xs={12} md={3} lg={4} xl={4}>
-							<FormControl fullWidth>
-								<InputLabel id="zone">Zone</InputLabel>
-								<Select
-									id="zone"
-									name="zone"
-									value={reportFilters.zone}
-									label="Zone"
-									onChange={handleReportFilterSelectChange}
-								>
-									<MenuItem value="">None</MenuItem>
-									<MenuItem value={10}>Ten</MenuItem>
-									<MenuItem value={20}>Twenty</MenuItem>
-									<MenuItem value={30}>Thirty</MenuItem>
-								</Select>
-							</FormControl>
-						</Grid>
-						<Grid item xs={12} md={3} lg={4} xl={4}>
-							<FormControl fullWidth>
-								<InputLabel id="section">Section</InputLabel>
-								<Select
-									id="section"
-									name="section"
-									value={reportFilters.section}
-									label="Section"
-									onChange={handleReportFilterSelectChange}
-								>
-									<MenuItem value="">None</MenuItem>
-									<MenuItem value={10}>Ten</MenuItem>
-									<MenuItem value={20}>Twenty</MenuItem>
-									<MenuItem value={30}>Thirty</MenuItem>
-								</Select>
-							</FormControl>
-						</Grid>
-
-						<Grid item xs={12} md={3} lg={4} xl={4}>
-							<FormControl fullWidth>
-								<InputLabel id="type">Type</InputLabel>
-								<Select
-									id="type"
-									name="type"
-									value={reportFilters.type}
-									label="Type"
-									onChange={handleReportFilterSelectChange}
-								>
-									<MenuItem value="">None</MenuItem>
-									<MenuItem value={10}>Ten</MenuItem>
-									<MenuItem value={20}>Twenty</MenuItem>
-									<MenuItem value={30}>Thirty</MenuItem>
-								</Select>
-							</FormControl>
-						</Grid>
-						<Grid item xs={12} md={3} lg={4} xl={4}>
-							<FormControl fullWidth>
-								<InputLabel id="owner">Owner</InputLabel>
-								<Select
-									id="owner"
-									name="owner"
-									value={reportFilters.owner}
-									label="Owner"
-									onChange={handleReportFilterSelectChange}
-								>
-									<MenuItem value="">None</MenuItem>
-									<MenuItem value={10}>Ten</MenuItem>
-									<MenuItem value={20}>Twenty</MenuItem>
-									<MenuItem value={30}>Thirty</MenuItem>
-								</Select>
-							</FormControl>
-						</Grid>
-						<Grid item xs={12} md={3} lg={4} xl={4}>
-							<FormControl fullWidth>
-								<InputLabel id="owner">Building</InputLabel>
-								<Select
-									id="building"
-									name="building"
-									value={reportFilters.building}
-									label="Building"
-									onChange={handleReportFilterSelectChange}
-								>
-									<MenuItem value="">None</MenuItem>
-									<MenuItem value={10}>Ten</MenuItem>
-									<MenuItem value={20}>Twenty</MenuItem>
-									<MenuItem value={30}>Thirty</MenuItem>
-								</Select>
-							</FormControl>
-						</Grid>
-
-						<Grid item xs={6} md={12}>
-							<FormControlLabel
-								control={
-									<Checkbox
-										onChange={handleReportFilterCheckChange}
-										checked={reportFilters.showCancelledDocs}
-									/>
-								}
-								label="Show cancelled documents?"
-							/>
-						</Grid>
-
-						<Grid item xs={6} md={12}>
-							<FormControl>
-								<FormLabel id="sortBy">Sort By</FormLabel>
-								<RadioGroup
-									row
-									defaultValue={reportFilters.sortBy}
-									name="radio-buttons-group"
-								>
-									<FormControlLabel value="Date" control={<Radio />} label="Date" />
-									<FormControlLabel
-										value="Building"
-										control={<Radio />}
-										label="Building"
-									/>
-									<FormControlLabel value="Owner" control={<Radio />} label="Owner" />
-									<FormControlLabel
-										value="Milestone"
-										control={<Radio />}
-										label="Milestone"
-									/>
-									<FormControlLabel value="Zone" control={<Radio />} label="Zone" />
-								</RadioGroup>
-							</FormControl>
+						<Grid item xs={12}>
+							<Button
+								fullWidth
+								size="small"
+								endIcon={showMore ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+								onClick={handleShowMoreChange}
+							>
+								Show more filters
+							</Button>
 						</Grid>
 					</Grid>
 
 					<Box component="div" sx={{ p: 1 }} />
 					<Divider sx={{ width: "99%" }} />
+
+					<Grid item xs={12}>
+						<Collapse in={showMore} sx={{ p: 1, display: "flex", alignItems: "center" }}>
+							<Grid container item spacing={1}>
+								<Grid item xs={12} md={3} lg={4} xl={4}>
+									<FormControl fullWidth>
+										<InputLabel id="project">Project</InputLabel>
+										<Select
+											id="project"
+											name="project"
+											value={reportFilters.project}
+											label="Project"
+											onChange={handleReportFilterSelectChange}
+										>
+											<MenuItem value="">None</MenuItem>
+											<MenuItem value={10}>Ten</MenuItem>
+											<MenuItem value={20}>Twenty</MenuItem>
+											<MenuItem value={30}>Thirty</MenuItem>
+										</Select>
+									</FormControl>
+								</Grid>
+
+								<Grid item xs={12} md={3} lg={4} xl={4}>
+									<FormControl fullWidth>
+										<InputLabel id="milestone">Milestone</InputLabel>
+										<Select
+											id="milestone"
+											name="milestone"
+											value={reportFilters.milestone}
+											label="Milestone"
+											onChange={handleReportFilterSelectChange}
+										>
+											<MenuItem value="">None</MenuItem>
+											<MenuItem value={10}>Ten</MenuItem>
+											<MenuItem value={20}>Twenty</MenuItem>
+											<MenuItem value={30}>Thirty</MenuItem>
+										</Select>
+									</FormControl>
+								</Grid>
+								<Grid item xs={12} md={3} lg={4} xl={4}>
+									<FormControl fullWidth>
+										<InputLabel id="zone">Zone</InputLabel>
+										<Select
+											id="zone"
+											name="zone"
+											value={reportFilters.zone}
+											label="Zone"
+											onChange={handleReportFilterSelectChange}
+										>
+											<MenuItem value="">None</MenuItem>
+											<MenuItem value={10}>Ten</MenuItem>
+											<MenuItem value={20}>Twenty</MenuItem>
+											<MenuItem value={30}>Thirty</MenuItem>
+										</Select>
+									</FormControl>
+								</Grid>
+								<Grid item xs={12} md={3} lg={4} xl={4}>
+									<FormControl fullWidth>
+										<InputLabel id="section">Section</InputLabel>
+										<Select
+											id="section"
+											name="section"
+											value={reportFilters.section}
+											label="Section"
+											onChange={handleReportFilterSelectChange}
+										>
+											<MenuItem value="">None</MenuItem>
+											<MenuItem value={10}>Ten</MenuItem>
+											<MenuItem value={20}>Twenty</MenuItem>
+											<MenuItem value={30}>Thirty</MenuItem>
+										</Select>
+									</FormControl>
+								</Grid>
+
+								<Grid item xs={12} md={3} lg={4} xl={4}>
+									<FormControl fullWidth>
+										<InputLabel id="type">Type</InputLabel>
+										<Select
+											id="type"
+											name="type"
+											value={reportFilters.type}
+											label="Type"
+											onChange={handleReportFilterSelectChange}
+										>
+											<MenuItem value="">None</MenuItem>
+											<MenuItem value={10}>Ten</MenuItem>
+											<MenuItem value={20}>Twenty</MenuItem>
+											<MenuItem value={30}>Thirty</MenuItem>
+										</Select>
+									</FormControl>
+								</Grid>
+								<Grid item xs={12} md={3} lg={4} xl={4}>
+									<FormControl fullWidth>
+										<InputLabel id="owner">Owner</InputLabel>
+										<Select
+											id="owner"
+											name="owner"
+											value={reportFilters.owner}
+											label="Owner"
+											onChange={handleReportFilterSelectChange}
+										>
+											<MenuItem value="">None</MenuItem>
+											<MenuItem value={10}>Ten</MenuItem>
+											<MenuItem value={20}>Twenty</MenuItem>
+											<MenuItem value={30}>Thirty</MenuItem>
+										</Select>
+									</FormControl>
+								</Grid>
+								<Grid item xs={12} md={3} lg={4} xl={4}>
+									<FormControl fullWidth>
+										<InputLabel id="owner">Building</InputLabel>
+										<Select
+											id="building"
+											name="building"
+											value={reportFilters.building}
+											label="Building"
+											onChange={handleReportFilterSelectChange}
+										>
+											<MenuItem value="">None</MenuItem>
+											<MenuItem value={10}>Ten</MenuItem>
+											<MenuItem value={20}>Twenty</MenuItem>
+											<MenuItem value={30}>Thirty</MenuItem>
+										</Select>
+									</FormControl>
+								</Grid>
+							</Grid>
+
+							<Box component="div" sx={{ p: 1 }} />
+							<Divider sx={{ width: "99%" }} />
+						</Collapse>
+					</Grid>
+
+					<Grid item xs={6} md={12}>
+						<FormControlLabel
+							control={
+								<Checkbox
+									onChange={handleReportFilterCheckChange}
+									checked={reportFilters.showCancelledDocs}
+								/>
+							}
+							label="Show cancelled documents?"
+						/>
+					</Grid>
+
+					<Grid item xs={6} md={12}>
+						<FormControl>
+							<FormLabel id="sortBy">Sort By</FormLabel>
+							<RadioGroup
+								row
+								defaultValue={reportFilters.sortBy}
+								name="radio-buttons-group"
+							>
+								<FormControlLabel value="Date" control={<Radio />} label="Date" />
+								<FormControlLabel value="Building" control={<Radio />} label="Building" />
+								<FormControlLabel value="Owner" control={<Radio />} label="Owner" />
+								<FormControlLabel
+									value="Milestone"
+									control={<Radio />}
+									label="Milestone"
+								/>
+								<FormControlLabel value="Zone" control={<Radio />} label="Zone" />
+							</RadioGroup>
+						</FormControl>
+					</Grid>
 
 					<Grid item xs={12} md={6} lg={6} xl={6} justifyContent="space-evenly">
 						<Button

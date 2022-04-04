@@ -2,7 +2,8 @@ import { Response } from "express";
 import { knexMySQL } from "services/database";
 import { logger } from "utilities/logger";
 import { handleServerResponse, handleServerError } from "helpers/serverResponse";
-import { ReportProgressDetailInterface, RequestAuthInterface } from "types";
+import { REPORT_FILTER } from "utilities/constants";
+import { ReportFilterItem, ReportProgressDetailInterface, RequestAuthInterface } from "types";
 
 const formatReportProgressDetailController = (
 	response: ReportProgressDetailInterface[]
@@ -10,19 +11,13 @@ const formatReportProgressDetailController = (
 	let returnArray: ReportProgressDetailInterface[] = [];
 
 	for (const items of response) {
-		returnArray = [
-			...returnArray,
-			{ ...items, activities: JSON.parse(items.activities.toString()) },
-		];
+		returnArray = [...returnArray, { ...items, activities: JSON.parse(items.activities.toString()) }];
 	}
 
 	return returnArray;
 };
 
-export const getReportProgressDetailController = async (
-	req: RequestAuthInterface,
-	res: Response
-): Promise<void> => {
+export const getReportProgressDetailController = async (req: RequestAuthInterface, res: Response): Promise<void> => {
 	try {
 		// const { userId, password } = req.user ? req.user : { userId: "", password: "" };
 
@@ -84,20 +79,57 @@ export const getReportProgressDetailController = async (
 			`
 		);
 
-		const response = formatReportProgressDetailController(
-			results[0] as ReportProgressDetailInterface[]
-		);
+		const response = formatReportProgressDetailController(results[0] as ReportProgressDetailInterface[]);
 
 		handleServerResponse(res, 200, {
 			success: true,
-			message: "Generate Report Progress Detail Success",
+			message: "Get report progress detail success",
 			data: response,
 		});
 	} catch (error) {
-		logger.error(`@reportProgressDetailController Error ${error}`);
+		logger.error(`@reportProgressDetailController error ${error}`);
 		handleServerError(res, 500, {
 			success: false,
-			message: "Generate Report Progress Detail Error",
+			message: "Get report progress detail error",
+			error: error as Error,
+		});
+	}
+};
+
+export const getReportFilterController = async (req: RequestAuthInterface, res: Response): Promise<void> => {
+	try {
+		logger.info("@getReportFilterController");
+
+		const { type } = req.params;
+
+		if (!type) throw new Error("<type> parameter is required in url");
+		if (!REPORT_FILTER[type]) throw new Error("Filter type not found");
+
+		const { columnName, tableName } = REPORT_FILTER[type];
+		const results = await knexMySQL.raw(
+			`
+			SELECT 					
+				${columnName}_Cd as id,
+				${columnName}_Name as name
+			FROM 
+				pmsysdb.${tableName}
+			WHERE
+				isActive = 1;
+			`
+		);
+
+		const response = results[0] as ReportFilterItem[];
+
+		handleServerResponse(res, 200, {
+			success: true,
+			message: "Get filters success",
+			data: response,
+		});
+	} catch (error) {
+		logger.error(`@getReportFilterController error ${error}`);
+		handleServerError(res, 500, {
+			success: false,
+			message: "Get filters error",
 			error: error as Error,
 		});
 	}

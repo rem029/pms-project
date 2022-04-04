@@ -1,5 +1,5 @@
-import { PrintOutlined } from "@mui/icons-material";
-import { Modal, Paper, Button } from "@mui/material";
+import { CloseOutlined, PrintOutlined } from "@mui/icons-material";
+import { Modal, Paper, Button, Box, IconButton } from "@mui/material";
 
 export const ReportingPrintPreviewModal = (props: {
 	open: boolean;
@@ -13,20 +13,26 @@ export const ReportingPrintPreviewModal = (props: {
 			onClose={handleModalClose}
 			sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
 		>
-			<Paper sx={{ width: "95%", height: "95%", overflowY: "scroll" }}>
-				<Button
-					onClick={() => {
-						const PDF: HTMLIFrameElement | null = document.getElementById(
-							"reportPrintF"
-						) as HTMLIFrameElement | null;
+			<Paper sx={{ width: "95%", height: "98%", overflowY: "scroll" }}>
+				<Box component="div" display="flex" justifyContent="space-between">
+					<Button
+						onClick={() => {
+							const PDF: HTMLIFrameElement | null = document.getElementById(
+								"reportPrintF"
+							) as HTMLIFrameElement | null;
 
-						PDF?.focus();
-						PDF?.contentWindow?.print();
-					}}
-					endIcon={<PrintOutlined />}
-				>
-					Print
-				</Button>
+							PDF?.focus();
+							PDF?.contentWindow?.print();
+						}}
+						endIcon={<PrintOutlined />}
+					>
+						Print
+					</Button>
+
+					<IconButton onClick={handleModalClose}>
+						<CloseOutlined />
+					</IconButton>
+				</Box>
 				<iframe
 					id="reportPrintF"
 					name="reportPrintF"

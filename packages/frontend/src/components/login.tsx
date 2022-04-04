@@ -20,7 +20,9 @@ import { URL_LOGIN } from "utils/constant";
 export const Login = (): JSX.Element => {
 	const [fields, setFields] = useState({ username: "", password: "" });
 	const [helpText, setHelperText] = useState("");
-	const { data, fetch, loading, success, message } = useAxios<Token>(URL_LOGIN);
+	const { data, fetch, loading, success, message } = useAxios<Token>(URL_LOGIN, {
+		method: "POST",
+	});
 
 	const navigate = useNavigate();
 
@@ -48,7 +50,7 @@ export const Login = (): JSX.Element => {
 			return;
 		}
 
-		fetch("post", {
+		fetch({
 			headers: {
 				Authorization: `Basic ${Buffer.from(
 					fields.username + ":" + fields.password

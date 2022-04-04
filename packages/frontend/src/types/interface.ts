@@ -12,6 +12,11 @@ export interface UserInfo {
 	IsDelete: number;
 }
 
+export interface ReportFilter {
+	id: string;
+	name: string;
+}
+
 export interface Token {
 	token: string;
 	expiresIn: string;

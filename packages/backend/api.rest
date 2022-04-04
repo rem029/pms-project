@@ -5,7 +5,7 @@ law     123
 @username = sahar
 @password = 789
 
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc3JfSWQiOiJzYWhhciIsIlVzcl9OYW1lIjoiU2FoYXIgVGFoYSIsIlVzcl9FbWFpbCI6Im4vYUBnbWFpbC5jb20iLCJVc3JfUGgiOiIrOTc0IDExMjIzMzQ0IiwiSXNBZG1pbiI6MCwiSXNBY3RpdmUiOjEsIklzQWRkIjowLCJJc0VkaXQiOjAsIklzQ2FuY2VsIjowLCJJc0RlbGV0ZSI6MCwiaWF0IjoxNjQ4NDUzMjI5LCJleHAiOjE2NDg1Mzk2Mjl9.YgNFzEMEb9PwjnmqUj06YY-U16Lc79OJbruyS3IRuTA
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc3JfSWQiOiJzYWhhciIsIlVzcl9OYW1lIjoiU2FoYXIgVGFoYSIsIlVzcl9FbWFpbCI6Im4vYUBnbWFpbC5jb20iLCJVc3JfUGgiOiIrOTc0IDExMjIzMzQ0IiwiSXNBZG1pbiI6MCwiSXNBY3RpdmUiOjEsIklzQWRkIjowLCJJc0VkaXQiOjAsIklzQ2FuY2VsIjowLCJJc0RlbGV0ZSI6MCwiaWF0IjoxNjQ5MDU0NzkxLCJleHAiOjE2NDkxNDExOTF9.dlfP6Ye2ldx_jqMoHgHsYOuRdK8coUDkHDoHaYES2YU
 
 ### LOGIN
 POST http://localhost:6060/login/
@@ -16,4 +16,51 @@ Authorization: Token {{token}}
 
 ### GET REPORT PROGRESSIVE DETAIL
 GET http://localhost:6060/report/progressive-detail
+Authorization: Token {{token}}
+
+### GET REPORT FILTER
+
+### ERROR
+GET http://localhost:6060/report/filter/zz
+Authorization: Token {{token}}
+
+### PHASE
+GET http://localhost:6060/report/filter/phase
+Authorization: Token {{token}}
+
+### CLASSIFICATION
+GET http://localhost:6060/report/filter/classification
+Authorization: Token {{token}}
+
+### PROJECT
+GET http://localhost:6060/report/filter/project
+Authorization: Token {{token}}
+
+
+### MILESTONE
+GET http://localhost:6060/report/filter/milestone
+Authorization: Token {{token}}
+
+
+### ZONE
+GET http://localhost:6060/report/filter/zone
+Authorization: Token {{token}}
+
+### SECTION
+GET http://localhost:6060/report/filter/section
+Authorization: Token {{token}}
+
+
+### TYPE
+GET http://localhost:6060/report/filter/type
+Authorization: Token {{token}}
+
+
+### OWNER
+GET http://localhost:6060/report/filter/owner
+Authorization: Token {{token}}
+
+### BUILDING
+GET http://localhost:6060/report/filter/building
+
 Authorization: Token {{token}}

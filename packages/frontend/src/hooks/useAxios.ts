@@ -1,20 +1,20 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { useSnackbar } from "notistack";
 import { getUserContext } from "store/userProvider";
 import { NOTISTACK_AUTO_HIDE_MS } from "utils/constant";
 
-type AxiosType = "get" | "post" | "delete" | "patch";
-
 export const useAxios = <T>(
-	url: string
+	url: string,
+	config?: AxiosRequestConfig
 ): {
-	success: boolean;
-	loading: boolean;
 	data: T | undefined;
 	error: AxiosError | undefined;
 	message: string;
-	fetch: (method: AxiosType, config?: AxiosRequestConfig) => void;
+	success: boolean;
+	loading: boolean;
+	config: AxiosRequestConfig | undefined;
+	fetch: (config?: AxiosRequestConfig) => void;
 	fetchCancel: () => void;
 } => {
 	const [loading, setLoading] = useState(false);
@@ -23,9 +23,18 @@ export const useAxios = <T>(
 	const [error, setError] = useState<AxiosError | undefined>(undefined);
 	const [success, setSuccess] = useState(false);
 
+	const axiosConfig = useMemo(() => {
+		return config;
+	}, [config]);
 	const [axiosController, setAxiosController] = useState<AbortController>();
 	const { logout } = getUserContext();
 	const { enqueueSnackbar } = useSnackbar();
+
+	useEffect(() => {
+		if ((axiosConfig && axiosConfig?.method === "get") || axiosConfig?.method === "GET") {
+			fetch();
+		}
+	}, []);
 
 	const resetState = (): void => {
 		setLoading(false);
@@ -39,15 +48,20 @@ export const useAxios = <T>(
 		axiosController?.abort();
 	};
 
-	const fetch = (method: AxiosType, config?: AxiosRequestConfig): void => {
+	const fetch = (config?: AxiosRequestConfig): void => {
 		resetState();
 
 		const controller = new AbortController();
 		setAxiosController(controller);
-		const request = axios.create({ ...config, signal: controller.signal });
+		const request = axios.create({
+			...axiosConfig,
+			...config,
+			signal: controller.signal,
+		});
 
 		setLoading(true);
-		request[method](url)
+
+		request(url)
 			.then((response) => {
 				setLoading(false);
 				setData(response.data.data);
@@ -80,5 +94,14 @@ export const useAxios = <T>(
 			});
 	};
 
-	return { success, loading, data, error, message, fetch, fetchCancel };
+	return {
+		success,
+		loading,
+		data,
+		error,
+		message,
+		config: axiosConfig,
+		fetch,
+		fetchCancel,
+	};
 };

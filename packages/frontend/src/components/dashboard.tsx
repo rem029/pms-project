@@ -57,8 +57,6 @@ export const Dashboard = (): JSX.Element => {
 						<HistogramChart />
 					</Grid>
 
-					<Divider sx={{ width: "99%" }} />
-
 					<Grid item xs={12}>
 						<Typography
 							color="text.secondary"

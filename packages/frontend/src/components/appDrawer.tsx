@@ -28,6 +28,7 @@ import { useNavigate } from "react-router-dom";
 import { URL_USER } from "utils/constant";
 import { getToken } from "utils/storage";
 import { getUserContext } from "store/userProvider";
+import { dateHelperFormatProper } from "helpers/dateHelper";
 interface AppDrawerProps extends MuiAppBarProps {
 	open?: boolean;
 	setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -52,22 +53,15 @@ export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element
 
 	const {
 		data: userData,
-		fetch: userFetch,
 		loading: userLoading,
 		success: userSuccess,
 		error: userError,
-	} = useAxios<UserInfo>(URL_USER);
-
-	useEffect(() => {
-		const token = getToken();
-
-		if (token)
-			userFetch("get", {
-				headers: {
-					Authorization: `Token ${token}`,
-				},
-			});
-	}, []);
+	} = useAxios<UserInfo>(URL_USER, {
+		method: "GET",
+		headers: {
+			Authorization: `Token ${getToken()}`,
+		},
+	});
 
 	useEffect(() => {
 		if (userError) setUserName("Error");
@@ -143,7 +137,7 @@ export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element
 				</ListItem>
 				<ListItem>
 					<Typography variant="caption" noWrap letterSpacing={1}>
-						26th of March 2022
+						{dateHelperFormatProper(new Date())}
 					</Typography>
 				</ListItem>
 			</List>

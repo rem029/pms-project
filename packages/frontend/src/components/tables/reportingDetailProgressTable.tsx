@@ -25,8 +25,8 @@ import { useWindowDimensions } from "hooks/useWindowDimensions";
 import { red } from "@mui/material/colors";
 
 import { ReportingDetailProgressActivityTable } from "./reportingDetailProgressActivityTable";
-import { getDocumentCSS } from "helper/documentCSSHelper";
-import { formatDate } from "helper/dateHelper";
+import { getDocumentCSS } from "helpers/documentCSSHelper";
+import { dateHelperFormat } from "helpers/dateHelper";
 import { Preview } from "@mui/icons-material";
 import { ReportingPrintPreviewModal } from "components/utilities/reportingPrintPreviewModal";
 
@@ -45,6 +45,7 @@ type TableSortBy =
 	| "classificationName";
 
 type TableOrderBy = "asc" | "desc";
+const tableMaxHeight = 720;
 
 export const ReportingDetailProgressTable = (): JSX.Element => {
 	const [report, setReport] = useState<ReportProgressDetailInterface[]>([]);
@@ -62,12 +63,16 @@ export const ReportingDetailProgressTable = (): JSX.Element => {
 
 	const {
 		data: reportData,
-		fetch: reportFetch,
-		fetchCancel: reportFetchCancel,
+
 		loading: reportLoading,
 		success: reportSuccess,
 		message: reportMessage,
-	} = useAxios<ReportProgressDetailInterface[]>(URL_REPORTING_DETAIL_PROGRESS);
+	} = useAxios<ReportProgressDetailInterface[]>(URL_REPORTING_DETAIL_PROGRESS, {
+		method: "get",
+		headers: {
+			Authorization: `Token ${getToken()}`,
+		},
+	});
 
 	const reportSorted = useMemo(() => {
 		if (report.length > 0) {
@@ -86,28 +91,10 @@ export const ReportingDetailProgressTable = (): JSX.Element => {
 	}, [report, orderBy]);
 
 	useEffect(() => {
-		console.log("@useEffect width", width);
-	}, [width]);
-
-	useEffect(() => {
 		if (!reportLoading && reportSuccess && reportData) {
 			setReport(reportData);
 		} else setReport([]);
 	}, [reportData, reportSuccess, reportLoading]);
-
-	useEffect(() => {
-		const token = getToken();
-
-		if (token) {
-			reportFetch("get", {
-				headers: {
-					Authorization: `Token ${token}`,
-				},
-			});
-		}
-
-		return () => reportFetchCancel();
-	}, []);
 
 	const handleChangePage = (
 		_: React.MouseEvent<HTMLButtonElement> | null,
@@ -173,17 +160,12 @@ export const ReportingDetailProgressTable = (): JSX.Element => {
 			)}
 
 			{!reportLoading && (
-				<>
+				<Paper>
 					<TableContainer
 						ref={tableRef}
-						component={Paper}
 						sx={{
 							overflowX: "auto",
-							width: () => {
-								if (width > 0 && width < 540) return width - 50;
-								if (width > 540) return width - 90;
-							},
-							maxHeight: rowsPerPage < 0 ? undefined : 480,
+							maxHeight: rowsPerPage < 0 ? undefined : tableMaxHeight,
 						}}
 					>
 						<Table aria-label="collapsible table" stickyHeader>
@@ -309,7 +291,7 @@ export const ReportingDetailProgressTable = (): JSX.Element => {
 						onRowsPerPageChange={handleChangeRowsPerPage}
 						ActionsComponent={TablePaginationActions}
 					/>
-				</>
+				</Paper>
 			)}
 		</>
 	);
@@ -337,7 +319,9 @@ const Row = (props: {
 				<TableCell component="th" scope="row" align="center">
 					{row.inspectionNumber}
 				</TableCell>
-				<TableCell align="center">{formatDate(new Date(row.inspectionDate))}</TableCell>
+				<TableCell align="center">
+					{dateHelperFormat(new Date(row.inspectionDate))}
+				</TableCell>
 				<TableCell align="center">{row.bldgCode}</TableCell>
 				<TableCell align="center">{row.ownerName}</TableCell>
 				<TableCell align="center">{row.typeCode}</TableCell>

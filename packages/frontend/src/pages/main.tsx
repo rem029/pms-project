@@ -45,10 +45,6 @@ export const Main = (): JSX.Element => {
 	const [open, setOpen] = React.useState(false);
 	const { width: screenWidth } = useWindowDimensions();
 
-	React.useEffect(() => {
-		console.log("screenWidth", screenWidth);
-	}, [screenWidth]);
-
 	return (
 		<Box sx={{ display: "flex" }}>
 			<CssBaseline />
