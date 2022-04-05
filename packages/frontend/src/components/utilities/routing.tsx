@@ -2,11 +2,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {
 	Dashboard,
 	ProtectedRoute,
-	Reporting,
 	Login,
 	Master,
 	Project,
-	ReportDetailProgress,
+	DetailProgressReport,
+	ReportTemplate,
 } from "components";
 import { Main } from "pages/main";
 import { NotFound } from "pages/notFound";
@@ -30,13 +30,13 @@ export const Routing = (): JSX.Element => {
 						<Route path={"dashboard"} element={<Dashboard />} />
 						<Route path={"master"} element={<Master />} />
 						<Route path={"projects"} element={<Project />} />
-						<Route path={"report-detail-progress"} element={<ReportDetailProgress />} />
-						<Route path={"reportingB"} element={<Reporting title="Statistics" />} />
+
+						<Route path={"report/"} element={<NotFound />} />
+						<Route path={"report/detail-progress"} element={<DetailProgressReport />} />
 						<Route
-							path={"reportingC"}
-							element={<Reporting title="Testing and Commissioning" />}
+							path={"report/reportingB"}
+							element={<ReportTemplate title="Statistics" />}
 						/>
-						<Route path={"reportingD"} element={<Reporting title="Inspection" />} />
 					</Route>
 
 					<Route path="*" element={<NotFound />} />

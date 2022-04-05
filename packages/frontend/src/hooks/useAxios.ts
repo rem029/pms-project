@@ -68,10 +68,7 @@ export const useAxios = <T>(
 				setMessage(response.data.message);
 				setSuccess(response.data.success);
 
-				enqueueSnackbar(response.data.message, {
-					variant: "default",
-					autoHideDuration: NOTISTACK_AUTO_HIDE_MS,
-				});
+				
 			})
 			.catch((error: AxiosError) => {
 				if (error) {

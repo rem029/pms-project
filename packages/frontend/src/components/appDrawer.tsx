@@ -150,6 +150,7 @@ export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element
 						onClick={() =>
 							text === "Reporting" ? handleSubMenuOpen() : handleChangePage(text)
 						}
+						disabled={text === "Master" || text === "Projects"}
 					>
 						<ListItemIcon>
 							{index % 2 === 0 ? (
@@ -159,7 +160,9 @@ export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element
 							)}
 						</ListItemIcon>
 						<ListItemText>
-							<Link sx={{ textDecoration: "none", color: grey[600] }}>{text}</Link>
+							<Link sx={{ textDecoration: "none", color: grey[600] }}>
+								{text === "Master" || text === "Projects" ? text + " (WIP)" : text}
+							</Link>
 						</ListItemText>
 						{text === "Reporting" ? (
 							subMenuOpenReporting ? (
@@ -175,29 +178,20 @@ export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element
 
 				<Collapse in={subMenuOpenReporting} timeout="auto" unmountOnExit>
 					<List component="div" disablePadding>
-						<ListItemButton
-							sx={{ pl: 4 }}
-							onClick={() => handleChangePage("report-detail-progress")}
-						>
-							<ListItemIcon>
-								<StarBorder />
-							</ListItemIcon>
-							<ListItemText primary="Progress Detail Report" />
-						</ListItemButton>
-
-						<ListItemButton sx={{ pl: 4 }} onClick={() => handleChangePage("reportingB")}>
-							<ListItemIcon>
-								<StarBorder />
-							</ListItemIcon>
-							<ListItemText primary="Reporting for B" />
-						</ListItemButton>
-
-						<ListItemButton sx={{ pl: 4 }} onClick={() => handleChangePage("reportingC")}>
-							<ListItemIcon>
-								<StarBorder />
-							</ListItemIcon>
-							<ListItemText primary="Reporting for C" />
-						</ListItemButton>
+						{[{ label: "Progress Detail Report", url: "report/detail-progress" }].map(
+							(item, index) => (
+								<ListItemButton
+									key={index + item.label}
+									sx={{ pl: 4 }}
+									onClick={() => handleChangePage(item.url)}
+								>
+									<ListItemIcon>
+										<StarBorder />
+									</ListItemIcon>
+									<ListItemText primary={item.label} />
+								</ListItemButton>
+							)
+						)}
 					</List>
 				</Collapse>
 			</List>

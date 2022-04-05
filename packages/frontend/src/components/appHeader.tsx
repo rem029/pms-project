@@ -45,10 +45,10 @@ export const AppHeader = ({ open, setOpen, width }: AppBarProps): JSX.Element =>
 					<MenuOutlined />
 				</IconButton>
 
-				<Typography color="white" variant="body1" noWrap sx={{ flexGrow: 1 }}>
+				<Typography color="white" variant="body1" noWrap sx={{ width: "95%" }}>
 					Project Management System
 				</Typography>
-				<Box component="img" src={logo} sx={{ width: 64, borderRadius: 1 }} />
+				<Box component="img" src={logo} sx={{ width: 56, borderRadius: 0.5 }} />
 			</Toolbar>
 		</AppBar>
 	);

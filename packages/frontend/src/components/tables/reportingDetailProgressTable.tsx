@@ -21,7 +21,6 @@ import { ReportProgressDetailInterface } from "types/interface";
 import { getToken } from "utils/storage";
 import { Button, CircularProgress, TablePagination, Typography } from "@mui/material";
 import TablePaginationActions from "@mui/material/TablePagination/TablePaginationActions";
-import { useWindowDimensions } from "hooks/useWindowDimensions";
 import { red } from "@mui/material/colors";
 
 import { ReportingDetailProgressActivityTable } from "./reportingDetailProgressActivityTable";
@@ -47,7 +46,19 @@ type TableSortBy =
 type TableOrderBy = "asc" | "desc";
 const tableMaxHeight = 720;
 
-export const ReportingDetailProgressTable = (): JSX.Element => {
+interface ReportingDetailProgressTableInterface {
+	data?: ReportProgressDetailInterface[];
+	success: boolean;
+	message: string;
+	loading: boolean;
+}
+
+export const ReportingDetailProgressTable = ({
+	data,
+	success,
+	message,
+	loading,
+}: ReportingDetailProgressTableInterface): JSX.Element => {
 	const [report, setReport] = useState<ReportProgressDetailInterface[]>([]);
 	const [reportHTMLCSSString, setReportHTMLCSSString] = useState("");
 	const [page, setPage] = useState(0);
@@ -58,21 +69,7 @@ export const ReportingDetailProgressTable = (): JSX.Element => {
 	const [sortBy, setSortBy] = useState<TableSortBy>("inspectionNumber");
 	const [orderBy, setOrderBy] = useState<TableOrderBy>("desc");
 
-	const { width } = useWindowDimensions();
 	const tableRef = useRef<HTMLDivElement>(null);
-
-	const {
-		data: reportData,
-
-		loading: reportLoading,
-		success: reportSuccess,
-		message: reportMessage,
-	} = useAxios<ReportProgressDetailInterface[]>(URL_REPORTING_DETAIL_PROGRESS, {
-		method: "get",
-		headers: {
-			Authorization: `Token ${getToken()}`,
-		},
-	});
 
 	const reportSorted = useMemo(() => {
 		if (report.length > 0) {
@@ -91,10 +88,10 @@ export const ReportingDetailProgressTable = (): JSX.Element => {
 	}, [report, orderBy]);
 
 	useEffect(() => {
-		if (!reportLoading && reportSuccess && reportData) {
-			setReport(reportData);
+		if (!loading && success && data) {
+			setReport(data);
 		} else setReport([]);
-	}, [reportData, reportSuccess, reportLoading]);
+	}, [data, success, loading]);
 
 	const handleChangePage = (
 		_: React.MouseEvent<HTMLButtonElement> | null,
@@ -141,7 +138,7 @@ export const ReportingDetailProgressTable = (): JSX.Element => {
 				reportElementInString={reportHTMLCSSString}
 			/>
 
-			{reportLoading && (
+			{loading && (
 				<>
 					<CircularProgress
 						sx={{
@@ -159,7 +156,7 @@ export const ReportingDetailProgressTable = (): JSX.Element => {
 				</>
 			)}
 
-			{!reportLoading && (
+			{!loading && (
 				<Paper>
 					<TableContainer
 						ref={tableRef}
@@ -246,11 +243,11 @@ export const ReportingDetailProgressTable = (): JSX.Element => {
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{!reportLoading && !reportSuccess && reportMessage && (
+								{!loading && !success && message && (
 									<TableRow>
 										<TableCell align="center" colSpan={12}>
 											<Typography color={red[500]}>
-												{`${reportMessage} Please contact support.`}
+												{`${message} Please contact support.`}
 											</Typography>
 										</TableCell>
 									</TableRow>

@@ -6,9 +6,7 @@ import {
 	TextField,
 	Button,
 	FormControl,
-	InputLabel,
 	MenuItem,
-	Select,
 	SelectChangeEvent,
 	Box,
 	FormControlLabel,
@@ -17,6 +15,8 @@ import {
 	Radio,
 	RadioGroup,
 	Collapse,
+	Autocomplete,
+	CircularProgress,
 } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -29,31 +29,17 @@ import { useAxios } from "hooks/useAxios";
 import {
 	URL_REPORTING_FILTER_BUILDING,
 	URL_REPORTING_FILTER_CLASSIFICATION,
+	URL_REPORTING_FILTER_MILESTONE,
+	URL_REPORTING_FILTER_OWNER,
 	URL_REPORTING_FILTER_PHASE,
 	URL_REPORTING_FILTER_PROJECT,
+	URL_REPORTING_FILTER_SECTION,
+	URL_REPORTING_FILTER_TYPE,
+	URL_REPORTING_FILTER_ZONE,
 } from "utils/constant";
-import { ReportFilter } from "types/interface";
+import { ReportFilter, ReportFilterType } from "types/interface";
 import { getToken } from "utils/storage";
 import { AxiosRequestConfig } from "axios";
-
-type ReportFilterType = {
-	date: Date | null;
-	phase: string;
-	classification: string;
-	project: string;
-	milestone: string;
-	zone: string;
-	section: string;
-	type: string;
-	owner: string;
-	building: string;
-	showCancelledDocs: boolean;
-	sortBy: "Date" | "Building" | "Owner" | "Milestone" | "Zone";
-};
-
-interface ReportFiltersInterface {
-	filter?: ReportFilterType;
-}
 
 const defaultReportFilters = (): ReportFilterType =>
 	({
@@ -71,7 +57,15 @@ const defaultReportFilters = (): ReportFilterType =>
 		sortBy: "Date",
 	} as ReportFilterType);
 
-export const ReportFilters = ({ filter }: ReportFiltersInterface): JSX.Element => {
+interface ReportFiltersInterface {
+	filter?: ReportFilterType;
+	onSubmit?: (filter: ReportFilterType) => void;
+}
+
+export const ReportFilters = ({
+	filter,
+	onSubmit,
+}: ReportFiltersInterface): JSX.Element => {
 	const [reportFilters, setReportFilters] = useState<ReportFilterType>(
 		filter ? filter : defaultReportFilters()
 	);
@@ -90,20 +84,53 @@ export const ReportFilters = ({ filter }: ReportFiltersInterface): JSX.Element =
 		console.log("@reportFilters", reportFilters);
 	}, [reportFilters]);
 
-	const { data: filterPhaseData } = useAxios<ReportFilter[]>(
+	const { data: filterPhaseData, loading: filterPhaseLoading } = useAxios<ReportFilter[]>(
 		URL_REPORTING_FILTER_PHASE,
 		axiosConfigReportFilter
 	);
 
-	const { data: filterClassificationData } = useAxios<ReportFilter[]>(
-		URL_REPORTING_FILTER_CLASSIFICATION,
+	const { data: filterClassificationData, loading: filterClassificationLoading } =
+		useAxios<ReportFilter[]>(
+			URL_REPORTING_FILTER_CLASSIFICATION,
+			axiosConfigReportFilter
+		);
+
+	const { data: filterProjectData, loading: filterProjectLoading } = useAxios<
+		ReportFilter[]
+	>(URL_REPORTING_FILTER_PROJECT, axiosConfigReportFilter);
+
+	const { data: filterMilestoneData, loading: filterMilestoneLoading } = useAxios<
+		ReportFilter[]
+	>(URL_REPORTING_FILTER_MILESTONE, axiosConfigReportFilter);
+
+	const { data: filterZoneData, loading: filterZoneLoading } = useAxios<ReportFilter[]>(
+		URL_REPORTING_FILTER_ZONE,
 		axiosConfigReportFilter
 	);
 
-	const { data: filterProjectData } = useAxios<ReportFilter[]>(
-		URL_REPORTING_FILTER_PROJECT,
+	const { data: filterSectionData, loading: filterSectionLoading } = useAxios<
+		ReportFilter[]
+	>(URL_REPORTING_FILTER_SECTION, axiosConfigReportFilter);
+
+	const { data: filterTypeData, loading: filterTypeLoading } = useAxios<ReportFilter[]>(
+		URL_REPORTING_FILTER_TYPE,
 		axiosConfigReportFilter
 	);
+
+	const { data: filterOwnerData, loading: filterOwnerLoading } = useAxios<ReportFilter[]>(
+		URL_REPORTING_FILTER_OWNER,
+		axiosConfigReportFilter
+	);
+
+	const { data: filterBuildingData, loading: filterBuildingLoading } = useAxios<
+		ReportFilter[]
+	>(URL_REPORTING_FILTER_BUILDING, axiosConfigReportFilter);
+
+	const getListItems = (data?: ReportFilter[]): readonly ReportFilter[] => {
+		const items: readonly ReportFilter[] = data ? [...data] : [];
+		console.log("@getMenuItems", items);
+		return items;
+	};
 
 	const handleReportFilterDateChange = (newValue: Date | null): void => {
 		setReportFilters((currentReportFilters) => ({
@@ -112,14 +139,13 @@ export const ReportFilters = ({ filter }: ReportFiltersInterface): JSX.Element =
 		}));
 	};
 
-	const handleReportFilterSelectChange = (
-		event: SelectChangeEvent<string>,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		_: React.ReactNode
+	const handleReportFilterAutoCompleteChange = (
+		name: string,
+		value: ReportFilter | null
 	): void => {
 		setReportFilters((currentReportFilters) => ({
 			...currentReportFilters,
-			[event.target.name]: event.target.value,
+			[name]: value?.name,
 		}));
 	};
 
@@ -128,7 +154,7 @@ export const ReportFilters = ({ filter }: ReportFiltersInterface): JSX.Element =
 	};
 
 	const handleReportFiltersApply = (): void => {
-		alert(`@FILTERS ${JSON.stringify(reportFilters)}`);
+		onSubmit && onSubmit(reportFilters);
 	};
 
 	const handleReportFilterCheckChange = (
@@ -185,45 +211,69 @@ export const ReportFilters = ({ filter }: ReportFiltersInterface): JSX.Element =
 
 						<Grid item xs={12} md={3} lg={4} xl={4}>
 							<FormControl fullWidth required>
-								<InputLabel id="phase">Phase</InputLabel>
-								<Select
-									id="phase"
-									name="phase"
-									value={reportFilters.phase}
-									label="Phase"
-									onChange={handleReportFilterSelectChange}
-								>
-									<MenuItem key=" none" value="">
-										None
-									</MenuItem>
-									{filterPhaseData?.map((item) => (
-										<MenuItem key={`${item.id}${item.name}`} value={item.id}>
-											{item.name}
-										</MenuItem>
-									))}
-								</Select>
+								<Autocomplete
+									disablePortal
+									componentName="phase"
+									options={getListItems(filterPhaseData)}
+									getOptionLabel={(option) => option.name}
+									loading
+									onChange={(_, value) => {
+										handleReportFilterAutoCompleteChange("phase", value);
+									}}
+									renderInput={(params) => (
+										<TextField
+											{...params}
+											name="phase"
+											label="Phase"
+											fullWidth
+											InputProps={{
+												...params.InputProps,
+												endAdornment: (
+													<>
+														{filterPhaseLoading ? (
+															<CircularProgress color="inherit" size={20} />
+														) : null}
+														{params.InputProps.endAdornment}
+													</>
+												),
+											}}
+										/>
+									)}
+								/>
 							</FormControl>
 						</Grid>
 
 						<Grid item xs={12} md={3} lg={4} xl={4}>
 							<FormControl fullWidth required>
-								<InputLabel id="classification">Classification</InputLabel>
-								<Select
-									id="classification"
-									name="classification"
-									value={reportFilters.classification}
-									label="Classification"
-									onChange={handleReportFilterSelectChange}
-								>
-									<MenuItem key=" none" value="">
-										None
-									</MenuItem>
-									{filterClassificationData?.map((item) => (
-										<MenuItem key={`${item.id}${item.name}`} value={item.id}>
-											{item.name}
-										</MenuItem>
-									))}
-								</Select>
+								<Autocomplete
+									disablePortal
+									componentName="classification"
+									options={getListItems(filterClassificationData)}
+									getOptionLabel={(option) => option.name}
+									loading
+									onChange={(_, value) => {
+										handleReportFilterAutoCompleteChange("classification", value);
+									}}
+									renderInput={(params) => (
+										<TextField
+											{...params}
+											name="classification"
+											label="Classification"
+											fullWidth
+											InputProps={{
+												...params.InputProps,
+												endAdornment: (
+													<>
+														{filterClassificationLoading ? (
+															<CircularProgress color="inherit" size={20} />
+														) : null}
+														{params.InputProps.endAdornment}
+													</>
+												),
+											}}
+										/>
+									)}
+								/>
 							</FormControl>
 						</Grid>
 
@@ -246,124 +296,236 @@ export const ReportFilters = ({ filter }: ReportFiltersInterface): JSX.Element =
 						<Collapse in={showMore} sx={{ p: 1, display: "flex", alignItems: "center" }}>
 							<Grid container item spacing={1}>
 								<Grid item xs={12} md={3} lg={4} xl={4}>
-									<FormControl fullWidth>
-										<InputLabel id="project">Project</InputLabel>
-										<Select
-											id="project"
-											name="project"
-											value={reportFilters.project}
-											label="Project"
-											onChange={handleReportFilterSelectChange}
-										>
-											<MenuItem value="">None</MenuItem>
-											<MenuItem value={10}>Ten</MenuItem>
-											<MenuItem value={20}>Twenty</MenuItem>
-											<MenuItem value={30}>Thirty</MenuItem>
-										</Select>
+									<FormControl fullWidth required>
+										<Autocomplete
+											disablePortal
+											componentName="project"
+											options={getListItems(filterProjectData)}
+											getOptionLabel={(option) => option.name}
+											loading
+											onChange={(_, value) => {
+												handleReportFilterAutoCompleteChange("classification", value);
+											}}
+											renderInput={(params) => (
+												<TextField
+													{...params}
+													name="project"
+													label="Project"
+													fullWidth
+													InputProps={{
+														...params.InputProps,
+														endAdornment: (
+															<>
+																{filterProjectLoading ? (
+																	<CircularProgress color="inherit" size={20} />
+																) : null}
+																{params.InputProps.endAdornment}
+															</>
+														),
+													}}
+												/>
+											)}
+										/>
 									</FormControl>
 								</Grid>
 
 								<Grid item xs={12} md={3} lg={4} xl={4}>
-									<FormControl fullWidth>
-										<InputLabel id="milestone">Milestone</InputLabel>
-										<Select
-											id="milestone"
-											name="milestone"
-											value={reportFilters.milestone}
-											label="Milestone"
-											onChange={handleReportFilterSelectChange}
-										>
-											<MenuItem value="">None</MenuItem>
-											<MenuItem value={10}>Ten</MenuItem>
-											<MenuItem value={20}>Twenty</MenuItem>
-											<MenuItem value={30}>Thirty</MenuItem>
-										</Select>
+									<FormControl fullWidth required>
+										<Autocomplete
+											disablePortal
+											componentName="milestone"
+											options={getListItems(filterMilestoneData)}
+											getOptionLabel={(option) => option.name}
+											loading
+											onChange={(_, value) => {
+												handleReportFilterAutoCompleteChange("milestone", value);
+											}}
+											renderInput={(params) => (
+												<TextField
+													{...params}
+													name="milestone"
+													label="Milestone"
+													fullWidth
+													InputProps={{
+														...params.InputProps,
+														endAdornment: (
+															<>
+																{filterMilestoneLoading ? (
+																	<CircularProgress color="inherit" size={20} />
+																) : null}
+																{params.InputProps.endAdornment}
+															</>
+														),
+													}}
+												/>
+											)}
+										/>
 									</FormControl>
 								</Grid>
 								<Grid item xs={12} md={3} lg={4} xl={4}>
-									<FormControl fullWidth>
-										<InputLabel id="zone">Zone</InputLabel>
-										<Select
-											id="zone"
-											name="zone"
-											value={reportFilters.zone}
-											label="Zone"
-											onChange={handleReportFilterSelectChange}
-										>
-											<MenuItem value="">None</MenuItem>
-											<MenuItem value={10}>Ten</MenuItem>
-											<MenuItem value={20}>Twenty</MenuItem>
-											<MenuItem value={30}>Thirty</MenuItem>
-										</Select>
+									<FormControl fullWidth required>
+										<Autocomplete
+											disablePortal
+											componentName="zone"
+											options={getListItems(filterZoneData)}
+											getOptionLabel={(option) => option.name}
+											loading
+											onChange={(_, value) => {
+												handleReportFilterAutoCompleteChange("zone", value);
+											}}
+											renderInput={(params) => (
+												<TextField
+													{...params}
+													name="zone"
+													label="Zone"
+													fullWidth
+													InputProps={{
+														...params.InputProps,
+														endAdornment: (
+															<>
+																{filterZoneLoading ? (
+																	<CircularProgress color="inherit" size={20} />
+																) : null}
+																{params.InputProps.endAdornment}
+															</>
+														),
+													}}
+												/>
+											)}
+										/>
 									</FormControl>
 								</Grid>
 								<Grid item xs={12} md={3} lg={4} xl={4}>
-									<FormControl fullWidth>
-										<InputLabel id="section">Section</InputLabel>
-										<Select
-											id="section"
-											name="section"
-											value={reportFilters.section}
-											label="Section"
-											onChange={handleReportFilterSelectChange}
-										>
-											<MenuItem value="">None</MenuItem>
-											<MenuItem value={10}>Ten</MenuItem>
-											<MenuItem value={20}>Twenty</MenuItem>
-											<MenuItem value={30}>Thirty</MenuItem>
-										</Select>
+									<FormControl fullWidth required>
+										<Autocomplete
+											disablePortal
+											componentName="section"
+											options={getListItems(filterSectionData)}
+											getOptionLabel={(option) => option.name}
+											loading
+											onChange={(_, value) => {
+												handleReportFilterAutoCompleteChange("section", value);
+											}}
+											renderInput={(params) => (
+												<TextField
+													{...params}
+													name="section"
+													label="Section"
+													fullWidth
+													InputProps={{
+														...params.InputProps,
+														endAdornment: (
+															<>
+																{filterSectionLoading ? (
+																	<CircularProgress color="inherit" size={20} />
+																) : null}
+																{params.InputProps.endAdornment}
+															</>
+														),
+													}}
+												/>
+											)}
+										/>
 									</FormControl>
 								</Grid>
 
 								<Grid item xs={12} md={3} lg={4} xl={4}>
-									<FormControl fullWidth>
-										<InputLabel id="type">Type</InputLabel>
-										<Select
-											id="type"
-											name="type"
-											value={reportFilters.type}
-											label="Type"
-											onChange={handleReportFilterSelectChange}
-										>
-											<MenuItem value="">None</MenuItem>
-											<MenuItem value={10}>Ten</MenuItem>
-											<MenuItem value={20}>Twenty</MenuItem>
-											<MenuItem value={30}>Thirty</MenuItem>
-										</Select>
+									<FormControl fullWidth required>
+										<Autocomplete
+											disablePortal
+											componentName="type"
+											options={getListItems(filterTypeData)}
+											getOptionLabel={(option) => option.name}
+											loading
+											onChange={(_, value) => {
+												handleReportFilterAutoCompleteChange("type", value);
+											}}
+											renderInput={(params) => (
+												<TextField
+													{...params}
+													name="type"
+													label="Type"
+													fullWidth
+													InputProps={{
+														...params.InputProps,
+														endAdornment: (
+															<>
+																{filterTypeLoading ? (
+																	<CircularProgress color="inherit" size={20} />
+																) : null}
+																{params.InputProps.endAdornment}
+															</>
+														),
+													}}
+												/>
+											)}
+										/>
 									</FormControl>
 								</Grid>
 								<Grid item xs={12} md={3} lg={4} xl={4}>
-									<FormControl fullWidth>
-										<InputLabel id="owner">Owner</InputLabel>
-										<Select
-											id="owner"
-											name="owner"
-											value={reportFilters.owner}
-											label="Owner"
-											onChange={handleReportFilterSelectChange}
-										>
-											<MenuItem value="">None</MenuItem>
-											<MenuItem value={10}>Ten</MenuItem>
-											<MenuItem value={20}>Twenty</MenuItem>
-											<MenuItem value={30}>Thirty</MenuItem>
-										</Select>
+									<FormControl fullWidth required>
+										<Autocomplete
+											disablePortal
+											componentName="owner"
+											options={getListItems(filterOwnerData)}
+											getOptionLabel={(option) => option.name}
+											loading
+											onChange={(_, value) => {
+												handleReportFilterAutoCompleteChange("type", value);
+											}}
+											renderInput={(params) => (
+												<TextField
+													{...params}
+													name="owner"
+													label="Owner"
+													fullWidth
+													InputProps={{
+														...params.InputProps,
+														endAdornment: (
+															<>
+																{filterOwnerLoading ? (
+																	<CircularProgress color="inherit" size={20} />
+																) : null}
+																{params.InputProps.endAdornment}
+															</>
+														),
+													}}
+												/>
+											)}
+										/>
 									</FormControl>
 								</Grid>
 								<Grid item xs={12} md={3} lg={4} xl={4}>
-									<FormControl fullWidth>
-										<InputLabel id="owner">Building</InputLabel>
-										<Select
-											id="building"
-											name="building"
-											value={reportFilters.building}
-											label="Building"
-											onChange={handleReportFilterSelectChange}
-										>
-											<MenuItem value="">None</MenuItem>
-											<MenuItem value={10}>Ten</MenuItem>
-											<MenuItem value={20}>Twenty</MenuItem>
-											<MenuItem value={30}>Thirty</MenuItem>
-										</Select>
+									<FormControl fullWidth required>
+										<Autocomplete
+											disablePortal
+											componentName="building"
+											options={getListItems(filterBuildingData)}
+											getOptionLabel={(option) => option.name}
+											loading
+											onChange={(_, value) => {
+												handleReportFilterAutoCompleteChange("type", value);
+											}}
+											renderInput={(params) => (
+												<TextField
+													{...params}
+													name="building"
+													label="Building"
+													fullWidth
+													InputProps={{
+														...params.InputProps,
+														endAdornment: (
+															<>
+																{filterBuildingLoading ? (
+																	<CircularProgress color="inherit" size={20} />
+																) : null}
+																{params.InputProps.endAdornment}
+															</>
+														),
+													}}
+												/>
+											)}
+										/>
 									</FormControl>
 								</Grid>
 							</Grid>

@@ -1,3 +1,26 @@
+export type ReportProgressDetailActivity = {
+	id: number;
+	code: string;
+	name: string;
+	comments: string;
+	progress: number;
+};
+
+export type ReportFilterType = {
+	date: Date | null;
+	phase: string;
+	classification: string;
+	project: string;
+	milestone: string;
+	zone: string;
+	section: string;
+	type: string;
+	owner: string;
+	building: string;
+	showCancelledDocs: boolean;
+	sortBy: "Date" | "Building" | "Owner" | "Milestone" | "Zone";
+};
+
 export interface UserInfo {
 	Usr_Id: string;
 	Usr_Name: string;
@@ -22,13 +45,6 @@ export interface Token {
 	expiresIn: string;
 }
 
-export type ReportProgressDetailActivity = {
-	id: number;
-	code: string;
-	name: string;
-	comments: string;
-	progress: number;
-};
 export interface ReportProgressDetailInterface {
 	inspectionNumber: number;
 	inspectionDate: string;

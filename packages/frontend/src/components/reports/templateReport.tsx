@@ -1,12 +1,12 @@
 import { Grid } from "@mui/material";
-import { Options } from "./options";
-import { PageContainer } from "./utilities/pageContainer";
+import { Options } from "../options";
+import { PageContainer } from "components/utilities/pageContainer";
 
 interface ReportingInterface {
 	title: string;
 }
 
-export const Reporting = ({ title }: ReportingInterface): JSX.Element => {
+export const ReportTemplate = ({ title }: ReportingInterface): JSX.Element => {
 	return (
 		<PageContainer title={title}>
 			<Grid
