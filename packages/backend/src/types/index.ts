@@ -52,3 +52,23 @@ export interface ReportFilterItem {
 	id: number;
 	name: string;
 }
+
+export type ReportFilterType = {
+	date: Date | null;
+	phase: ReportFilter | null;
+	classification: ReportFilter | null;
+	project: ReportFilter | null;
+	milestone: ReportFilter | null;
+	zone: ReportFilter | null;
+	section: ReportFilter | null;
+	type: ReportFilter | null;
+	owner: ReportFilter | null;
+	building: ReportFilter | null;
+	showCancelledDocs: boolean;
+	// sortBy: "Date" | "Building" | "Owner" | "Milestone" | "Zone";
+};
+
+export interface ReportFilter {
+	id: string;
+	name: string;
+}

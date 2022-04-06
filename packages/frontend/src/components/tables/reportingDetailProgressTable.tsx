@@ -12,13 +12,10 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import {
-	TABLE_HEADER_REPORTING_DETAIL_PROGRESS,
-	URL_REPORTING_DETAIL_PROGRESS,
-} from "utils/constant";
-import { useAxios } from "hooks/useAxios";
-import { ReportProgressDetailInterface } from "types/interface";
-import { getToken } from "utils/storage";
+import { TABLE_HEADER_REPORTING_DETAIL_PROGRESS } from "utils/constant";
+
+import { ReportProgressDetailInterface } from "types";
+
 import { Button, CircularProgress, TablePagination, Typography } from "@mui/material";
 import TablePaginationActions from "@mui/material/TablePagination/TablePaginationActions";
 import { red } from "@mui/material/colors";

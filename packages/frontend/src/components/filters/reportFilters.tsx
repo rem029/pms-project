@@ -5,15 +5,9 @@ import {
 	Divider,
 	TextField,
 	Button,
-	FormControl,
-	MenuItem,
-	SelectChangeEvent,
 	Box,
 	FormControlLabel,
 	Checkbox,
-	FormLabel,
-	Radio,
-	RadioGroup,
 	Collapse,
 	Autocomplete,
 	CircularProgress,
@@ -23,7 +17,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { DatePicker } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { FilterAlt, RestartAlt } from "@mui/icons-material";
 import { useAxios } from "hooks/useAxios";
 import {
@@ -37,25 +31,25 @@ import {
 	URL_REPORTING_FILTER_TYPE,
 	URL_REPORTING_FILTER_ZONE,
 } from "utils/constant";
-import { ReportFilter, ReportFilterType } from "types/interface";
+import { ReportFilterType, ReportFilter } from "types";
 import { getToken } from "utils/storage";
 import { AxiosRequestConfig } from "axios";
 
-const defaultReportFilters = (): ReportFilterType =>
-	({
-		date: new Date(),
-		phase: "",
-		classification: "",
-		project: "",
-		milestone: "",
-		zone: "",
-		section: "",
-		type: "",
-		owner: "",
-		building: "",
-		showCancelledDocs: false,
-		sortBy: "Date",
-	} as ReportFilterType);
+// const defaultItem: ReportFilter = { id: "-1", name: " " };
+
+const defaultReportFilters = {
+	date: null,
+	phase: null,
+	classification: null,
+	project: null,
+	milestone: null,
+	zone: null,
+	section: null,
+	type: null,
+	owner: null,
+	building: null,
+	showCancelledDocs: false,
+};
 
 interface ReportFiltersInterface {
 	filter?: ReportFilterType;
@@ -67,9 +61,10 @@ export const ReportFilters = ({
 	onSubmit,
 }: ReportFiltersInterface): JSX.Element => {
 	const [reportFilters, setReportFilters] = useState<ReportFilterType>(
-		filter ? filter : defaultReportFilters()
+		filter ? filter : defaultReportFilters
 	);
 	const [showMore, setShowMore] = useState(false);
+	const refResetButton = useRef<HTMLButtonElement>(null);
 
 	const axiosConfigReportFilter: AxiosRequestConfig = useMemo(() => {
 		return {
@@ -128,7 +123,6 @@ export const ReportFilters = ({
 
 	const getListItems = (data?: ReportFilter[]): readonly ReportFilter[] => {
 		const items: readonly ReportFilter[] = data ? [...data] : [];
-		console.log("@getMenuItems", items);
 		return items;
 	};
 
@@ -145,15 +139,29 @@ export const ReportFilters = ({
 	): void => {
 		setReportFilters((currentReportFilters) => ({
 			...currentReportFilters,
-			[name]: value?.name,
+			[name]: value,
 		}));
 	};
 
-	const handleReportFiltersReset = (): void => {
-		setReportFilters(defaultReportFilters());
+	const handleReportFiltersReset = (event: React.FormEvent<HTMLDivElement>): void => {
+		event.preventDefault();
+
+		const clearButtons = document.getElementsByClassName(
+			"MuiAutocomplete-clearIndicator"
+		);
+
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		for (const clearButton of clearButtons as any) {
+			(clearButton as HTMLElement).click();
+		}
+
+		refResetButton.current?.focus();
+
+		setReportFilters(defaultReportFilters);
 	};
 
-	const handleReportFiltersApply = (): void => {
+	const handleReportFiltersApply = (event: React.FormEvent<HTMLDivElement>): void => {
+		event.preventDefault();
 		onSubmit && onSubmit(reportFilters);
 	};
 
@@ -175,48 +183,51 @@ export const ReportFilters = ({
 	return (
 		<LocalizationProvider dateAdapter={AdapterDateFns}>
 			<Paper sx={{ flexGrow: 1, padding: 1, mt: 0.5 }} elevation={3}>
-				<Grid container spacing={1} justifyContent="center">
-					<Grid item xs={12}>
-						<Typography
-							color="text.secondary"
-							variant="button"
-							noWrap
-							component="p"
-							align="left"
-							sx={{ display: "flex", alignItems: "center", p: 1 }}
-						>
-							<FilterAlt />
-							Filter by
-						</Typography>
-					</Grid>
-
-					<Divider sx={{ width: "99%" }} />
-
-					<Grid container item spacing={1}>
-						<Grid item xs={12} md={3} lg={4} xl={4}>
-							<DatePicker
-								disableFuture
-								label="Date"
-								value={reportFilters.date}
-								onChange={handleReportFilterDateChange}
-								openTo="day"
-								views={["year", "month", "day"]}
-								renderInput={(params) => (
-									<FormControl required fullWidth>
-										<TextField {...params} required name="date" />
-									</FormControl>
-								)}
-							/>
+				<Box
+					component="form"
+					onReset={handleReportFiltersReset}
+					onSubmit={handleReportFiltersApply}
+				>
+					<Grid container spacing={1} justifyContent="center">
+						<Grid item xs={12}>
+							<Typography
+								color="text.secondary"
+								variant="button"
+								noWrap
+								component="p"
+								align="left"
+								sx={{ display: "flex", alignItems: "center", p: 1 }}
+							>
+								<FilterAlt />
+								Filter by
+							</Typography>
 						</Grid>
 
-						<Grid item xs={12} md={3} lg={4} xl={4}>
-							<FormControl fullWidth required>
+						<Divider sx={{ width: "99%" }} />
+
+						<Grid container item spacing={1}>
+							<Grid item xs={12} md={3} lg={4} xl={4}>
+								<DatePicker
+									disableFuture
+									label="Date"
+									value={reportFilters.date}
+									onChange={handleReportFilterDateChange}
+									openTo="day"
+									views={["year", "month", "day"]}
+									renderInput={(params) => (
+										<TextField {...params} fullWidth name="date" />
+									)}
+								/>
+							</Grid>
+
+							<Grid item xs={12} md={3} lg={4} xl={4}>
 								<Autocomplete
 									disablePortal
 									componentName="phase"
 									options={getListItems(filterPhaseData)}
 									getOptionLabel={(option) => option.name}
 									loading
+									inputValue={filter?.phase?.name}
 									onChange={(_, value) => {
 										handleReportFilterAutoCompleteChange("phase", value);
 									}}
@@ -226,6 +237,7 @@ export const ReportFilters = ({
 											name="phase"
 											label="Phase"
 											fullWidth
+											required
 											InputProps={{
 												...params.InputProps,
 												endAdornment: (
@@ -240,11 +252,9 @@ export const ReportFilters = ({
 										/>
 									)}
 								/>
-							</FormControl>
-						</Grid>
+							</Grid>
 
-						<Grid item xs={12} md={3} lg={4} xl={4}>
-							<FormControl fullWidth required>
+							<Grid item xs={12} md={3} lg={4} xl={4}>
 								<Autocomplete
 									disablePortal
 									componentName="classification"
@@ -260,6 +270,7 @@ export const ReportFilters = ({
 											name="classification"
 											label="Classification"
 											fullWidth
+											required
 											InputProps={{
 												...params.InputProps,
 												endAdornment: (
@@ -274,29 +285,30 @@ export const ReportFilters = ({
 										/>
 									)}
 								/>
-							</FormControl>
+							</Grid>
+
+							<Grid item xs={12}>
+								<Button
+									fullWidth
+									size="small"
+									endIcon={showMore ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+									onClick={handleShowMoreChange}
+								>
+									Show more filters
+								</Button>
+							</Grid>
 						</Grid>
+
+						<Box component="div" sx={{ p: 1 }} />
+						<Divider sx={{ width: "99%" }} />
 
 						<Grid item xs={12}>
-							<Button
-								fullWidth
-								size="small"
-								endIcon={showMore ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-								onClick={handleShowMoreChange}
+							<Collapse
+								in={showMore}
+								sx={{ p: 1, display: "flex", alignItems: "center" }}
 							>
-								Show more filters
-							</Button>
-						</Grid>
-					</Grid>
-
-					<Box component="div" sx={{ p: 1 }} />
-					<Divider sx={{ width: "99%" }} />
-
-					<Grid item xs={12}>
-						<Collapse in={showMore} sx={{ p: 1, display: "flex", alignItems: "center" }}>
-							<Grid container item spacing={1}>
-								<Grid item xs={12} md={3} lg={4} xl={4}>
-									<FormControl fullWidth required>
+								<Grid container item spacing={1}>
+									<Grid item xs={12} md={3} lg={4} xl={4}>
 										<Autocomplete
 											disablePortal
 											componentName="project"
@@ -304,7 +316,7 @@ export const ReportFilters = ({
 											getOptionLabel={(option) => option.name}
 											loading
 											onChange={(_, value) => {
-												handleReportFilterAutoCompleteChange("classification", value);
+												handleReportFilterAutoCompleteChange("project", value);
 											}}
 											renderInput={(params) => (
 												<TextField
@@ -326,11 +338,9 @@ export const ReportFilters = ({
 												/>
 											)}
 										/>
-									</FormControl>
-								</Grid>
+									</Grid>
 
-								<Grid item xs={12} md={3} lg={4} xl={4}>
-									<FormControl fullWidth required>
+									<Grid item xs={12} md={3} lg={4} xl={4}>
 										<Autocomplete
 											disablePortal
 											componentName="milestone"
@@ -360,10 +370,8 @@ export const ReportFilters = ({
 												/>
 											)}
 										/>
-									</FormControl>
-								</Grid>
-								<Grid item xs={12} md={3} lg={4} xl={4}>
-									<FormControl fullWidth required>
+									</Grid>
+									<Grid item xs={12} md={3} lg={4} xl={4}>
 										<Autocomplete
 											disablePortal
 											componentName="zone"
@@ -393,10 +401,8 @@ export const ReportFilters = ({
 												/>
 											)}
 										/>
-									</FormControl>
-								</Grid>
-								<Grid item xs={12} md={3} lg={4} xl={4}>
-									<FormControl fullWidth required>
+									</Grid>
+									<Grid item xs={12} md={3} lg={4} xl={4}>
 										<Autocomplete
 											disablePortal
 											componentName="section"
@@ -426,11 +432,9 @@ export const ReportFilters = ({
 												/>
 											)}
 										/>
-									</FormControl>
-								</Grid>
+									</Grid>
 
-								<Grid item xs={12} md={3} lg={4} xl={4}>
-									<FormControl fullWidth required>
+									<Grid item xs={12} md={3} lg={4} xl={4}>
 										<Autocomplete
 											disablePortal
 											componentName="type"
@@ -460,10 +464,8 @@ export const ReportFilters = ({
 												/>
 											)}
 										/>
-									</FormControl>
-								</Grid>
-								<Grid item xs={12} md={3} lg={4} xl={4}>
-									<FormControl fullWidth required>
+									</Grid>
+									<Grid item xs={12} md={3} lg={4} xl={4}>
 										<Autocomplete
 											disablePortal
 											componentName="owner"
@@ -471,7 +473,7 @@ export const ReportFilters = ({
 											getOptionLabel={(option) => option.name}
 											loading
 											onChange={(_, value) => {
-												handleReportFilterAutoCompleteChange("type", value);
+												handleReportFilterAutoCompleteChange("owner", value);
 											}}
 											renderInput={(params) => (
 												<TextField
@@ -493,10 +495,8 @@ export const ReportFilters = ({
 												/>
 											)}
 										/>
-									</FormControl>
-								</Grid>
-								<Grid item xs={12} md={3} lg={4} xl={4}>
-									<FormControl fullWidth required>
+									</Grid>
+									<Grid item xs={12} md={3} lg={4} xl={4}>
 										<Autocomplete
 											disablePortal
 											componentName="building"
@@ -504,7 +504,7 @@ export const ReportFilters = ({
 											getOptionLabel={(option) => option.name}
 											loading
 											onChange={(_, value) => {
-												handleReportFilterAutoCompleteChange("type", value);
+												handleReportFilterAutoCompleteChange("building", value);
 											}}
 											renderInput={(params) => (
 												<TextField
@@ -526,74 +526,79 @@ export const ReportFilters = ({
 												/>
 											)}
 										/>
-									</FormControl>
+									</Grid>
 								</Grid>
-							</Grid>
 
-							<Box component="div" sx={{ p: 1 }} />
-							<Divider sx={{ width: "99%" }} />
-						</Collapse>
-					</Grid>
+								<Box component="div" sx={{ p: 1 }} />
+								<Divider sx={{ width: "99%" }} />
+							</Collapse>
+						</Grid>
 
-					<Grid item xs={6} md={12}>
-						<FormControlLabel
-							control={
-								<Checkbox
-									onChange={handleReportFilterCheckChange}
-									checked={reportFilters.showCancelledDocs}
-								/>
-							}
-							label="Show cancelled documents?"
-						/>
-					</Grid>
+						<Grid item xs={6} md={12}>
+							<FormControlLabel
+								control={
+									<Checkbox
+										onChange={handleReportFilterCheckChange}
+										checked={reportFilters.showCancelledDocs}
+									/>
+								}
+								label="Show cancelled documents?"
+							/>
+						</Grid>
 
-					<Grid item xs={6} md={12}>
-						<FormControl>
-							<FormLabel id="sortBy">Sort By</FormLabel>
-							<RadioGroup
-								row
-								defaultValue={reportFilters.sortBy}
-								name="radio-buttons-group"
+						{/* <Grid item xs={6} md={12}>
+							<FormControl>
+								<FormLabel id="sortBy">Sort By</FormLabel>
+								<RadioGroup
+									row
+									defaultValue={reportFilters.sortBy}
+									name="radio-buttons-group"
+								>
+									<FormControlLabel value="Date" control={<Radio />} label="Date" />
+									<FormControlLabel
+										value="Building"
+										control={<Radio />}
+										label="Building"
+									/>
+									<FormControlLabel value="Owner" control={<Radio />} label="Owner" />
+									<FormControlLabel
+										value="Milestone"
+										control={<Radio />}
+										label="Milestone"
+									/>
+									<FormControlLabel value="Zone" control={<Radio />} label="Zone" />
+								</RadioGroup>
+							</FormControl>
+						</Grid> */}
+
+						<Grid item xs={12} md={6} lg={6} xl={6} justifyContent="space-evenly">
+							<Button
+								variant="contained"
+								size="large"
+								fullWidth
+								sx={{ p: 1 }}
+								endIcon={<FilterAlt />}
+								type="submit"
 							>
-								<FormControlLabel value="Date" control={<Radio />} label="Date" />
-								<FormControlLabel value="Building" control={<Radio />} label="Building" />
-								<FormControlLabel value="Owner" control={<Radio />} label="Owner" />
-								<FormControlLabel
-									value="Milestone"
-									control={<Radio />}
-									label="Milestone"
-								/>
-								<FormControlLabel value="Zone" control={<Radio />} label="Zone" />
-							</RadioGroup>
-						</FormControl>
-					</Grid>
+								Apply
+							</Button>
+						</Grid>
 
-					<Grid item xs={12} md={6} lg={6} xl={6} justifyContent="space-evenly">
-						<Button
-							variant="contained"
-							size="large"
-							fullWidth
-							sx={{ p: 1 }}
-							onClick={handleReportFiltersApply}
-							endIcon={<FilterAlt />}
-						>
-							Apply
-						</Button>
+						<Grid item xs={12} md={6} lg={6} xl={6} justifyContent="space-evenly">
+							<Button
+								ref={refResetButton}
+								variant="outlined"
+								size="large"
+								fullWidth
+								sx={{ p: 1 }}
+								endIcon={<RestartAlt />}
+								type="reset"
+							>
+								Reset Filters
+							</Button>
+						</Grid>
 					</Grid>
-
-					<Grid item xs={12} md={6} lg={6} xl={6} justifyContent="space-evenly">
-						<Button
-							variant="outlined"
-							size="large"
-							fullWidth
-							sx={{ p: 1 }}
-							onClick={handleReportFiltersReset}
-							endIcon={<RestartAlt />}
-						>
-							Reset Filters
-						</Button>
-					</Grid>
-				</Grid>
+				</Box>
 			</Paper>
 		</LocalizationProvider>
 	);

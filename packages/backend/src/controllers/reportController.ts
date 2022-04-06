@@ -1,9 +1,15 @@
-import { Response } from "express";
+import { query, Response } from "express";
 import { knexMySQL } from "services/database";
 import { logger } from "utilities/logger";
 import { handleServerResponse, handleServerError } from "helpers/serverResponse";
 import { REPORT_FILTER } from "utilities/constants";
-import { ReportFilterItem, ReportProgressDetailInterface, RequestAuthInterface } from "types";
+import {
+	ReportFilter,
+	ReportFilterItem,
+	ReportFilterType,
+	ReportProgressDetailInterface,
+	RequestAuthInterface,
+} from "types";
 
 const formatReportProgressDetailController = (
 	response: ReportProgressDetailInterface[]
@@ -17,11 +23,83 @@ const formatReportProgressDetailController = (
 	return returnArray;
 };
 
+const defaultReportFilters: ReportFilterType = {
+	date: null,
+	phase: null,
+	classification: null,
+	project: null,
+	milestone: null,
+	zone: null,
+	section: null,
+	type: null,
+	owner: null,
+	building: null,
+	showCancelledDocs: false,
+};
+
+const getReportFilter = (filters: ReportFilterType): { queryFilter: string; queryBindings: any[] } => {
+	const queryFilter = `
+				WHERE
+					-- date filter
+					${filters.date ? "DATE(InsH_Dt) = Date(?)" : "TRUE"}
+				AND
+					-- phase filter
+					${filters.phase ? "pmsysdb.phasem.Phs_Cd = ?" : "TRUE"}
+				AND
+					-- classification filter
+					${filters.classification ? "pmsysdb.classm.Cls_Cd = ?" : "TRUE"}
+				AND
+					-- project filter
+					${filters.project ? "pmsysdb.buildm.Prj_Cd = ?" : "TRUE"}
+				AND
+					-- milestone filter
+					${filters.milestone ? "pmsysdb.buildm.Mst_Cd = ?" : "TRUE"}
+
+				AND
+					-- type filter
+					${filters.building ? "pmsysdb.buildm.Typ_Cd = ?" : "TRUE"}
+				AND
+					-- ownerName filter
+					${filters.owner ? "pmsysdb.ownm.Own_Cd = ?" : "TRUE"}
+				AND
+					-- building filter
+					${filters.building ? "pmsysdb.buildm.Bld_Cd = ?" : "TRUE"}
+				AND
+					InsH_Cancelled = ?
+	`;
+
+	const queryBindings: any[] = [];
+
+	for (const keys in filters) {
+		const keyItem = keys;
+		const currentItem = filters[keyItem as keyof ReportFilterType];
+
+		if (currentItem !== null) {
+			if (keyItem !== "date" && keyItem !== "showCancelledDocs") {
+				queryBindings.push((currentItem as ReportFilter).id);
+			} else {
+				queryBindings.push(currentItem);
+			}
+		}
+	}
+
+	return {
+		queryFilter: queryFilter,
+		queryBindings: queryBindings,
+	};
+};
+
 export const getReportProgressDetailController = async (req: RequestAuthInterface, res: Response): Promise<void> => {
 	try {
-		// const { userId, password } = req.user ? req.user : { userId: "", password: "" };
-
 		logger.info("@reportProgressDetailController");
+		const filters = req.query.filter
+			? (JSON.parse(req.query.filter as string) as ReportFilterType)
+			: defaultReportFilters;
+		const { queryFilter, queryBindings } = getReportFilter(filters);
+
+		console.log("@reportProgressDetailController filters", filters);
+		console.log("@reportProgressDetailController queryFilter", queryFilter);
+		console.log("@reportProgressDetailController queryBindings", queryBindings);
 
 		const results = await knexMySQL.raw(
 			`
@@ -73,14 +151,24 @@ export const getReportProgressDetailController = async (req: RequestAuthInterfac
 				LEFT JOIN
 					pmsysdb.consysm
 				ON  
-					pmsysdb.consysm.Cns_Cd = pmsysdb.buildm.Cns_Cd    
+					pmsysdb.consysm.Cns_Cd = pmsysdb.buildm.Cns_Cd
+				${queryFilter}
 				GROUP BY
-					InsH_No;
-			`
+					InsH_No
+				ORDER BY
+					InsH_Dt DESC;
+			`,
+			queryBindings
 		);
+		// ********TBD ZONE FILTER
+		// ********TBD SECTION FILTER
+
+		console.log("@reportProgressDetailController filters", filters);
+		console.log("@reportProgressDetailController getReportFilter", getReportFilter(filters));
 
 		const response = formatReportProgressDetailController(results[0] as ReportProgressDetailInterface[]);
 
+		console.log("filters", filters);
 		handleServerResponse(res, 200, {
 			success: true,
 			message: "Get report progress detail success",

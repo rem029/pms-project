@@ -1,7 +1,7 @@
 export const dateHelperFormat = (date: Date): string => {
 	const day =
-		date.getDate().toString().length > 1
-			? date.getDate().toString()
+		(date.getDate() + 1).toLocaleString().length > 1
+			? date.getDate().toLocaleString()
 			: `0${date.getDate()}`;
 
 	const month = date.getMonth();

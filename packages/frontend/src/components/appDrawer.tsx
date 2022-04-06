@@ -23,7 +23,7 @@ import {
 	StarBorder,
 } from "@mui/icons-material";
 import { useAxios } from "hooks/useAxios";
-import { UserInfo } from "types/interface";
+import { UserInfo } from "types";
 import { useNavigate } from "react-router-dom";
 import { URL_USER } from "utils/constant";
 import { getToken } from "utils/storage";

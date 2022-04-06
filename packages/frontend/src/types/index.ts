@@ -8,19 +8,23 @@ export type ReportProgressDetailActivity = {
 
 export type ReportFilterType = {
 	date: Date | null;
-	phase: string;
-	classification: string;
-	project: string;
-	milestone: string;
-	zone: string;
-	section: string;
-	type: string;
-	owner: string;
-	building: string;
+	phase: ReportFilter | null;
+	classification: ReportFilter | null;
+	project: ReportFilter | null;
+	milestone: ReportFilter | null;
+	zone: ReportFilter | null;
+	section: ReportFilter | null;
+	type: ReportFilter | null;
+	owner: ReportFilter | null;
+	building: ReportFilter | null;
 	showCancelledDocs: boolean;
-	sortBy: "Date" | "Building" | "Owner" | "Milestone" | "Zone";
+	// sortBy: "Date" | "Building" | "Owner" | "Milestone" | "Zone";
 };
 
+export interface ReportFilter {
+	id: string;
+	name: string;
+}
 export interface UserInfo {
 	Usr_Id: string;
 	Usr_Name: string;
@@ -33,11 +37,6 @@ export interface UserInfo {
 	IsEdit: number;
 	IsCancel: number;
 	IsDelete: number;
-}
-
-export interface ReportFilter {
-	id: string;
-	name: string;
 }
 
 export interface Token {

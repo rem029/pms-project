@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 
 import { useAxios } from "../hooks/useAxios";
-import { Token } from "types/interface";
+import { Token } from "types";
 import { saveToken } from "utils/storage";
 import { URL_LOGIN } from "utils/constant";
 

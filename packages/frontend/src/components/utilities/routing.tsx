@@ -15,7 +15,7 @@ import { StoreProvider } from "store";
 export const Routing = (): JSX.Element => {
 	return (
 		<BrowserRouter>
-			<StoreProvider maxNotification={6}>
+			<StoreProvider maxNotification={3}>
 				<Routes>
 					<Route path="/login" element={<Login />} />
 					<Route

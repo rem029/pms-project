@@ -61,6 +61,40 @@ ON
 LEFT JOIN
     pmsysdb.consysm
 ON  
-    pmsysdb.consysm.Cns_Cd = pmsysdb.buildm.Cns_Cd    
+    pmsysdb.consysm.Cns_Cd = pmsysdb.buildm.Cns_Cd   
+WHERE
+    -- date filter
+    DATE(InsH_Dt) = DATE('2022-03-03T12:00:00.000Z')
+AND
+    -- phase filter
+    pmsysdb.phasem.Phs_Cd = '06C' 
+AND
+    -- classification filter
+    pmsysdb.classm.Cls_Cd = 'TP'
+AND
+    -- project filter
+    pmsysdb.buildm.Prj_Cd = 'B01020'
+AND
+    -- milestone filter
+    pmsysdb.buildm.Mst_Cd = 'M06'
+
+AND
+    -- type filter
+    -- pmsysdb.buildm.Typ_Cd = 'OB'
+    TRUE
+AND
+    -- ownerName filter
+    -- pmsysdb.ownm.Own_Cd = 'O042'
+    TRUE
+AND
+    -- building filter
+    pmsysdb.buildm.Bld_Cd = '1301'
+AND
+    InsH_Cancelled = FALSE
+
+-- AND zone filter TBD
+-- AND section filter TBD
 GROUP BY
-    InsH_No;
+    InsH_No
+ORDER BY
+    InsH_Dt DESC;

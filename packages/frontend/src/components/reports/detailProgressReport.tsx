@@ -6,7 +6,7 @@ import { ReportFilters } from "../filters/reportFilters";
 
 import { URL_REPORTING_DETAIL_PROGRESS } from "utils/constant";
 import { useAxios } from "hooks/useAxios";
-import { ReportFilterType, ReportProgressDetailInterface } from "types/interface";
+import { ReportFilterType, ReportProgressDetailInterface } from "types";
 import { getToken } from "utils/storage";
 
 export const DetailProgressReport = (): JSX.Element => {
@@ -20,7 +20,7 @@ export const DetailProgressReport = (): JSX.Element => {
 	});
 
 	const handleOnSubmit = (filter: ReportFilterType): void => {
-		fetch();
+		fetch({ params: { filter: filter } });
 	};
 
 	return (
