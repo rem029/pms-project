@@ -1,7 +1,7 @@
 import * as React from "react";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import { styled, Toolbar, Typography, IconButton, Box } from "@mui/material";
-import { RadioButtonUnchecked, MenuOutlined } from "@mui/icons-material";
+import { MenuOutlined } from "@mui/icons-material";
 import logo from "assets/logo-qpm-large.jpeg";
 
 interface AppBarProps extends MuiAppBarProps {
@@ -33,7 +33,12 @@ export const AppHeader = ({ open, setOpen, width }: AppBarProps): JSX.Element =>
 	};
 
 	return (
-		<AppBar position="fixed" open={open} width={width}>
+		<AppBar
+			position="fixed"
+			open={open}
+			width={width}
+			sx={{ backgroundColor: "primary.contrastText", color: "primary.main" }}
+		>
 			<Toolbar>
 				<IconButton
 					color="inherit"
@@ -45,10 +50,10 @@ export const AppHeader = ({ open, setOpen, width }: AppBarProps): JSX.Element =>
 					<MenuOutlined />
 				</IconButton>
 
-				<Typography color="white" variant="body1" noWrap sx={{ width: "95%" }}>
+				<Typography variant="body1" noWrap sx={{ width: "95%" }}>
 					Project Management System
 				</Typography>
-				<Box component="img" src={logo} sx={{ width: 56, borderRadius: 0.5 }} />
+				<Box component="img" src={logo} sx={{ width: 72 }} />
 			</Toolbar>
 		</AppBar>
 	);

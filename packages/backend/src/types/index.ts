@@ -33,7 +33,7 @@ type ReportProgressDetailActivity = {
 };
 export interface ReportProgressDetailInterface {
 	inspectionNumber: number;
-	inspectionDate: string;
+	inspectionDate: Date;
 	bldgCode: string;
 	ownerName: string;
 	typeCode: string;

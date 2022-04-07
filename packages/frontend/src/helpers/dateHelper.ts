@@ -1,14 +1,15 @@
 export const dateHelperFormat = (date: Date): string => {
 	const day =
-		(date.getDate() + 1).toLocaleString().length > 1
+		date.getDate().toLocaleString().length > 1
 			? date.getDate().toLocaleString()
 			: `0${date.getDate()}`;
 
-	const month = date.getMonth();
-
-	return `${day}-${
+	const month = date.getMonth() + 1;
+	const returnValue = `${day}-${
 		month.toString().length > 1 ? month : "0" + month
 	}-${date.getFullYear()}`;
+
+	return returnValue;
 };
 
 export const dateHelperFormatProper = (date: Date): string => {

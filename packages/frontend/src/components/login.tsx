@@ -15,6 +15,7 @@ import { useAxios } from "../hooks/useAxios";
 import { Token } from "types";
 import { saveToken } from "utils/storage";
 import { URL_LOGIN } from "utils/constant";
+import logo from "assets/logo-qpm-large.jpeg";
 
 // ADD SHOW PASSWORD TO TEXT
 export const Login = (): JSX.Element => {
@@ -71,12 +72,28 @@ export const Login = (): JSX.Element => {
 					alignItems: "center",
 				}}
 			>
-				<Grid container alignItems="center" justifyContent="center" spacing={1}>
+				<Grid
+					container
+					alignItems="center"
+					justifyContent="center"
+					spacing={2}
+					direction="column"
+				>
+					<Grid item xs={12}>
+						<Box
+							component="img"
+							src={logo}
+							sx={{ width: "100%", height: "auto", m: "auto" }}
+							alignSelf="center"
+						/>
+					</Grid>
+
 					<Grid item xs={12}>
 						<Typography variant="h5" align="center" color="primary">
 							Project Management System
 						</Typography>
 					</Grid>
+
 					<Grid item xs={12}>
 						<Typography variant="h6" align="center">
 							Login Page

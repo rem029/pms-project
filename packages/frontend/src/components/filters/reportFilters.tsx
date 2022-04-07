@@ -223,7 +223,6 @@ export const ReportFilters = ({
 							<Grid item xs={12} md={3} lg={4} xl={4}>
 								<Autocomplete
 									disablePortal
-									componentName="phase"
 									options={getListItems(filterPhaseData)}
 									getOptionLabel={(option) => option.name}
 									loading
@@ -237,7 +236,6 @@ export const ReportFilters = ({
 											name="phase"
 											label="Phase"
 											fullWidth
-											required
 											InputProps={{
 												...params.InputProps,
 												endAdornment: (
@@ -257,7 +255,6 @@ export const ReportFilters = ({
 							<Grid item xs={12} md={3} lg={4} xl={4}>
 								<Autocomplete
 									disablePortal
-									componentName="classification"
 									options={getListItems(filterClassificationData)}
 									getOptionLabel={(option) => option.name}
 									loading
@@ -270,7 +267,6 @@ export const ReportFilters = ({
 											name="classification"
 											label="Classification"
 											fullWidth
-											required
 											InputProps={{
 												...params.InputProps,
 												endAdornment: (
@@ -311,7 +307,6 @@ export const ReportFilters = ({
 									<Grid item xs={12} md={3} lg={4} xl={4}>
 										<Autocomplete
 											disablePortal
-											componentName="project"
 											options={getListItems(filterProjectData)}
 											getOptionLabel={(option) => option.name}
 											loading
@@ -343,7 +338,6 @@ export const ReportFilters = ({
 									<Grid item xs={12} md={3} lg={4} xl={4}>
 										<Autocomplete
 											disablePortal
-											componentName="milestone"
 											options={getListItems(filterMilestoneData)}
 											getOptionLabel={(option) => option.name}
 											loading
@@ -374,7 +368,6 @@ export const ReportFilters = ({
 									<Grid item xs={12} md={3} lg={4} xl={4}>
 										<Autocomplete
 											disablePortal
-											componentName="zone"
 											options={getListItems(filterZoneData)}
 											getOptionLabel={(option) => option.name}
 											loading
@@ -405,7 +398,6 @@ export const ReportFilters = ({
 									<Grid item xs={12} md={3} lg={4} xl={4}>
 										<Autocomplete
 											disablePortal
-											componentName="section"
 											options={getListItems(filterSectionData)}
 											getOptionLabel={(option) => option.name}
 											loading
@@ -437,7 +429,6 @@ export const ReportFilters = ({
 									<Grid item xs={12} md={3} lg={4} xl={4}>
 										<Autocomplete
 											disablePortal
-											componentName="type"
 											options={getListItems(filterTypeData)}
 											getOptionLabel={(option) => option.name}
 											loading
@@ -468,7 +459,6 @@ export const ReportFilters = ({
 									<Grid item xs={12} md={3} lg={4} xl={4}>
 										<Autocomplete
 											disablePortal
-											componentName="owner"
 											options={getListItems(filterOwnerData)}
 											getOptionLabel={(option) => option.name}
 											loading
@@ -499,7 +489,6 @@ export const ReportFilters = ({
 									<Grid item xs={12} md={3} lg={4} xl={4}>
 										<Autocomplete
 											disablePortal
-											componentName="building"
 											options={getListItems(filterBuildingData)}
 											getOptionLabel={(option) => option.name}
 											loading
@@ -534,7 +523,7 @@ export const ReportFilters = ({
 							</Collapse>
 						</Grid>
 
-						<Grid item xs={6} md={12}>
+						<Grid item xs={12}>
 							<FormControlLabel
 								control={
 									<Checkbox
