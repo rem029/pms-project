@@ -15,7 +15,7 @@
 
 SELECT 
     InsH_No as inspectionNumber,
-    InsH_Dt as inspectionDate,
+    InsH_Dt as inspectionDate,     
     InsH_Bld as bldgCode,
     pmsysdb.ownm.Own_Name as ownerName,
     pmsysdb.buildm.Typ_Cd as typeCode,
@@ -65,32 +65,8 @@ ON
 WHERE
     -- date filter
     DATE(InsH_Dt) = DATE('2022-03-03T12:00:00.000Z')
-AND
-    -- phase filter
-    pmsysdb.phasem.Phs_Cd = '06C' 
-AND
-    -- classification filter
-    pmsysdb.classm.Cls_Cd = 'TP'
-AND
-    -- project filter
-    pmsysdb.buildm.Prj_Cd = 'B01020'
-AND
-    -- milestone filter
-    pmsysdb.buildm.Mst_Cd = 'M06'
-
-AND
-    -- type filter
-    -- pmsysdb.buildm.Typ_Cd = 'OB'
-    TRUE
-AND
-    -- ownerName filter
-    -- pmsysdb.ownm.Own_Cd = 'O042'
-    TRUE
-AND
-    -- building filter
-    pmsysdb.buildm.Bld_Cd = '1301'
-AND
-    InsH_Cancelled = FALSE
+AND 
+    InsH_No = 184
 
 -- AND zone filter TBD
 -- AND section filter TBD

@@ -1,6 +1,6 @@
-import { Divider, Grid, Paper, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { LineChart, BarChart, HistogramChart, ProgressCards } from "components";
-import { Options } from "./options";
+
 import { PageContainer } from "./utilities/pageContainer";
 
 export const Dashboard = (): JSX.Element => {
@@ -13,8 +13,6 @@ export const Dashboard = (): JSX.Element => {
 				sx={{ p: 1 }}
 				flexDirection="column"
 			>
-				<Options />
-
 				<Grid container spacing={1} justifyContent="center" sx={{ pt: 1 }}>
 					<Grid item xs={12} md={12} xl={3} lg={3}>
 						<ProgressCards theme="primary" />

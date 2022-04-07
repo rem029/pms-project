@@ -1,4 +1,5 @@
-import { query, Response } from "express";
+import { Response } from "express";
+import moment from "moment-timezone";
 import { knexMySQL } from "services/database";
 import { logger } from "utilities/logger";
 import { handleServerResponse, handleServerError } from "helpers/serverResponse";
@@ -105,7 +106,7 @@ export const getReportProgressDetailController = async (req: RequestAuthInterfac
 			`
 				SELECT 
 					InsH_No as inspectionNumber,
-					InsH_Dt as inspectionDate,
+					InsH_Dt as inspectionDate,   
 					InsH_Bld as bldgCode,
 					pmsysdb.ownm.Own_Name as ownerName,
 					pmsysdb.buildm.Typ_Cd as typeCode,
@@ -168,7 +169,8 @@ export const getReportProgressDetailController = async (req: RequestAuthInterfac
 
 		const response = formatReportProgressDetailController(results[0] as ReportProgressDetailInterface[]);
 
-		console.log("filters", filters);
+		console.log("response", response);
+
 		handleServerResponse(res, 200, {
 			success: true,
 			message: "Get report progress detail success",

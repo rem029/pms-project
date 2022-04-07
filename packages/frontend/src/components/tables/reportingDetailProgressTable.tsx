@@ -17,7 +17,6 @@ import { TABLE_HEADER_REPORTING_DETAIL_PROGRESS } from "utils/constant";
 import { ReportProgressDetailInterface } from "types";
 
 import { Button, CircularProgress, TablePagination, Typography } from "@mui/material";
-import TablePaginationActions from "@mui/material/TablePagination/TablePaginationActions";
 import { red } from "@mui/material/colors";
 
 import { ReportingDetailProgressActivityTable } from "./reportingDetailProgressActivityTable";
@@ -25,6 +24,7 @@ import { getDocumentCSS } from "helpers/documentCSSHelper";
 import { dateHelperFormat } from "helpers/dateHelper";
 import { Preview } from "@mui/icons-material";
 import { ReportingPrintPreviewModal } from "components/utilities/reportingPrintPreviewModal";
+import { TablePaginationActions } from "components/utilities/tablePaginationActions";
 
 type TableSortBy =
 	| "inspectionNumber"
@@ -154,7 +154,7 @@ export const ReportingDetailProgressTable = ({
 			)}
 
 			{!loading && (
-				<Paper>
+				<Paper elevation={3}>
 					<TableContainer
 						ref={tableRef}
 						sx={{
@@ -207,6 +207,7 @@ export const ReportingDetailProgressTable = ({
 											handleHeaderSort("ownerName");
 										}}
 										sortDirection={sortBy === "ownerName" ? orderBy : false}
+										sx={{ minWidth: 136 }}
 									>
 										{TABLE_HEADER_REPORTING_DETAIL_PROGRESS.Own}
 									</TableCell>
@@ -270,6 +271,7 @@ export const ReportingDetailProgressTable = ({
 					</TableContainer>
 
 					<TablePagination
+						component="div"
 						labelRowsPerPage="Item(s) shown:"
 						rowsPerPageOptions={[10, 25, 50]}
 						count={reportSorted?.length || 0}

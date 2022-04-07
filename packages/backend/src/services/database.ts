@@ -11,7 +11,7 @@ const defaultConnectionString = {
 
 export const knexMySQL = knex({
 	client: "mysql",
-	connection: defaultConnectionString,
+	connection: { ...defaultConnectionString, timezone: "utc" },
 	debug: true,
 	log: {
 		warn(message) {
@@ -24,6 +24,7 @@ export const knexMySQL = knex({
 			logger.info(message);
 		},
 	},
+
 	pool: {
 		min: 2,
 		max: 6,
