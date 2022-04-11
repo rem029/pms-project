@@ -10,7 +10,7 @@ import { ReportFilterType, ReportProgressDetailInterface } from "types";
 import { getToken } from "utils/storage";
 
 export const DetailProgressReport = (): JSX.Element => {
-	const { data, loading, success, message, fetch } = useAxios<
+	const { data, loading, success, message, fetch, fetchCancel } = useAxios<
 		ReportProgressDetailInterface[]
 	>(URL_REPORTING_DETAIL_PROGRESS, {
 		method: "get",
@@ -20,6 +20,7 @@ export const DetailProgressReport = (): JSX.Element => {
 	});
 
 	const handleOnSubmit = (filter: ReportFilterType): void => {
+		fetchCancel();
 		fetch({ params: { filter: filter } });
 	};
 
@@ -32,7 +33,7 @@ export const DetailProgressReport = (): JSX.Element => {
 				sx={{ p: 1 }}
 				flexDirection="column"
 			>
-				<ReportFilters onSubmit={handleOnSubmit} />
+				<ReportFilters onSubmit={handleOnSubmit} disableButtonApply={loading} />
 
 				<Grid container spacing={1} justifyContent="center" padding={0.5}>
 					<Grid item xs={12} sx={{ width: "100%", overflowX: "auto" }}>

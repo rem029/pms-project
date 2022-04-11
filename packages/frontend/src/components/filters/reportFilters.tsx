@@ -54,11 +54,13 @@ const defaultReportFilters = {
 interface ReportFiltersInterface {
 	filter?: ReportFilterType;
 	onSubmit?: (filter: ReportFilterType) => void;
+	disableButtonApply?: boolean;
 }
 
 export const ReportFilters = ({
 	filter,
 	onSubmit,
+	disableButtonApply,
 }: ReportFiltersInterface): JSX.Element => {
 	const [reportFilters, setReportFilters] = useState<ReportFilterType>(
 		filter ? filter : defaultReportFilters
@@ -564,6 +566,7 @@ export const ReportFilters = ({
 								sx={{ p: 1 }}
 								endIcon={<FilterAlt />}
 								type="submit"
+								disabled={disableButtonApply}
 							>
 								Apply
 							</Button>

@@ -154,7 +154,7 @@ export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element
 					</ListItemIcon>
 					<ListItemText>
 						<Link sx={{ textDecoration: "none", color: colorLabel }}>
-							<Typography variant="subtitle1">Dashboard</Typography>
+							<Typography variant="body1">Dashboard</Typography>
 						</Link>
 					</ListItemText>
 				</ListItem>
@@ -169,7 +169,7 @@ export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element
 					</ListItemIcon>
 					<ListItemText>
 						<Link sx={{ textDecoration: "none", color: colorLabel }}>
-							<Typography variant="subtitle1">Projects (WIP)</Typography>
+							<Typography variant="body1">Projects (WIP)</Typography>
 						</Link>
 					</ListItemText>
 				</ListItem>
@@ -184,7 +184,7 @@ export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element
 					</ListItemIcon>
 					<ListItemText>
 						<Link sx={{ textDecoration: "none", color: colorLabel }}>
-							<Typography variant="subtitle1">Masters (WIP)</Typography>
+							<Typography variant="body1">Masters (WIP)</Typography>
 						</Link>
 					</ListItemText>
 				</ListItem>
@@ -194,7 +194,7 @@ export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element
 					</ListItemIcon>
 					<ListItemText>
 						<Link sx={{ textDecoration: "none", color: colorLabel }}>
-							<Typography variant="subtitle1">Reporting</Typography>
+							<Typography variant="body1">Reporting</Typography>
 						</Link>
 					</ListItemText>
 					{subMenuOpenReporting ? <ExpandLess /> : <ExpandMore />}
@@ -213,7 +213,7 @@ export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element
 										<TableRowsOutlined htmlColor={colorIcon} fontSize="small" />
 									</ListItemIcon>
 									<ListItemText
-										primary={<Typography variant="subtitle2">{item.label}</Typography>}
+										primary={<Typography variant="body2">{item.label}</Typography>}
 									/>
 								</ListItemButton>
 							)

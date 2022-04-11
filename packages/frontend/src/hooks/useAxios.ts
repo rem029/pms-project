@@ -45,7 +45,7 @@ export const useAxios = <T>(
 	};
 
 	const fetchCancel = (): void => {
-		axiosController?.abort();
+		if (axiosController) axiosController.abort();
 	};
 
 	const fetch = (config?: AxiosRequestConfig): void => {
@@ -67,8 +67,6 @@ export const useAxios = <T>(
 				setData(response.data.data);
 				setMessage(response.data.message);
 				setSuccess(response.data.success);
-
-				
 			})
 			.catch((error: AxiosError) => {
 				if (error) {
