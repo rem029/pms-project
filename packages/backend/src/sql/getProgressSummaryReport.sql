@@ -1,18 +1,3 @@
--- INSPECTION NO.
--- INSPECTION DATE
--- BLDG CODE buildm
--- OWNER NAME  ownm
--- TYPE CODE buildm
--- CONSTRUCTION METHOD CODE buildm
--- MILESTONE CODE buildm
--- UNITS buildm
--- MODULES buildm
--- PHASE NAME phasem
--- CLASSIFICATION NAME classm
--- pmsysdb.insentryh.Prj_Cd as projectCode, projm
--- pmsysdb.insentryh.Phs_Cd as phaseCode phasem,
--- pmsysdb.insentryh.Cls_Cd as classificationCode classm,
-
 SELECT 
     InsH_No as inspectionNumber,
     InsH_Dt as inspectionDate,   
@@ -27,12 +12,27 @@ SELECT
     pmsysdb.phasem.Phs_Name as phaseName,
     pmsysdb.classm.Cls_Cd as classificationName,
     InsH_Cancelled as isCancelled,
-    JSON_ARRAYAGG(
-        JSON_OBJECT(
-            'name',InsD_Name,
-            'progress',InsD_Prg            
-        )
-    ) as activities    
+    MAX(CASE WHEN InsD_Code = 'FND' THEN InsD_Prg END) as activityFoundation,
+    MAX(CASE WHEN InsD_Code = 'SUP' THEN InsD_Prg END) as activitySuperStructure,
+    MAX(CASE WHEN InsD_Code = 'PRT' THEN InsD_Prg END) as activityPartitionBlockWorkPlaster,
+    MAX(CASE WHEN InsD_Code = 'ELE1' THEN InsD_Prg END) as activityElectricalFirstFix,
+    MAX(CASE WHEN InsD_Code = 'MCH1' THEN InsD_Prg END) as activityMechanicalFirstFix,
+    MAX(CASE WHEN InsD_Code = 'WTP' THEN InsD_Prg END) as activityWetAreaProofing,
+    MAX(CASE WHEN InsD_Code = 'SRD' THEN InsD_Prg END) as activityScreed,
+    MAX(CASE WHEN InsD_Code = 'TIL' THEN InsD_Prg END) as activityFlooringTerrazzoEpoxy,
+    MAX(CASE WHEN InsD_Code = 'WAL' THEN InsD_Prg END) as activityWallCladding,
+    MAX(CASE WHEN InsD_Code = 'ELE2' THEN InsD_Prg END) as activityElectricalSecondFix,
+    MAX(CASE WHEN InsD_Code = 'MCH2' THEN InsD_Prg END) as activityMechanicalSecondFix,
+    MAX(CASE WHEN InsD_Code = 'RWP' THEN InsD_Prg END) as activityRoofWaterProofing,
+    MAX(CASE WHEN InsD_Code = 'EPN' THEN InsD_Prg END) as activityExternalPaint,
+    MAX(CASE WHEN InsD_Code = 'IPN' THEN InsD_Prg END) as activityInternalPaint,
+    MAX(CASE WHEN InsD_Code = 'WND' THEN InsD_Prg END) as activityWindows,
+    MAX(CASE WHEN InsD_Code = 'DR' THEN InsD_Prg END) as activityDoors,
+    MAX(CASE WHEN InsD_Code = 'HNDR' THEN InsD_Prg END) as activityHandlRails,
+    MAX(CASE WHEN InsD_Code = 'MCHF' THEN InsD_Prg END) as activityMechanical,
+    MAX(CASE WHEN InsD_Code = 'ELEF' THEN InsD_Prg END) as activityElectrical,
+    MAX(CASE WHEN InsD_Code = 'KTC' THEN InsD_Prg END) as activityKitchen,
+    MAX(CASE WHEN InsD_Code = 'OTH' THEN InsD_Prg END) as activityOthers
 FROM 
     pmsysdb.insentryh
 LEFT JOIN
@@ -59,8 +59,7 @@ LEFT JOIN
     pmsysdb.consysm
 ON  
     pmsysdb.consysm.Cns_Cd = pmsysdb.buildm.Cns_Cd
-
 GROUP BY
-    InsH_No
+	InsH_No
 ORDER BY
     InsH_Dt DESC;
