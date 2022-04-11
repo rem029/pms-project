@@ -79,7 +79,6 @@ export const ReportingDetailProgressTable = ({
 	const tableRef = useRef<HTMLDivElement>(null);
 
 	const reportSorted = useMemo(() => {
-		console.log("report.length", report.length);
 		if (report.length > 0) {
 			return [...report].sort((compareReportA, compareReportB) => {
 				const compareA =
@@ -92,9 +91,6 @@ export const ReportingDetailProgressTable = ({
 						? new Date(compareReportB[sortBy]).getTime()
 						: compareReportB[sortBy];
 
-				console.log(sortBy, "compareA", typeof compareA, compareA);
-				console.log(sortBy, "compareB", typeof compareB, compareB);
-
 				if (orderBy === "desc" && compareA > compareB) return -1;
 				if (orderBy === "asc" && compareB < compareA) return 1;
 
@@ -104,6 +100,16 @@ export const ReportingDetailProgressTable = ({
 
 		return [] as ReportProgressDetailInterface[];
 	}, [report, orderBy]);
+
+	// const reportSortedCSV = useMemo(() => {
+	// 	let csvData = "";
+	// 	if (reportSorted.length > 0)
+	// 		csvData = parse(reportSorted, {
+	// 			fields: ["insNo", "insDate", "bldgCode", "ownerName"],
+	// 		});
+	// 	console.log("@reportSortedCSV", csvData);
+	// 	return csvData;
+	// }, [reportSorted]);
 
 	useEffect(() => {
 		if (!loading && success && data) {
@@ -132,11 +138,6 @@ export const ReportingDetailProgressTable = ({
 		setIsModalExportOpen(true);
 	};
 
-	const handleButtonExportCSVClick = (): void => {
-		const csvData = parse(report);
-		console.log(csvData);
-	};
-
 	const handleHeaderSort = (headerName: TableSortBy): void => {
 		setSortBy(headerName);
 		setOrderBy((currentOrderBy) => (currentOrderBy === "asc" ? "desc" : "asc"));
@@ -160,15 +161,8 @@ export const ReportingDetailProgressTable = ({
 					</Button>
 				</Grid>
 				<Grid item xs={3}>
-					{/* <Button
-						onClick={handleButtonExportCSVClick}
-						endIcon={<Preview />}
-						disabled={report.length <= 0}
-						fullWidth
-					>
-						<CSVLink data={report && parse(report, { fields: ["lol"] })}>
-							Export CSV
-						</CSVLink>
+					{/* <Button endIcon={<Preview />} disabled={report.length <= 0} fullWidth>
+						<CSVLink data={reportSortedCSV}>Export CSV</CSVLink>
 					</Button> */}
 				</Grid>
 			</Grid>
