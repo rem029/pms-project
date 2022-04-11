@@ -202,22 +202,23 @@ export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element
 
 				<Collapse in={subMenuOpenReporting} timeout="auto" unmountOnExit>
 					<List component="div" disablePadding>
-						{[{ label: "Progress Detail Report", url: "report/detail-progress" }].map(
-							(item, index) => (
-								<ListItemButton
-									key={index + item.label}
-									sx={{ pl: 3, color: colorLabelSub }}
-									onClick={() => handleChangePage(item.url)}
-								>
-									<ListItemIcon>
-										<TableRowsOutlined htmlColor={colorIcon} fontSize="small" />
-									</ListItemIcon>
-									<ListItemText
-										primary={<Typography variant="body2">{item.label}</Typography>}
-									/>
-								</ListItemButton>
-							)
-						)}
+						{[
+							{ label: "Progress Detail Report", url: "report/detail-progress" },
+							{ label: "Progress Summary Report", url: "report/summary-progress" },
+						].map((item, index) => (
+							<ListItemButton
+								key={index + item.label}
+								sx={{ pl: 3, color: colorLabelSub }}
+								onClick={() => handleChangePage(item.url)}
+							>
+								<ListItemIcon>
+									<TableRowsOutlined htmlColor={colorIcon} fontSize="small" />
+								</ListItemIcon>
+								<ListItemText
+									primary={<Typography variant="body2">{item.label}</Typography>}
+								/>
+							</ListItemButton>
+						))}
 					</List>
 				</Collapse>
 			</List>

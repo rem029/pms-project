@@ -24,12 +24,15 @@ export interface UserInfo {
 	IsDelete: number;
 }
 
-type ReportProgressDetailActivity = {
+type ReportProgressSummaryActivity = {
 	id: number;
+	progress: number;
+};
+
+type ReportProgressDetailActivity = ReportProgressSummaryActivity & {
 	code: string;
 	name: string;
 	comments: string;
-	progress: number;
 };
 export interface ReportProgressDetailInterface {
 	inspectionNumber: number;
@@ -45,6 +48,23 @@ export interface ReportProgressDetailInterface {
 	phaseName: string;
 	classificationName: string;
 	activities: ReportProgressDetailActivity[];
+	isCancelled: number;
+}
+
+export interface ReportProgressSummaryInterface {
+	inspectionNumber: number;
+	inspectionDate: Date;
+	bldgCode: string;
+	ownerName: string;
+	typeCode: string;
+	constructionMethodName: string;
+	projectCode: string;
+	milestoneCode: string;
+	unit: number;
+	module: number;
+	phaseName: string;
+	classificationName: string;
+	activities: ReportProgressSummaryActivity[];
 	isCancelled: number;
 }
 

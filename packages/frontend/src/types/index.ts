@@ -1,11 +1,3 @@
-export type ReportProgressDetailActivity = {
-	id: number;
-	code: string;
-	name: string;
-	comments: string;
-	progress: number;
-};
-
 export type ReportFilterType = {
 	date: Date | null;
 	phase: ReportFilter | null;
@@ -44,6 +36,16 @@ export interface Token {
 	expiresIn: string;
 }
 
+export type ReportProgressSummaryActivity = {
+	id: number;
+	progress: number;
+};
+
+export type ReportProgressDetailActivity = ReportProgressSummaryActivity & {
+	code: string;
+	name: string;
+	comments: string;
+};
 export interface ReportProgressDetailInterface {
 	inspectionNumber: number;
 	inspectionDate: Date;
@@ -58,5 +60,22 @@ export interface ReportProgressDetailInterface {
 	phaseName: string;
 	classificationName: string;
 	activities: ReportProgressDetailActivity[];
+	isCancelled: number;
+}
+
+export interface ReportProgressSummaryInterface {
+	inspectionNumber: number;
+	inspectionDate: Date;
+	bldgCode: string;
+	ownerName: string;
+	typeCode: string;
+	constructionMethodName: string;
+	projectCode: string;
+	milestoneCode: string;
+	unit: number;
+	module: number;
+	phaseName: string;
+	classificationName: string;
+	activities: ReportProgressSummaryActivity[];
 	isCancelled: number;
 }
