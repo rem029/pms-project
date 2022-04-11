@@ -15,12 +15,13 @@ import { yellow, grey } from "@mui/material/colors";
 import { CircularProgress, Collapse, Link, ListItemButton, Tooltip } from "@mui/material";
 import {
 	Summarize,
-	Assessment,
 	WbSunny,
 	ExitToApp,
 	ExpandLess,
 	ExpandMore,
-	StarBorder,
+	TableRowsOutlined,
+	DashboardOutlined,
+	InfoOutlined,
 } from "@mui/icons-material";
 import { useAxios } from "hooks/useAxios";
 import { UserInfo } from "types";
@@ -43,6 +44,10 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 	...theme.mixins.toolbar,
 	justifyContent: "flex-end",
 }));
+
+const colorIcon = grey[500];
+const colorLabel = grey[700];
+const colorLabelSub = grey[600];
 
 export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element => {
 	const theme = useTheme();
@@ -143,38 +148,57 @@ export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element
 			</List>
 			<Divider />
 			<List>
-				{["Dashboard", "Master", "Projects", "Reporting"].map((text, index) => (
-					<ListItem
-						button
-						key={text}
-						onClick={() =>
-							text === "Reporting" ? handleSubMenuOpen() : handleChangePage(text)
-						}
-						disabled={text === "Master" || text === "Projects"}
-					>
-						<ListItemIcon>
-							{index % 2 === 0 ? (
-								<Summarize color="primary" />
-							) : (
-								<Assessment color="secondary" />
-							)}
-						</ListItemIcon>
-						<ListItemText>
-							<Link sx={{ textDecoration: "none", color: grey[600] }}>
-								{text === "Master" || text === "Projects" ? text + " (WIP)" : text}
-							</Link>
-						</ListItemText>
-						{text === "Reporting" ? (
-							subMenuOpenReporting ? (
-								<ExpandLess />
-							) : (
-								<ExpandMore />
-							)
-						) : (
-							<></>
-						)}
-					</ListItem>
-				))}
+				<ListItem button key={"Dashboard"} onClick={() => handleChangePage("Dashboard")}>
+					<ListItemIcon>
+						<DashboardOutlined htmlColor={colorIcon} />
+					</ListItemIcon>
+					<ListItemText>
+						<Link sx={{ textDecoration: "none", color: colorLabel }}>
+							<Typography variant="subtitle1">Dashboard</Typography>
+						</Link>
+					</ListItemText>
+				</ListItem>
+				<ListItem
+					button
+					disabled
+					key={"Projects"}
+					onClick={() => handleChangePage("Projects")}
+				>
+					<ListItemIcon>
+						<Summarize htmlColor={colorIcon} />
+					</ListItemIcon>
+					<ListItemText>
+						<Link sx={{ textDecoration: "none", color: colorLabel }}>
+							<Typography variant="subtitle1">Projects (WIP)</Typography>
+						</Link>
+					</ListItemText>
+				</ListItem>
+				<ListItem
+					button
+					disabled
+					key={"Master"}
+					onClick={() => handleChangePage("Master")}
+				>
+					<ListItemIcon>
+						<Summarize htmlColor={colorIcon} />
+					</ListItemIcon>
+					<ListItemText>
+						<Link sx={{ textDecoration: "none", color: colorLabel }}>
+							<Typography variant="subtitle1">Masters (WIP)</Typography>
+						</Link>
+					</ListItemText>
+				</ListItem>
+				<ListItem button key="Reporting" onClick={() => handleSubMenuOpen()}>
+					<ListItemIcon>
+						<InfoOutlined htmlColor={colorIcon} />
+					</ListItemIcon>
+					<ListItemText>
+						<Link sx={{ textDecoration: "none", color: colorLabel }}>
+							<Typography variant="subtitle1">Reporting</Typography>
+						</Link>
+					</ListItemText>
+					{subMenuOpenReporting ? <ExpandLess /> : <ExpandMore />}
+				</ListItem>
 
 				<Collapse in={subMenuOpenReporting} timeout="auto" unmountOnExit>
 					<List component="div" disablePadding>
@@ -182,13 +206,15 @@ export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element
 							(item, index) => (
 								<ListItemButton
 									key={index + item.label}
-									sx={{ pl: 4 }}
+									sx={{ pl: 3, color: colorLabelSub }}
 									onClick={() => handleChangePage(item.url)}
 								>
 									<ListItemIcon>
-										<StarBorder />
+										<TableRowsOutlined htmlColor={colorIcon} fontSize="small" />
 									</ListItemIcon>
-									<ListItemText primary={item.label} />
+									<ListItemText
+										primary={<Typography variant="subtitle2">{item.label}</Typography>}
+									/>
 								</ListItemButton>
 							)
 						)}

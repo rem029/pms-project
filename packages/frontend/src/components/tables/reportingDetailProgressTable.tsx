@@ -14,9 +14,19 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { TABLE_HEADER_REPORTING_DETAIL_PROGRESS } from "utils/constant";
 
+import { parse } from "json2csv";
+import { CSVLink } from "react-csv";
+
 import { ReportProgressDetailInterface } from "types";
 
-import { Button, CircularProgress, TablePagination, Typography } from "@mui/material";
+import {
+	Button,
+	CircularProgress,
+	Grid,
+	TablePagination,
+	TableSortLabel,
+	Typography,
+} from "@mui/material";
 import { red } from "@mui/material/colors";
 
 import { ReportingDetailProgressActivityTable } from "./reportingDetailProgressActivityTable";
@@ -35,7 +45,7 @@ type TableSortBy =
 	| "constructionMethodName"
 	| "projectCode"
 	| "milestoneCode"
-	| "Unit"
+	| "unit"
 	| "module"
 	| "phaseName"
 	| "classificationName";
@@ -60,19 +70,30 @@ export const ReportingDetailProgressTable = ({
 	const [reportHTMLCSSString, setReportHTMLCSSString] = useState("");
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
-	const [openAll, setOpenAll] = useState(true);
+	const [openAll, setOpenAll] = useState(false);
 	const [isModalExportOpen, setIsModalExportOpen] = useState(false);
 
-	const [sortBy, setSortBy] = useState<TableSortBy>("inspectionNumber");
+	const [sortBy, setSortBy] = useState<TableSortBy>("inspectionDate");
 	const [orderBy, setOrderBy] = useState<TableOrderBy>("desc");
 
 	const tableRef = useRef<HTMLDivElement>(null);
 
 	const reportSorted = useMemo(() => {
+		console.log("report.length", report.length);
 		if (report.length > 0) {
 			return [...report].sort((compareReportA, compareReportB) => {
-				const compareA = compareReportA[sortBy];
-				const compareB = compareReportB[sortBy];
+				const compareA =
+					sortBy === "inspectionDate"
+						? new Date(compareReportA[sortBy]).getTime()
+						: compareReportA[sortBy];
+
+				const compareB =
+					sortBy === "inspectionDate"
+						? new Date(compareReportB[sortBy]).getTime()
+						: compareReportB[sortBy];
+
+				console.log(sortBy, "compareA", typeof compareA, compareA);
+				console.log(sortBy, "compareB", typeof compareB, compareB);
 
 				if (orderBy === "desc" && compareA > compareB) return -1;
 				if (orderBy === "asc" && compareB < compareA) return 1;
@@ -111,6 +132,11 @@ export const ReportingDetailProgressTable = ({
 		setIsModalExportOpen(true);
 	};
 
+	const handleButtonExportCSVClick = (): void => {
+		const csvData = parse(report);
+		console.log(csvData);
+	};
+
 	const handleHeaderSort = (headerName: TableSortBy): void => {
 		setSortBy(headerName);
 		setOrderBy((currentOrderBy) => (currentOrderBy === "asc" ? "desc" : "asc"));
@@ -122,13 +148,31 @@ export const ReportingDetailProgressTable = ({
 
 	return (
 		<>
-			<Button
-				onClick={handleButtonExportClick}
-				endIcon={<Preview />}
-				disabled={report.length <= 0}
-			>
-				Print Preview
-			</Button>
+			<Grid container>
+				<Grid item xs={3}>
+					<Button
+						onClick={handleButtonExportClick}
+						endIcon={<Preview />}
+						disabled={report.length <= 0}
+						fullWidth
+					>
+						Print Preview
+					</Button>
+				</Grid>
+				<Grid item xs={3}>
+					{/* <Button
+						onClick={handleButtonExportCSVClick}
+						endIcon={<Preview />}
+						disabled={report.length <= 0}
+						fullWidth
+					>
+						<CSVLink data={report && parse(report, { fields: ["lol"] })}>
+							Export CSV
+						</CSVLink>
+					</Button> */}
+				</Grid>
+			</Grid>
+
 			<ReportingPrintPreviewModal
 				open={isModalExportOpen}
 				handleModalClose={handleModalClose}
@@ -174,70 +218,35 @@ export const ReportingDetailProgressTable = ({
 											{openAll ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
 										</IconButton>
 									</TableCell>
-									<TableCell
-										align="center"
-										onClick={() => {
-											handleHeaderSort("inspectionNumber");
-										}}
-										sortDirection={sortBy === "inspectionNumber" ? orderBy : false}
-									>
-										{TABLE_HEADER_REPORTING_DETAIL_PROGRESS.DocNo}
-									</TableCell>
-									<TableCell
-										align="center"
-										onClick={() => {
-											handleHeaderSort("inspectionDate");
-										}}
-										sortDirection={sortBy === "inspectionDate" ? orderBy : false}
-									>
-										{TABLE_HEADER_REPORTING_DETAIL_PROGRESS.DocDt}
-									</TableCell>
-									<TableCell
-										align="center"
-										onClick={() => {
-											handleHeaderSort("bldgCode");
-										}}
-										sortDirection={sortBy === "bldgCode" ? orderBy : false}
-									>
-										{TABLE_HEADER_REPORTING_DETAIL_PROGRESS.Bld}
-									</TableCell>
-									<TableCell
-										align="center"
-										onClick={() => {
-											handleHeaderSort("ownerName");
-										}}
-										sortDirection={sortBy === "ownerName" ? orderBy : false}
-										sx={{ minWidth: 136 }}
-									>
-										{TABLE_HEADER_REPORTING_DETAIL_PROGRESS.Own}
-									</TableCell>
-									<TableCell
-										align="center"
-										onClick={() => {
-											handleHeaderSort("typeCode");
-										}}
-										sortDirection={sortBy === "typeCode" ? orderBy : false}
-									>
-										{TABLE_HEADER_REPORTING_DETAIL_PROGRESS.Typ}
-									</TableCell>
-									<TableCell align="center" sx={{ maxWidth: 110 }}>
-										{TABLE_HEADER_REPORTING_DETAIL_PROGRESS.Cns}
-									</TableCell>
-									<TableCell align="center" sx={{ maxWidth: 110 }}>
-										{TABLE_HEADER_REPORTING_DETAIL_PROGRESS.Mst}
-									</TableCell>
-									<TableCell align="center">
-										{TABLE_HEADER_REPORTING_DETAIL_PROGRESS.Unt}
-									</TableCell>
-									<TableCell align="center">
-										{TABLE_HEADER_REPORTING_DETAIL_PROGRESS.Mdl}
-									</TableCell>
-									<TableCell align="center">
-										{TABLE_HEADER_REPORTING_DETAIL_PROGRESS.PhsName}
-									</TableCell>
-									<TableCell align="center">
-										{TABLE_HEADER_REPORTING_DETAIL_PROGRESS.ClsName}
-									</TableCell>
+									{Object.keys(TABLE_HEADER_REPORTING_DETAIL_PROGRESS).map(
+										(text, index) => {
+											return (
+												text !== "isCancelled" &&
+												text !== "activities" && (
+													<TableCell
+														key={index + text}
+														align="center"
+														sortDirection={sortBy === text ? orderBy : false}
+														sx={{ minWidth: 120 }}
+													>
+														<TableSortLabel
+															active={sortBy === text}
+															direction={sortBy === text ? orderBy : "asc"}
+															onClick={() => {
+																handleHeaderSort(text as TableSortBy);
+															}}
+														>
+															{
+																TABLE_HEADER_REPORTING_DETAIL_PROGRESS[
+																	text as keyof typeof TABLE_HEADER_REPORTING_DETAIL_PROGRESS
+																]
+															}
+														</TableSortLabel>
+													</TableCell>
+												)
+											);
+										}
+									)}
 								</TableRow>
 							</TableHead>
 							<TableBody>
@@ -273,7 +282,7 @@ export const ReportingDetailProgressTable = ({
 					<TablePagination
 						component="div"
 						labelRowsPerPage="Item(s) shown:"
-						rowsPerPageOptions={[10, 25, 50]}
+						rowsPerPageOptions={[10, 25, 50, { label: "All", value: -1 }]}
 						count={reportSorted?.length || 0}
 						rowsPerPage={rowsPerPage}
 						page={page}
@@ -323,7 +332,7 @@ const Row = (props: {
 				<TableCell align="center">{row.typeCode}</TableCell>
 				<TableCell align="center">{row.constructionMethodName}</TableCell>
 				<TableCell align="center">{row.milestoneCode}</TableCell>
-				<TableCell align="center">{row.Unit}</TableCell>
+				<TableCell align="center">{row.unit}</TableCell>
 				<TableCell align="center">{row.module}</TableCell>
 				<TableCell align="center">{row.phaseName}</TableCell>
 				<TableCell align="center">{row.classificationName}</TableCell>

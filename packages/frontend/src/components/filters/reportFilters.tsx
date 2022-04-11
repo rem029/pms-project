@@ -17,7 +17,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { DatePicker } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { FilterAlt, RestartAlt } from "@mui/icons-material";
 import { useAxios } from "hooks/useAxios";
 import {
@@ -74,10 +74,6 @@ export const ReportFilters = ({
 			},
 		};
 	}, []);
-
-	useEffect(() => {
-		console.log("@reportFilters", reportFilters);
-	}, [reportFilters]);
 
 	const { data: filterPhaseData, loading: filterPhaseLoading } = useAxios<ReportFilter[]>(
 		URL_REPORTING_FILTER_PHASE,
@@ -206,7 +202,7 @@ export const ReportFilters = ({
 						<Divider sx={{ width: "99%" }} />
 
 						<Grid container item spacing={1}>
-							<Grid item xs={12} md={3} lg={4} xl={4}>
+							<Grid item xs={12} md={4} lg={4} xl={4}>
 								<DatePicker
 									disableFuture
 									label="Date"
@@ -220,7 +216,7 @@ export const ReportFilters = ({
 								/>
 							</Grid>
 
-							<Grid item xs={12} md={3} lg={4} xl={4}>
+							<Grid item xs={12} md={4} lg={4} xl={4}>
 								<Autocomplete
 									disablePortal
 									options={getListItems(filterPhaseData)}
@@ -252,7 +248,7 @@ export const ReportFilters = ({
 								/>
 							</Grid>
 
-							<Grid item xs={12} md={3} lg={4} xl={4}>
+							<Grid item xs={12} md={4} lg={4} xl={4}>
 								<Autocomplete
 									disablePortal
 									options={getListItems(filterClassificationData)}

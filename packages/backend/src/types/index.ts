@@ -40,7 +40,7 @@ export interface ReportProgressDetailInterface {
 	constructionMethodName: string;
 	projectCode: string;
 	milestoneCode: string;
-	Unit: number;
+	unit: number;
 	module: number;
 	phaseName: string;
 	classificationName: string;

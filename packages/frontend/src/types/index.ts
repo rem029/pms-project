@@ -46,14 +46,14 @@ export interface Token {
 
 export interface ReportProgressDetailInterface {
 	inspectionNumber: number;
-	inspectionDate: string;
+	inspectionDate: Date;
 	bldgCode: string;
 	ownerName: string;
 	typeCode: string;
 	constructionMethodName: string;
 	projectCode: string;
 	milestoneCode: string;
-	Unit: number;
+	unit: number;
 	module: number;
 	phaseName: string;
 	classificationName: string;

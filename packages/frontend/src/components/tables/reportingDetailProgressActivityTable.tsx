@@ -17,19 +17,19 @@ export const ReportingDetailProgressActivityTable = (props: {
 							Activitity
 						</TableCell>
 						<TableCell align="center" padding="checkbox">
-							{TABLE_HEADER_REPORTING_DETAIL_PROGRESS.id}
+							{TABLE_HEADER_REPORTING_DETAIL_PROGRESS.activities.id}
 						</TableCell>
 						<TableCell align="center" padding="checkbox">
-							{TABLE_HEADER_REPORTING_DETAIL_PROGRESS.cd}
+							{TABLE_HEADER_REPORTING_DETAIL_PROGRESS.activities.code}
 						</TableCell>
 						<TableCell align="left" padding="checkbox">
-							{TABLE_HEADER_REPORTING_DETAIL_PROGRESS.nm}
+							{TABLE_HEADER_REPORTING_DETAIL_PROGRESS.activities.name}
 						</TableCell>
 						<TableCell align="center" padding="none" sx={{ width: 320 }}>
-							{TABLE_HEADER_REPORTING_DETAIL_PROGRESS.prg}
+							{TABLE_HEADER_REPORTING_DETAIL_PROGRESS.activities.progress}
 						</TableCell>
 						<TableCell align="left">
-							{TABLE_HEADER_REPORTING_DETAIL_PROGRESS.com}
+							{TABLE_HEADER_REPORTING_DETAIL_PROGRESS.activities.comments}
 						</TableCell>
 					</TableRow>
 				</TableHead>
