@@ -113,7 +113,7 @@ export const getReportProgressDetailController = async (req: RequestAuthInterfac
 					pmsysdb.consysm.Cns_Name as constructionMethodName,
 					pmsysdb.buildm.Prj_Cd as projectCode,
 					pmsysdb.buildm.Mst_Cd as milestoneCode,
-					pmsysdb.buildm.Unit,
+					pmsysdb.buildm.Unit as unit,
 					pmsysdb.buildm.Mode as module,
 					pmsysdb.phasem.Phs_Name as phaseName,
 					pmsysdb.classm.Cls_Cd as classificationName,

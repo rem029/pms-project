@@ -3,7 +3,7 @@ import Highcharts from "highcharts";
 import HighchartsExporting from "highcharts/modules/exporting";
 import HighchartsHistogram from "highcharts/modules/histogram-bellcurve";
 import HighchartsReact from "highcharts-react-official";
-import { Box, Paper } from "@mui/material";
+import { Paper } from "@mui/material";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
 
 const dummyData = [
