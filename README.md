@@ -6,25 +6,30 @@
 
 Apps required (skip if already installed in your workstation)
 
-1. NodeJS
-2. Git Bash
-3. Hyper
-4. Python
+1. [NodeJS](https://nodejs.org/en/)
+2. [Git Bash](https://git-scm.com/downloads)
+3. [Hyper](https://hyper.is/) (Optional)
+4. Python from Microsoft Store
 5. [Visual Studio Build Tools](https://github.com/nodejs/node-gyp#on-windows)
-
-6. on root folder run to install packages:
+6. Install lerna
 
 ```sh
-yarn bootstrap
+npm -g i lerna
 ```
 
 7. on root folder run to install packages:
 
 ```sh
+yarn bootstrap
+```
+
+8. on root folder run to install packages:
+
+```sh
 yarn start
 ```
 
-8. (Optional) On VSCode. install the following extensions:
+9. (Optional) On VSCode. install the following extensions:
    - Prettier
    - ESLint
 
