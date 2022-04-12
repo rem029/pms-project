@@ -4,7 +4,9 @@ export { AppDrawer } from "./appDrawer";
 export { Login } from "./login";
 
 export { DetailProgressReport } from "./reports/detailProgressReport";
+export { SummaryProgressReport } from "./reports/summaryProgressReport";
 export { ReportTemplate } from "./reports/templateReport";
+
 export { Dashboard } from "./dashboard";
 export { Master } from "./master";
 export { Project } from "./project";

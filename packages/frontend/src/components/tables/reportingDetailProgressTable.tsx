@@ -12,7 +12,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { TABLE_HEADER_REPORTING_DETAIL_PROGRESS } from "utils/constant";
+import { TABLE_HEADER_REPORTING_DETAIL_PROGRESS } from "utils/constants";
 
 import { parse } from "json2csv";
 import { CSVLink } from "react-csv";
@@ -30,7 +30,7 @@ import {
 import { red } from "@mui/material/colors";
 
 import { ReportingDetailProgressActivityTable } from "./reportingDetailProgressActivityTable";
-import { getDocumentCSS } from "helpers/documentCSSHelper";
+import { getCSSDocument } from "helpers/cssHelper";
 import { dateHelperFormat } from "helpers/dateHelper";
 import { Preview } from "@mui/icons-material";
 import { ReportingPrintPreviewModal } from "components/utilities/reportingPrintPreviewModal";
@@ -53,7 +53,7 @@ type TableSortBy =
 type TableOrderBy = "asc" | "desc";
 const tableMaxHeight = 720;
 
-interface ReportingDetailProgressTableInterface {
+interface ReportingTableProps {
 	data?: ReportProgressDetailInterface[];
 	success: boolean;
 	message: string;
@@ -65,7 +65,7 @@ export const ReportingDetailProgressTable = ({
 	success,
 	message,
 	loading,
-}: ReportingDetailProgressTableInterface): JSX.Element => {
+}: ReportingTableProps): JSX.Element => {
 	const [report, setReport] = useState<ReportProgressDetailInterface[]>([]);
 	const [reportHTMLCSSString, setReportHTMLCSSString] = useState("");
 	const [page, setPage] = useState(0);
@@ -73,13 +73,13 @@ export const ReportingDetailProgressTable = ({
 	const [openAll, setOpenAll] = useState(false);
 	const [isModalExportOpen, setIsModalExportOpen] = useState(false);
 
-	const [sortBy, setSortBy] = useState<TableSortBy>("inspectionDate");
+	const [sortBy, setSortBy] =
+		useState<keyof ReportProgressDetailInterface>("inspectionDate");
 	const [orderBy, setOrderBy] = useState<TableOrderBy>("desc");
 
 	const tableRef = useRef<HTMLDivElement>(null);
 
 	const reportSorted = useMemo(() => {
-		console.log("report.length", report.length);
 		if (report.length > 0) {
 			return [...report].sort((compareReportA, compareReportB) => {
 				const compareA =
@@ -92,8 +92,8 @@ export const ReportingDetailProgressTable = ({
 						? new Date(compareReportB[sortBy]).getTime()
 						: compareReportB[sortBy];
 
-				console.log(sortBy, "compareA", typeof compareA, compareA);
-				console.log(sortBy, "compareB", typeof compareB, compareB);
+				console.log("compareA", sortBy, typeof compareA, compareA);
+				console.log("compareB", sortBy, typeof compareB, compareB);
 
 				if (orderBy === "desc" && compareA > compareB) return -1;
 				if (orderBy === "asc" && compareB < compareA) return 1;
@@ -104,6 +104,16 @@ export const ReportingDetailProgressTable = ({
 
 		return [] as ReportProgressDetailInterface[];
 	}, [report, orderBy]);
+
+	// const reportSortedCSV = useMemo(() => {
+	// 	let csvData = "";
+	// 	if (reportSorted.length > 0)
+	// 		csvData = parse(reportSorted, {
+	// 			fields: ["insNo", "insDate", "bldgCode", "ownerName"],
+	// 		});
+	// 	console.log("@reportSortedCSV", csvData);
+	// 	return csvData;
+	// }, [reportSorted]);
 
 	useEffect(() => {
 		if (!loading && success && data) {
@@ -127,14 +137,9 @@ export const ReportingDetailProgressTable = ({
 
 	const handleButtonExportClick = (): void => {
 		setReportHTMLCSSString(
-			`<style>${getDocumentCSS()}</style> ${tableRef.current?.innerHTML}`
+			`<style>${getCSSDocument()}</style> ${tableRef.current?.innerHTML}`
 		);
 		setIsModalExportOpen(true);
-	};
-
-	const handleButtonExportCSVClick = (): void => {
-		const csvData = parse(report);
-		console.log(csvData);
 	};
 
 	const handleHeaderSort = (headerName: TableSortBy): void => {
@@ -160,15 +165,8 @@ export const ReportingDetailProgressTable = ({
 					</Button>
 				</Grid>
 				<Grid item xs={3}>
-					{/* <Button
-						onClick={handleButtonExportCSVClick}
-						endIcon={<Preview />}
-						disabled={report.length <= 0}
-						fullWidth
-					>
-						<CSVLink data={report && parse(report, { fields: ["lol"] })}>
-							Export CSV
-						</CSVLink>
+					{/* <Button endIcon={<Preview />} disabled={report.length <= 0} fullWidth>
+						<CSVLink data={reportSortedCSV}>Export CSV</CSVLink>
 					</Button> */}
 				</Grid>
 			</Grid>

@@ -14,7 +14,7 @@ import {
 import { useAxios } from "../hooks/useAxios";
 import { Token } from "types";
 import { saveToken } from "utils/storage";
-import { URL_LOGIN } from "utils/constant";
+import { URL_LOGIN } from "utils/constants";
 import logo from "assets/logo-qpm-large.jpeg";
 
 // ADD SHOW PASSWORD TO TEXT

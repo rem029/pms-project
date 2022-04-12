@@ -5,7 +5,7 @@ law     123
 @username = sahar
 @password = 789
 
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc3JfSWQiOiJzYWhhciIsIlVzcl9OYW1lIjoiU2FoYXIgVGFoYSIsIlVzcl9FbWFpbCI6Im4vYUBnbWFpbC5jb20iLCJVc3JfUGgiOiIrOTc0IDExMjIzMzQ0IiwiSXNBZG1pbiI6MCwiSXNBY3RpdmUiOjEsIklzQWRkIjowLCJJc0VkaXQiOjAsIklzQ2FuY2VsIjowLCJJc0RlbGV0ZSI6MCwiaWF0IjoxNjQ5MzI1ODQ2LCJleHAiOjE2NDk0MTIyNDZ9.EnFrc6gHx-iKy30ujOEdgqmUUTs2ZKJeRc5ZgVKptu8
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc3JfSWQiOiJzYWhhciIsIlVzcl9OYW1lIjoiU2FoYXIgVGFoYSIsIlVzcl9FbWFpbCI6Im4vYUBnbWFpbC5jb20iLCJVc3JfUGgiOiIrOTc0IDExMjIzMzQ0IiwiSXNBZG1pbiI6MCwiSXNBY3RpdmUiOjEsIklzQWRkIjowLCJJc0VkaXQiOjAsIklzQ2FuY2VsIjowLCJJc0RlbGV0ZSI6MCwiaWF0IjoxNjQ5NjU1NjUwLCJleHAiOjE2NDk3NDIwNTB9.TkuOJqEH5F4DMjsdVGjFBVSgCKuhh-JDNFz0BYNDKR0
 
 ### LOGIN
 POST http://localhost:6060/login/
@@ -14,8 +14,12 @@ Authorization: Basic {{username}}:{{password}}
 GET http://localhost:6060/user/
 Authorization: Token {{token}}
 
-### GET REPORT PROGRESSIVE DETAIL
-GET http://localhost:6060/report/progressive-detail
+### GET REPORT PROGRESS DETAIL
+GET http://localhost:6060/report/progress-detail
+Authorization: Token {{token}}
+
+### GET REPORT PROGRESS SUMMARY
+GET http://localhost:6060/report/progress-summary
 Authorization: Token {{token}}
 
 ### GET REPORT FILTER

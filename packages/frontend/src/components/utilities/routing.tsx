@@ -6,7 +6,7 @@ import {
 	Master,
 	Project,
 	DetailProgressReport,
-	ReportTemplate,
+	SummaryProgressReport,
 } from "components";
 import { Main } from "pages/main";
 import { NotFound } from "pages/notFound";
@@ -33,10 +33,7 @@ export const Routing = (): JSX.Element => {
 
 						<Route path={"report/"} element={<NotFound />} />
 						<Route path={"report/detail-progress"} element={<DetailProgressReport />} />
-						<Route
-							path={"report/reportingB"}
-							element={<ReportTemplate title="Statistics" />}
-						/>
+						<Route path={"report/summary-progress"} element={<SummaryProgressReport />} />
 					</Route>
 
 					<Route path="*" element={<NotFound />} />

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { useSnackbar } from "notistack";
 import { getUserContext } from "store/userProvider";
-import { NOTISTACK_AUTO_HIDE_MS } from "utils/constant";
+import { NOTISTACK_AUTO_HIDE_MS } from "utils/constants";
 
 export const useAxios = <T>(
 	url: string,

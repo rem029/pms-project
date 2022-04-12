@@ -1,18 +1,18 @@
 import { Grid } from "@mui/material";
 import { PageContainer } from "../utilities/pageContainer";
 
-import { ReportingDetailProgressTable } from "../tables/reportingDetailProgressTable";
+import { ReportingSummaryProgressTable } from "components/tables/reportingSummaryProgressTable";
 import { ReportFilters } from "../filters/reportFilters";
 
-import { URL_REPORTING_PROGRESS_DETAILED } from "utils/constants";
+import { URL_REPORTING_PROGRESS_SUMMARY } from "utils/constants";
 import { useAxios } from "hooks/useAxios";
-import { ReportFilterType, ReportProgressDetailInterface } from "types";
+import { ReportFilterType, ReportProgressSummaryInterface } from "types";
 import { getToken } from "utils/storage";
 
-export const DetailProgressReport = (): JSX.Element => {
+export const SummaryProgressReport = (): JSX.Element => {
 	const { data, loading, success, message, fetch, fetchCancel } = useAxios<
-		ReportProgressDetailInterface[]
-	>(URL_REPORTING_PROGRESS_DETAILED, {
+		ReportProgressSummaryInterface[]
+	>(URL_REPORTING_PROGRESS_SUMMARY, {
 		method: "get",
 		headers: {
 			Authorization: `Token ${getToken()}`,
@@ -25,7 +25,7 @@ export const DetailProgressReport = (): JSX.Element => {
 	};
 
 	return (
-		<PageContainer title="Progress Detail Report">
+		<PageContainer title="Progress Summary Report">
 			<Grid
 				container
 				spacing={1}
@@ -37,7 +37,7 @@ export const DetailProgressReport = (): JSX.Element => {
 
 				<Grid container spacing={1} justifyContent="center" padding={0.5}>
 					<Grid item xs={12} sx={{ width: "100%", overflowX: "auto" }}>
-						<ReportingDetailProgressTable
+						<ReportingSummaryProgressTable
 							data={data}
 							loading={loading}
 							success={success}
