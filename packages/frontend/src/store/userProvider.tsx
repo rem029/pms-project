@@ -2,7 +2,7 @@ import { createContext, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { deleteToken } from "utils/storage";
 import { useSnackbar } from "notistack";
-import { NOTISTACK_AUTO_HIDE_MS } from "utils/constant";
+import { NOTISTACK_AUTO_HIDE_MS } from "utils/constants";
 
 interface UserContextInterface {
 	logout: () => void;

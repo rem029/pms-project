@@ -30,7 +30,7 @@ import {
 	URL_REPORTING_FILTER_SECTION,
 	URL_REPORTING_FILTER_TYPE,
 	URL_REPORTING_FILTER_ZONE,
-} from "utils/constant";
+} from "utils/constants";
 import { ReportFilterType, ReportFilter } from "types";
 import { getToken } from "utils/storage";
 import { AxiosRequestConfig } from "axios";

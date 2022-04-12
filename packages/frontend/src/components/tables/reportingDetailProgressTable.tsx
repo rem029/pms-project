@@ -12,7 +12,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { TABLE_HEADER_REPORTING_DETAIL_PROGRESS } from "utils/constant";
+import { TABLE_HEADER_REPORTING_DETAIL_PROGRESS } from "utils/constants";
 
 import { parse } from "json2csv";
 import { CSVLink } from "react-csv";
@@ -53,7 +53,7 @@ type TableSortBy =
 type TableOrderBy = "asc" | "desc";
 const tableMaxHeight = 720;
 
-interface ReportingDetailProgressTableInterface {
+interface ReportingTableProps {
 	data?: ReportProgressDetailInterface[];
 	success: boolean;
 	message: string;
@@ -65,7 +65,7 @@ export const ReportingDetailProgressTable = ({
 	success,
 	message,
 	loading,
-}: ReportingDetailProgressTableInterface): JSX.Element => {
+}: ReportingTableProps): JSX.Element => {
 	const [report, setReport] = useState<ReportProgressDetailInterface[]>([]);
 	const [reportHTMLCSSString, setReportHTMLCSSString] = useState("");
 	const [page, setPage] = useState(0);

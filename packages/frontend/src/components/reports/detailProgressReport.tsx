@@ -4,7 +4,7 @@ import { PageContainer } from "../utilities/pageContainer";
 import { ReportingDetailProgressTable } from "../tables/reportingDetailProgressTable";
 import { ReportFilters } from "../filters/reportFilters";
 
-import { URL_REPORTING_PROGRESS_DETAILED } from "utils/constant";
+import { URL_REPORTING_PROGRESS_DETAILED } from "utils/constants";
 import { useAxios } from "hooks/useAxios";
 import { ReportFilterType, ReportProgressDetailInterface } from "types";
 import { getToken } from "utils/storage";
