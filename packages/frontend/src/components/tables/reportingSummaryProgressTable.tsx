@@ -1,7 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
-import Box from "@mui/material/Box";
-import Collapse from "@mui/material/Collapse";
-import IconButton from "@mui/material/IconButton";
+
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -10,11 +8,10 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
 import Paper from "@mui/material/Paper";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+
 import { TABLE_HEADER_REPORTING_SUMMARY_PROGRESS } from "utils/constants";
 
-import { ReportProgressDetailInterface, ReportProgressSummaryInterface } from "types";
+import { ReportProgressSummaryInterface } from "types";
 
 import {
 	Button,
@@ -24,28 +21,13 @@ import {
 	TableSortLabel,
 	Typography,
 } from "@mui/material";
-import { red } from "@mui/material/colors";
+import { grey, red } from "@mui/material/colors";
 
-import { ReportingDetailProgressActivityTable } from "./reportingDetailProgressActivityTable";
-import { getDocumentCSS } from "helpers/documentCSSHelper";
+import { getCSSDocument, getCSSReportColor } from "helpers/cssHelper";
 import { dateHelperFormat } from "helpers/dateHelper";
 import { Preview } from "@mui/icons-material";
 import { ReportingPrintPreviewModal } from "components/utilities/reportingPrintPreviewModal";
 import { TablePaginationActions } from "components/utilities/tablePaginationActions";
-
-type TableSortBy =
-	| "inspectionNumber"
-	| "inspectionDate"
-	| "bldgCode"
-	| "ownerName"
-	| "typeCode"
-	| "constructionMethodName"
-	| "projectCode"
-	| "milestoneCode"
-	| "unit"
-	| "module"
-	| "phaseName"
-	| "classificationName";
 
 type TableOrderBy = "asc" | "desc";
 const tableMaxHeight = 720;
@@ -67,36 +49,63 @@ export const ReportingSummaryProgressTable = ({
 	const [reportHTMLCSSString, setReportHTMLCSSString] = useState("");
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
-	const [openAll, setOpenAll] = useState(false);
 	const [isModalExportOpen, setIsModalExportOpen] = useState(false);
-
-	const [sortBy, setSortBy] = useState<TableSortBy>("inspectionDate");
-	const [orderBy, setOrderBy] = useState<TableOrderBy>("desc");
+	const [sort, setSort] = useState<{
+		key: keyof ReportProgressSummaryInterface;
+		order: TableOrderBy;
+	}>({ key: "inspectionDate", order: "desc" });
 
 	const tableRef = useRef<HTMLDivElement>(null);
 
 	const reportSorted = useMemo(() => {
 		if (report.length > 0) {
 			return [...report].sort((compareReportA, compareReportB) => {
-				const compareA =
-					sortBy === "inspectionDate"
-						? new Date(compareReportA[sortBy]).getTime()
-						: compareReportA[sortBy];
+				const { key, order } = sort;
+				if (key === "inspectionDate") {
+					//compare dates
 
-				const compareB =
-					sortBy === "inspectionDate"
-						? new Date(compareReportB[sortBy]).getTime()
-						: compareReportB[sortBy];
-
-				if (orderBy === "desc" && compareA > compareB) return -1;
-				if (orderBy === "asc" && compareB < compareA) return 1;
+					if (order === "asc")
+						return (
+							new Date(compareReportA[key]).getTime() -
+							new Date(compareReportB[key]).getTime()
+						);
+					if (order === "desc")
+						return (
+							new Date(compareReportB[key]).getTime() -
+							new Date(compareReportA[key]).getTime()
+						);
+				}
+				if (typeof compareReportA[key] === "number") {
+					if (order === "asc")
+						return Number(compareReportA[key]) - Number(compareReportB[key]);
+					if (order === "desc")
+						return Number(compareReportB[key]) - Number(compareReportA[key]);
+				}
+				if (typeof compareReportA[key] !== "number") {
+					if (
+						order === "asc" &&
+						compareReportA[key].toString().toLowerCase() >
+							compareReportB[key].toString().toLowerCase()
+					)
+						return 1;
+					if (
+						order === "desc" &&
+						compareReportA[key].toString().toLowerCase() <
+							compareReportB[key].toString().toLowerCase()
+					)
+						return -1;
+				}
 
 				return 0;
 			});
 		}
 
 		return [] as ReportProgressSummaryInterface[];
-	}, [report, orderBy]);
+	}, [report, sort]);
+
+	useEffect(() => {
+		console.log("reportSorted", reportSorted);
+	}, [reportSorted]);
 
 	// const reportSortedCSV = useMemo(() => {
 	// 	let csvData = "";
@@ -130,14 +139,16 @@ export const ReportingSummaryProgressTable = ({
 
 	const handleButtonExportClick = (): void => {
 		setReportHTMLCSSString(
-			`<style>${getDocumentCSS()}</style> ${tableRef.current?.innerHTML}`
+			`<style>${getCSSDocument()}</style> ${tableRef.current?.innerHTML}`
 		);
 		setIsModalExportOpen(true);
 	};
 
-	const handleHeaderSort = (headerName: TableSortBy): void => {
-		setSortBy(headerName);
-		setOrderBy((currentOrderBy) => (currentOrderBy === "asc" ? "desc" : "asc"));
+	const handleHeaderSort = (headerName: keyof ReportProgressSummaryInterface): void => {
+		setSort((currentSort) => ({
+			key: headerName,
+			order: currentSort.order === "asc" ? "desc" : "asc",
+		}));
 	};
 
 	const handleModalClose = (): void => {
@@ -194,60 +205,107 @@ export const ReportingSummaryProgressTable = ({
 						ref={tableRef}
 						sx={{
 							overflowX: "auto",
-							maxHeight: rowsPerPage < 0 ? undefined : tableMaxHeight,
+							maxHeight: tableMaxHeight,
 						}}
 					>
 						<Table aria-label="collapsible table" stickyHeader>
 							<TableHead>
 								<TableRow>
+									<TableCell colSpan={11} />
+									<TableCell
+										colSpan={21}
+										align="center"
+										sx={{
+											borderColor: grey[500],
+											borderLeft: "solid 1px",
+										}}
+									>
+										<Typography variant="body2" letterSpacing={8}>
+											Activities
+										</Typography>
+									</TableCell>
+								</TableRow>
+								<TableRow sx={{ height: 120 }}>
 									{Object.keys(TABLE_HEADER_REPORTING_SUMMARY_PROGRESS).map(
 										(text, index) => {
 											return (
 												text !== "isCancelled" &&
-												text !== "activities" && (
+												!text.includes("activity") && (
 													<TableCell
 														key={index + text}
 														align="center"
-														sortDirection={sortBy === text ? orderBy : false}
-														sx={{ minWidth: 90 }}
+														sortDirection={sort.key === text ? sort.order : false}
+														sx={{
+															borderColor: grey[500],
+															borderLeft: "solid 1px",
+														}}
 													>
 														<TableSortLabel
-															active={sortBy === text}
-															direction={sortBy === text ? orderBy : "asc"}
+															hideSortIcon
+															active={sort.key === text}
+															direction={sort.key === text ? sort.order : "asc"}
 															onClick={() => {
-																handleHeaderSort(text as TableSortBy);
+																handleHeaderSort(
+																	text as keyof ReportProgressSummaryInterface
+																);
 															}}
 														>
-															{
-																TABLE_HEADER_REPORTING_SUMMARY_PROGRESS[
-																	text as keyof typeof TABLE_HEADER_REPORTING_SUMMARY_PROGRESS
-																]
-															}
+															<Typography
+																variant="overline"
+																fontSize={12}
+																lineHeight={1.2}
+															>
+																{
+																	TABLE_HEADER_REPORTING_SUMMARY_PROGRESS[
+																		text as keyof typeof TABLE_HEADER_REPORTING_SUMMARY_PROGRESS
+																	]
+																}
+															</Typography>
 														</TableSortLabel>
 													</TableCell>
 												)
 											);
 										}
 									)}
-									{TABLE_HEADER_REPORTING_SUMMARY_PROGRESS.activities.map(
-										(activity, index) => {
+
+									{Object.keys(TABLE_HEADER_REPORTING_SUMMARY_PROGRESS).map(
+										(text, index) => {
 											return (
-												<TableCell
-													padding="none"
-													key={index + activity}
-													align="center"
-													sortDirection={sortBy === activity ? orderBy : false}
-												>
-													<TableSortLabel
-														active={sortBy === activity}
-														direction={sortBy === activity ? orderBy : "asc"}
-														onClick={() => {
-															handleHeaderSort(activity as TableSortBy);
+												text.includes("activity") && (
+													<TableCell
+														padding="none"
+														key={index + text}
+														align="center"
+														sortDirection={sort.key === text ? sort.order : false}
+														sx={{
+															borderColor: grey[500],
+															borderLeft: "solid 1px",
 														}}
 													>
-														{activity}
-													</TableSortLabel>
-												</TableCell>
+														<TableSortLabel
+															hideSortIcon
+															active={sort.key === text}
+															direction={sort.key === text ? sort.order : "asc"}
+															onClick={() => {
+																handleHeaderSort(
+																	text as keyof ReportProgressSummaryInterface
+																);
+															}}
+														>
+															<Typography
+																variant="overline"
+																sx={{ transform: "rotate(-90deg)" }}
+																lineHeight={1.2}
+															>
+																{
+																	TABLE_HEADER_REPORTING_SUMMARY_PROGRESS[
+																		text as keyof typeof TABLE_HEADER_REPORTING_SUMMARY_PROGRESS
+																	]
+																}
+															</Typography>
+														</TableSortLabel>
+													</TableCell>
+												)
 											);
 										}
 									)}
@@ -275,7 +333,6 @@ export const ReportingSummaryProgressTable = ({
 												<Row
 													key={`${item.inspectionDate} ${item.inspectionNumber}`}
 													row={item}
-													openAll={openAll}
 												/>
 											);
 										})}
@@ -306,16 +363,8 @@ export const ReportingSummaryProgressTable = ({
 	);
 };
 
-const Row = (props: {
-	openAll: boolean;
-	row: ReportProgressSummaryInterface;
-}): JSX.Element => {
-	const { row, openAll } = props;
-	const [open, setOpen] = useState(openAll);
-
-	useEffect(() => {
-		setOpen(openAll);
-	}, [openAll]);
+const Row = (props: { row: ReportProgressSummaryInterface }): JSX.Element => {
+	const { row } = props;
 
 	return (
 		<TableRow>
@@ -334,27 +383,19 @@ const Row = (props: {
 			<TableCell align="center">{row.module}</TableCell>
 			<TableCell align="center">{row.phaseName}</TableCell>
 			<TableCell align="center">{row.classificationName}</TableCell>
-			<TableCell align="center">{row.activityFoundation}</TableCell>
-			<TableCell align="center">{row.activitySuperStructure}</TableCell>
-			<TableCell align="center">{row.activityPartitionBlockWorkPlaster}</TableCell>
-			<TableCell align="center">{row.activityElectricalFirstFix}</TableCell>
-			<TableCell align="center">{row.activityMechanicalFirstFix}</TableCell>
-			<TableCell align="center">{row.activityWetAreaProofing}</TableCell>
-			<TableCell align="center">{row.activityScreed}</TableCell>
-			<TableCell align="center">{row.activityFlooringTerrazzoEpoxy}</TableCell>
-			<TableCell align="center">{row.activityWallCladding}</TableCell>
-			<TableCell align="center">{row.activityElectricalSecondFix}</TableCell>
-			<TableCell align="center">{row.activityMechanicalSecondFix}</TableCell>
-			<TableCell align="center">{row.activityRoofWaterProofing}</TableCell>
-			<TableCell align="center">{row.activityExternalPaint}</TableCell>
-			<TableCell align="center">{row.activityInternalPaint}</TableCell>
-			<TableCell align="center">{row.activityWindows}</TableCell>
-			<TableCell align="center">{row.activityDoors}</TableCell>
-			<TableCell align="center">{row.activityHandlRails}</TableCell>
-			<TableCell align="center">{row.activityMechanical}</TableCell>
-			<TableCell align="center">{row.activityElectrical}</TableCell>
-			<TableCell align="center">{row.activityKitchen}</TableCell>
-			<TableCell align="center">{row.activityOthers}</TableCell>
+			{Object.keys(row).map((header, index) => {
+				const headerKey = header as keyof ReportProgressSummaryInterface;
+				if (header.includes("activity"))
+					return (
+						<TableCell
+							key={header + index}
+							align="center"
+							sx={{ backgroundColor: getCSSReportColor(row[headerKey] as number) }}
+						>
+							{row[headerKey]}%
+						</TableCell>
+					);
+			})}
 		</TableRow>
 	);
 };

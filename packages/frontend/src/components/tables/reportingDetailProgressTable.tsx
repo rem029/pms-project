@@ -30,7 +30,7 @@ import {
 import { red } from "@mui/material/colors";
 
 import { ReportingDetailProgressActivityTable } from "./reportingDetailProgressActivityTable";
-import { getDocumentCSS } from "helpers/documentCSSHelper";
+import { getCSSDocument } from "helpers/cssHelper";
 import { dateHelperFormat } from "helpers/dateHelper";
 import { Preview } from "@mui/icons-material";
 import { ReportingPrintPreviewModal } from "components/utilities/reportingPrintPreviewModal";
@@ -73,7 +73,8 @@ export const ReportingDetailProgressTable = ({
 	const [openAll, setOpenAll] = useState(false);
 	const [isModalExportOpen, setIsModalExportOpen] = useState(false);
 
-	const [sortBy, setSortBy] = useState<TableSortBy>("inspectionDate");
+	const [sortBy, setSortBy] =
+		useState<keyof ReportProgressDetailInterface>("inspectionDate");
 	const [orderBy, setOrderBy] = useState<TableOrderBy>("desc");
 
 	const tableRef = useRef<HTMLDivElement>(null);
@@ -90,6 +91,9 @@ export const ReportingDetailProgressTable = ({
 					sortBy === "inspectionDate"
 						? new Date(compareReportB[sortBy]).getTime()
 						: compareReportB[sortBy];
+
+				console.log("compareA", sortBy, typeof compareA, compareA);
+				console.log("compareB", sortBy, typeof compareB, compareB);
 
 				if (orderBy === "desc" && compareA > compareB) return -1;
 				if (orderBy === "asc" && compareB < compareA) return 1;
@@ -133,7 +137,7 @@ export const ReportingDetailProgressTable = ({
 
 	const handleButtonExportClick = (): void => {
 		setReportHTMLCSSString(
-			`<style>${getDocumentCSS()}</style> ${tableRef.current?.innerHTML}`
+			`<style>${getCSSDocument()}</style> ${tableRef.current?.innerHTML}`
 		);
 		setIsModalExportOpen(true);
 	};

@@ -1,5 +1,5 @@
 import { Box, LinearProgress, Typography } from "@mui/material";
-import { blue, green, red } from "@mui/material/colors";
+import { blue, green, red, yellow } from "@mui/material/colors";
 
 //100% green
 //75-99% blue
@@ -21,13 +21,16 @@ export const LinearProgressWithLabel = (props: { value: number }): JSX.Element =
 	const getColor = (): string => {
 		const valueRounded = Math.round(value);
 		const backgroundOpacity = 400;
-		if (valueRounded >= 0 && valueRounded < 50) return red[backgroundOpacity];
+
+		if (valueRounded <= 0) return red[backgroundOpacity];
+		if (valueRounded >= 1 && valueRounded < 50) return yellow[backgroundOpacity];
 		if (valueRounded > 50 && valueRounded < 75) return blue[backgroundOpacity];
 		if (valueRounded > 75 && valueRounded < 100) return blue[backgroundOpacity];
 		if (valueRounded === 100) return green[backgroundOpacity];
 
 		return "primary";
 	};
+
 	return (
 		<Box sx={{ display: "flex", alignItems: "center", color: getColor() }}>
 			<Box sx={{ width: "100%", mr: 1 }}>
