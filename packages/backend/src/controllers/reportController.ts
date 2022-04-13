@@ -14,9 +14,9 @@ import {
 } from "types";
 
 const formatReportProgressDetailController = (
-	response: ReportProgressDetailInterface[] | ReportProgressSummaryInterface[]
-): ReportProgressDetailInterface[] | ReportProgressSummaryInterface[] => {
-	let returnArray: ReportProgressDetailInterface[] | ReportProgressSummaryInterface[] = [];
+	response: ReportProgressDetailInterface[] 
+): ReportProgressDetailInterface[]  => {
+	let returnArray: ReportProgressDetailInterface[]  = [];
 
 	for (const items of response) {
 		returnArray = [...returnArray, { ...items, activities: JSON.parse(items.activities.toString()) }];
