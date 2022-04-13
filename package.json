@@ -5,7 +5,7 @@
   "scripts": {
     "kill-ports": "kill-port --port 3030 && kill-port --port 6060",
     "bootstrap": "lerna bootstrap",
-    "start": "yarn kill-port && lerna run start --parallel --scope *",
+    "start": "yarn kill-ports && lerna run start --parallel --scope *",
     "eslint": "lerna eslint"
   },
   "devDependencies": {
