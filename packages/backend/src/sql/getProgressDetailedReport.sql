@@ -63,10 +63,7 @@ LEFT JOIN
 ON  
     pmsysdb.consysm.Cns_Cd = pmsysdb.buildm.Cns_Cd   
 WHERE
-    -- date filter
-    DATE(InsH_Dt) = DATE('2022-03-03T12:00:00.000Z')
-AND 
-    InsH_No = 184
+    pmsysdb.insentryh.Phs_Cd = '07T'
 
 -- AND zone filter TBD
 -- AND section filter TBD

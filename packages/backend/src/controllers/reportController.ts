@@ -14,9 +14,9 @@ import {
 } from "types";
 
 const formatReportProgressDetailController = (
-	response: ReportProgressDetailInterface[] 
-): ReportProgressDetailInterface[]  => {
-	let returnArray: ReportProgressDetailInterface[]  = [];
+	response: ReportProgressDetailInterface[]
+): ReportProgressDetailInterface[] => {
+	let returnArray: ReportProgressDetailInterface[] = [];
 
 	for (const items of response) {
 		returnArray = [...returnArray, { ...items, activities: JSON.parse(items.activities.toString()) }];
@@ -56,10 +56,9 @@ const getReportFilter = (filters: ReportFilterType): { queryFilter: string; quer
 				AND
 					-- milestone filter
 					${filters.milestone ? "pmsysdb.buildm.Mst_Cd = ?" : "TRUE"}
-
 				AND
 					-- type filter
-					${filters.building ? "pmsysdb.buildm.Typ_Cd = ?" : "TRUE"}
+					${filters.type ? "pmsysdb.buildm.Typ_Cd = ?" : "TRUE"}
 				AND
 					-- ownerName filter
 					${filters.owner ? "pmsysdb.ownm.Own_Cd = ?" : "TRUE"}
@@ -70,13 +69,16 @@ const getReportFilter = (filters: ReportFilterType): { queryFilter: string; quer
 					InsH_Cancelled = ?
 	`;
 
+	// ********TBD ZONE FILTER
+	// ********TBD SECTION FILTER
+
 	const queryBindings: any[] = [];
 
 	for (const keys in filters) {
-		const keyItem = keys;
-		const currentItem = filters[keyItem as keyof ReportFilterType];
+		const keyItem = keys as keyof ReportFilterType;
+		const currentItem = filters[keyItem];
 
-		if (currentItem !== null) {
+		if (currentItem !== null && keyItem !== "zone" && keyItem !== "section") {
 			if (keyItem !== "date" && keyItem !== "showCancelledDocs") {
 				queryBindings.push((currentItem as ReportFilter).id);
 			} else {
@@ -84,6 +86,11 @@ const getReportFilter = (filters: ReportFilterType): { queryFilter: string; quer
 			}
 		}
 	}
+
+	console.log("queryFilter, queryBindings", {
+		queryFilter: queryFilter,
+		queryBindings: queryBindings,
+	});
 
 	return {
 		queryFilter: queryFilter,
@@ -158,8 +165,6 @@ export const getReportProgressDetailController = async (req: RequestAuthInterfac
 			`,
 			queryBindings
 		);
-		// ********TBD ZONE FILTER
-		// ********TBD SECTION FILTER
 
 		console.log("@reportProgressDetailController filters", filters);
 		console.log("@reportProgressDetailController getReportFilter", getReportFilter(filters));
