@@ -1,5 +1,11 @@
 import { Grid, Typography } from "@mui/material";
-import { LineChart, BarChart, HistogramChart, ProgressCards } from "components";
+import {
+	LineChart,
+	BarChart,
+	HistogramChart,
+	ProgressCards,
+	DiamondTileMap,
+} from "components";
 
 import { PageContainer } from "./utilities/pageContainer";
 
@@ -32,6 +38,23 @@ export const Dashboard = (): JSX.Element => {
 				</Grid>
 
 				<Grid container spacing={1} justifyContent="center">
+					<Grid item xs={12}>
+						<Typography
+							color="text.secondary"
+							variant="subtitle1"
+							noWrap
+							component="p"
+							align="left"
+							fontSize={24}
+						>
+							Building Progress
+						</Typography>
+					</Grid>
+
+					<Grid item xs={12}>
+						<DiamondTileMap />
+					</Grid>
+
 					<Grid item xs={12}>
 						<Typography
 							color="text.secondary"

@@ -31,8 +31,7 @@ export const getCSSReportColor = (value: number): string => {
 
 	if (valueRounded <= 0) return red[backgroundOpacity];
 	if (valueRounded >= 1 && valueRounded < 50) return yellow[backgroundOpacity];
-	if (valueRounded > 50 && valueRounded < 75) return blue[backgroundOpacity];
-	if (valueRounded > 75 && valueRounded < 100) return blue[backgroundOpacity];
+	if (valueRounded > 50 && valueRounded < 100) return blue[backgroundOpacity];
 	if (valueRounded === 100) return green[backgroundOpacity];
 
 	return "primary";
