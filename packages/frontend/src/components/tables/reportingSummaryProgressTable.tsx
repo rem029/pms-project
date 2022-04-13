@@ -15,13 +15,14 @@ import { ReportProgressSummaryInterface } from "types";
 
 import {
 	Button,
+	Chip,
 	CircularProgress,
 	Grid,
 	TablePagination,
 	TableSortLabel,
 	Typography,
 } from "@mui/material";
-import { grey, red } from "@mui/material/colors";
+import { blue, green, grey, orange, red, yellow } from "@mui/material/colors";
 
 import { getCSSDocument, getCSSReportColor } from "helpers/cssHelper";
 import { dateHelperFormat } from "helpers/dateHelper";
@@ -37,6 +38,8 @@ interface ReportingTableProps {
 	success: boolean;
 	message: string;
 	loading: boolean;
+	classificationName: string;
+	phaseName: string;
 }
 
 export const ReportingSummaryProgressTable = ({
@@ -44,6 +47,8 @@ export const ReportingSummaryProgressTable = ({
 	success,
 	message,
 	loading,
+	classificationName,
+	phaseName,
 }: ReportingTableProps): JSX.Element => {
 	const [report, setReport] = useState<ReportProgressSummaryInterface[]>([]);
 	const [reportHTMLCSSString, setReportHTMLCSSString] = useState("");
@@ -208,21 +213,50 @@ export const ReportingSummaryProgressTable = ({
 							maxHeight: tableMaxHeight,
 						}}
 					>
-						<Table aria-label="collapsible table" stickyHeader>
-							<TableHead>
+						<Table stickyHeader>
+							<TableHead sx={{ position: "sticky", top: 0 }}>
 								<TableRow>
-									<TableCell colSpan={11} />
+									<TableCell colSpan={11} padding="none" align="left">
+										<Typography variant="h6" letterSpacing={4}>
+											BARAHAT AL JANOUB - Progress Summary Report
+										</Typography>
+									</TableCell>
 									<TableCell
 										colSpan={21}
-										align="center"
+										padding="checkbox"
+										align="left"
 										sx={{
 											borderColor: grey[500],
 											borderLeft: "solid 1px",
 										}}
+										component="th"
+									>
+										<Typography variant="caption" letterSpacing={4}>
+											{phaseName} / {classificationName}
+										</Typography>
+									</TableCell>
+								</TableRow>
+								<TableRow>
+									<TableCell colSpan={11} padding="none" />
+									<TableCell
+										colSpan={21}
+										padding="checkbox"
+										align="left"
+										sx={{
+											borderColor: grey[500],
+											borderLeft: "solid 1px",
+										}}
+										component="th"
 									>
 										<Typography variant="body2" letterSpacing={8}>
 											Activities
 										</Typography>
+
+										<Chip label="100%" sx={{ m: 1, backgroundColor: green[400] }} />
+										<Chip label="75%" sx={{ m: 1, backgroundColor: blue[400] }} />
+										<Chip label="50%" sx={{ m: 1, backgroundColor: orange[400] }} />
+										<Chip label="1%" sx={{ m: 1, backgroundColor: yellow[400] }} />
+										<Chip label="0%" sx={{ m: 1, backgroundColor: red[400] }} />
 									</TableCell>
 								</TableRow>
 								<TableRow sx={{ height: 120 }}>
@@ -381,8 +415,6 @@ const Row = (props: { row: ReportProgressSummaryInterface }): JSX.Element => {
 			<TableCell align="center">{row.milestoneCode}</TableCell>
 			<TableCell align="center">{row.unit}</TableCell>
 			<TableCell align="center">{row.module}</TableCell>
-			<TableCell align="center">{row.phaseName}</TableCell>
-			<TableCell align="center">{row.classificationName}</TableCell>
 			{Object.keys(row).map((header, index) => {
 				const headerKey = header as keyof ReportProgressSummaryInterface;
 				if (header.includes("activity"))

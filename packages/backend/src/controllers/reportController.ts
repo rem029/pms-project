@@ -213,8 +213,6 @@ export const getReportProgressSummaryController = async (req: RequestAuthInterfa
 				pmsysdb.buildm.Mst_Cd as milestoneCode,
 				pmsysdb.buildm.Unit as unit,
 				pmsysdb.buildm.Mode as module,
-				pmsysdb.phasem.Phs_Name as phaseName,
-				pmsysdb.classm.Cls_Cd as classificationName,
 				InsH_Cancelled as isCancelled,
 				MAX(CASE WHEN InsD_Code = 'FND' THEN InsD_Prg END) as activityFoundation,
 				MAX(CASE WHEN InsD_Code = 'SUP' THEN InsD_Prg END) as activitySuperStructure,
@@ -252,6 +250,10 @@ export const getReportProgressSummaryController = async (req: RequestAuthInterfa
 			ON  
 				pmsysdb.ownm.Own_Cd = pmsysdb.insentryh.InsH_Own
 			LEFT JOIN
+				pmsysdb.consysm
+			ON  
+				pmsysdb.consysm.Cns_Cd = pmsysdb.buildm.Cns_Cd
+				LEFT JOIN
 				pmsysdb.phasem
 			ON  
 				pmsysdb.phasem.Phs_Cd = pmsysdb.insentryh.Phs_Cd
@@ -259,11 +261,7 @@ export const getReportProgressSummaryController = async (req: RequestAuthInterfa
 				pmsysdb.classm
 			ON  
 				pmsysdb.classm.Cls_Cd = pmsysdb.insentryh.Cls_Cd
-			LEFT JOIN
-				pmsysdb.consysm
-			ON  
-				pmsysdb.consysm.Cns_Cd = pmsysdb.buildm.Cns_Cd
-				${queryFilter}
+			${queryFilter}
 			GROUP BY
 				InsH_No
 			ORDER BY

@@ -51,8 +51,6 @@ export const TABLE_HEADER_REPORTING_SUMMARY_PROGRESS = {
 	milestoneCode: "Milestone",
 	unit: "Units",
 	module: "Modules",
-	phaseName: "Phase",
-	classificationName: "Classification",
 	isCancelled: "Is cancelled?",
 	activityFoundation: "Foundation",
 	activitySuperStructure: "Super Structure",

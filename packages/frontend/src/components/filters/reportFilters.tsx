@@ -49,7 +49,7 @@ const defaultReportFilters = {
 	owner: null,
 	building: null,
 	showCancelledDocs: false,
-};
+} as ReportFilterType;
 
 interface ReportFiltersInterface {
 	filter?: ReportFilterType;
@@ -256,6 +256,7 @@ export const ReportFilters = ({
 									options={getListItems(filterClassificationData)}
 									getOptionLabel={(option) => option.name}
 									loading
+									inputValue={filter?.classification?.name}
 									onChange={(_, value) => {
 										handleReportFilterAutoCompleteChange("classification", value);
 									}}

@@ -19,7 +19,7 @@ export const Dashboard = (): JSX.Element => {
 				sx={{ p: 1 }}
 				flexDirection="column"
 			>
-				<Grid container spacing={1} justifyContent="center" sx={{ pt: 1 }}>
+				{/* <Grid container spacing={1} justifyContent="center" sx={{ pt: 1 }}>
 					<Grid item xs={12} md={3} xl={3} lg={3}>
 						<ProgressCards theme="primary" />
 					</Grid>
@@ -35,22 +35,9 @@ export const Dashboard = (): JSX.Element => {
 					<Grid item xs={12} md={3} xl={3} lg={3}>
 						<ProgressCards theme="secondary" />
 					</Grid>
-				</Grid>
+				</Grid> */}
 
 				<Grid container spacing={1} justifyContent="center">
-					<Grid item xs={12}>
-						<Typography
-							color="text.secondary"
-							variant="subtitle1"
-							noWrap
-							component="p"
-							align="left"
-							fontSize={24}
-						>
-							Building Progress
-						</Typography>
-					</Grid>
-
 					<Grid item xs={12}>
 						<DiamondTileMap />
 					</Grid>

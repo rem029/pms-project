@@ -41,13 +41,15 @@ export const Login = (): JSX.Element => {
 		}));
 	};
 
-	const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>): void => {
+	const handleSubmit = (
+		event: React.MouseEvent<HTMLButtonElement> | React.FormEvent<HTMLDivElement>
+	): void => {
 		event.preventDefault();
 
 		setHelperText("");
 
 		if (!fields.username || !fields.password) {
-			setHelperText("All fields are required.");
+			setHelperText("All fields with (*) are required.");
 			return;
 		}
 
@@ -64,6 +66,7 @@ export const Login = (): JSX.Element => {
 		<Container maxWidth="xs">
 			<Box
 				component="form"
+				onSubmit={handleSubmit}
 				sx={{
 					bgcolor: "#fff",
 					minHeight: "90vh",
@@ -102,6 +105,7 @@ export const Login = (): JSX.Element => {
 
 					<Grid item container alignItems="center" justifyContent="center" xs={12}>
 						<TextField
+							required
 							fullWidth
 							label="Username"
 							name="username"
@@ -113,6 +117,7 @@ export const Login = (): JSX.Element => {
 
 					<Grid item container alignItems="center" justifyContent="center" xs={12}>
 						<TextField
+							required
 							fullWidth
 							label="Password"
 							type="password"
@@ -128,7 +133,6 @@ export const Login = (): JSX.Element => {
 							variant="contained"
 							fullWidth
 							type="submit"
-							onClick={handleSubmit}
 							disabled={loading}
 						>
 							{loading ? <CircularProgress size={36} /> : "Login"}
@@ -145,7 +149,7 @@ export const Login = (): JSX.Element => {
 						</Typography>
 					</Grid>
 					<Grid item container alignItems="center" justifyContent="center" xs={12}>
-						<Typography variant="caption" color="red" align="center" fontSize={12}>
+						<Typography variant="caption" color="red" align="center" fontSize={16}>
 							{helpText}
 						</Typography>
 					</Grid>
