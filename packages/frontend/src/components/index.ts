@@ -19,4 +19,6 @@ export { LineChart } from "./charts/lineChart";
 export { HistogramChart } from "./charts/histogramChart";
 export { BarChart } from "./charts/barChart";
 
+export { DiamondTileMap } from "./maps/diamondTileMap";
+
 export { ProgressCards } from "./cards/progressCards";
