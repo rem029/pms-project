@@ -9,7 +9,10 @@ import TableRow from "@mui/material/TableRow";
 
 import Paper from "@mui/material/Paper";
 
-import { TABLE_HEADER_REPORTING_SUMMARY_PROGRESS } from "utils/constants";
+import {
+	TABLE_HEADER_REPORTING_SUMMARY_PROGRESS,
+	TABLE_HEADER_REPORTING_SUMMARY_PROGRESS_ACTIVITY_CONSTRUCTION,
+} from "utils/constants";
 
 import { ReportProgressSummaryInterface } from "types";
 
@@ -302,47 +305,45 @@ export const ReportingSummaryProgressTable = ({
 										}
 									)}
 
-									{Object.keys(TABLE_HEADER_REPORTING_SUMMARY_PROGRESS).map(
-										(text, index) => {
-											return (
-												text.includes("activity") && (
-													<TableCell
-														padding="none"
-														key={index + text}
-														align="center"
-														sortDirection={sort.key === text ? sort.order : false}
-														sx={{
-															borderColor: grey[500],
-															borderLeft: "solid 1px",
-														}}
+									{Object.keys(
+										TABLE_HEADER_REPORTING_SUMMARY_PROGRESS_ACTIVITY_CONSTRUCTION
+									).map((text, index) => {
+										return (
+											<TableCell
+												padding="none"
+												key={index + text}
+												align="center"
+												sortDirection={sort.key === text ? sort.order : false}
+												sx={{
+													borderColor: grey[500],
+													borderLeft: "solid 1px",
+												}}
+											>
+												<TableSortLabel
+													hideSortIcon
+													active={sort.key === text}
+													direction={sort.key === text ? sort.order : "asc"}
+													onClick={() => {
+														handleHeaderSort(
+															text as keyof ReportProgressSummaryInterface
+														);
+													}}
+												>
+													<Typography
+														variant="overline"
+														sx={{ transform: "rotate(-90deg)" }}
+														lineHeight={1.2}
 													>
-														<TableSortLabel
-															hideSortIcon
-															active={sort.key === text}
-															direction={sort.key === text ? sort.order : "asc"}
-															onClick={() => {
-																handleHeaderSort(
-																	text as keyof ReportProgressSummaryInterface
-																);
-															}}
-														>
-															<Typography
-																variant="overline"
-																sx={{ transform: "rotate(-90deg)" }}
-																lineHeight={1.2}
-															>
-																{
-																	TABLE_HEADER_REPORTING_SUMMARY_PROGRESS[
-																		text as keyof typeof TABLE_HEADER_REPORTING_SUMMARY_PROGRESS
-																	]
-																}
-															</Typography>
-														</TableSortLabel>
-													</TableCell>
-												)
-											);
-										}
-									)}
+														{
+															TABLE_HEADER_REPORTING_SUMMARY_PROGRESS_ACTIVITY_CONSTRUCTION[
+																text as keyof typeof TABLE_HEADER_REPORTING_SUMMARY_PROGRESS_ACTIVITY_CONSTRUCTION
+															]
+														}
+													</Typography>
+												</TableSortLabel>
+											</TableCell>
+										);
+									})}
 								</TableRow>
 							</TableHead>
 							<TableBody>

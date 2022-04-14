@@ -41,32 +41,14 @@ const defaultReportFilters: ReportFilterType = {
 
 const getReportFilter = (filters: ReportFilterType): { queryFilter: string; queryBindings: any[] } => {
 	const queryFilter = `
-				WHERE
-					-- date filter
-					${filters.date ? "DATE(InsH_Dt) = Date(?)" : "TRUE"}
-				AND
-					-- phase filter
-					${filters.phase ? "pmsysdb.phasem.Phs_Cd = ?" : "TRUE"}
-				AND
-					-- classification filter
-					${filters.classification ? "pmsysdb.classm.Cls_Cd = ?" : "TRUE"}
-				AND
-					-- project filter
-					${filters.project ? "pmsysdb.buildm.Prj_Cd = ?" : "TRUE"}
-				AND
-					-- milestone filter
-					${filters.milestone ? "pmsysdb.buildm.Mst_Cd = ?" : "TRUE"}
-				AND
-					-- type filter
-					${filters.type ? "pmsysdb.buildm.Typ_Cd = ?" : "TRUE"}
-				AND
-					-- ownerName filter
-					${filters.owner ? "pmsysdb.ownm.Own_Cd = ?" : "TRUE"}
-				AND
-					-- building filter
-					${filters.building ? "pmsysdb.buildm.Bld_Cd = ?" : "TRUE"}
-				AND
-					InsH_Cancelled = ?
+				WHERE ${filters.date ? "DATE(InsH_Dt) = Date(?)" : "TRUE"}
+				AND ${filters.phase ? "pmsysdb.phasem.Phs_Cd = ?" : "TRUE"}
+				AND ${filters.classification ? "pmsysdb.classm.Cls_Cd = ?" : "TRUE"}
+				AND ${filters.project ? "pmsysdb.buildm.Prj_Cd = ?" : "TRUE"}
+				AND ${filters.milestone ? "pmsysdb.buildm.Mst_Cd = ?" : "TRUE"}
+				AND ${filters.type ? "pmsysdb.buildm.Typ_Cd = ?" : "TRUE"}
+				AND ${filters.owner ? "pmsysdb.ownm.Own_Cd = ?" : "TRUE"}
+				AND  InsH_Cancelled = ?
 	`;
 
 	// ********TBD ZONE FILTER
@@ -87,15 +69,63 @@ const getReportFilter = (filters: ReportFilterType): { queryFilter: string; quer
 		}
 	}
 
-	console.log("queryFilter, queryBindings", {
-		queryFilter: queryFilter,
-		queryBindings: queryBindings,
-	});
-
 	return {
 		queryFilter: queryFilter,
 		queryBindings: queryBindings,
 	};
+};
+
+const getReportSummaryColumns = (phaseId: string): string => {
+	if (phaseId === "06C")
+		return `
+				MAX(CASE WHEN InsD_Code = 'FND' THEN InsD_Prg END) as activityFoundation,
+				MAX(CASE WHEN InsD_Code = 'SUP' THEN InsD_Prg END) as activitySuperStructure,
+				MAX(CASE WHEN InsD_Code = 'PRT' THEN InsD_Prg END) as activityPartitionBlockWorkPlaster,
+				MAX(CASE WHEN InsD_Code = 'ELE1' THEN InsD_Prg END) as activityElectricalFirstFix,
+				MAX(CASE WHEN InsD_Code = 'MCH1' THEN InsD_Prg END) as activityMechanicalFirstFix,
+				MAX(CASE WHEN InsD_Code = 'WTP' THEN InsD_Prg END) as activityWetAreaProofing,
+				MAX(CASE WHEN InsD_Code = 'SRD' THEN InsD_Prg END) as activityScreed,
+				MAX(CASE WHEN InsD_Code = 'TIL' THEN InsD_Prg END) as activityFlooringTerrazzoEpoxy,
+				MAX(CASE WHEN InsD_Code = 'WAL' THEN InsD_Prg END) as activityWallCladding,
+				MAX(CASE WHEN InsD_Code = 'ELE2' THEN InsD_Prg END) as activityElectricalSecondFix,
+				MAX(CASE WHEN InsD_Code = 'MCH2' THEN InsD_Prg END) as activityMechanicalSecondFix,
+				MAX(CASE WHEN InsD_Code = 'RWP' THEN InsD_Prg END) as activityRoofWaterProofing,
+				MAX(CASE WHEN InsD_Code = 'EPN' THEN InsD_Prg END) as activityExternalPaint,
+				MAX(CASE WHEN InsD_Code = 'IPN' THEN InsD_Prg END) as activityInternalPaint,
+				MAX(CASE WHEN InsD_Code = 'WND' THEN InsD_Prg END) as activityWindows,
+				MAX(CASE WHEN InsD_Code = 'DR' THEN InsD_Prg END) as activityDoors,
+				MAX(CASE WHEN InsD_Code = 'HNDR' THEN InsD_Prg END) as activityHandlRails,
+				MAX(CASE WHEN InsD_Code = 'MCHF' THEN InsD_Prg END) as activityMechanical,
+				MAX(CASE WHEN InsD_Code = 'ELEF' THEN InsD_Prg END) as activityElectrical,
+				MAX(CASE WHEN InsD_Code = 'KTC' THEN InsD_Prg END) as activityKitchen,
+				MAX(CASE WHEN InsD_Code = 'OTH' THEN InsD_Prg END) as activityOthers
+			`;
+	if (phaseId === "07T")
+		return `
+				MAX(CASE WHEN InsD_Code = 'BPITP' THEN InsD_Prg END) as activityFoundation,
+				MAX(CASE WHEN InsD_Code = 'BPRWT' THEN InsD_Prg END) as activitySuperStructure,
+				MAX(CASE WHEN InsD_Code = 'PRT' THEN InsD_Prg END) as activityPartitionBlockWorkPlaster,
+				MAX(CASE WHEN InsD_Code = 'ELE1' THEN InsD_Prg END) as activityElectricalFirstFix,
+				MAX(CASE WHEN InsD_Code = 'MCH1' THEN InsD_Prg END) as activityMechanicalFirstFix,
+				MAX(CASE WHEN InsD_Code = 'WTP' THEN InsD_Prg END) as activityWetAreaProofing,
+				MAX(CASE WHEN InsD_Code = 'SRD' THEN InsD_Prg END) as activityScreed,
+				MAX(CASE WHEN InsD_Code = 'TIL' THEN InsD_Prg END) as activityFlooringTerrazzoEpoxy,
+				MAX(CASE WHEN InsD_Code = 'WAL' THEN InsD_Prg END) as activityWallCladding,
+				MAX(CASE WHEN InsD_Code = 'ELE2' THEN InsD_Prg END) as activityElectricalSecondFix,
+				MAX(CASE WHEN InsD_Code = 'MCH2' THEN InsD_Prg END) as activityMechanicalSecondFix,
+				MAX(CASE WHEN InsD_Code = 'RWP' THEN InsD_Prg END) as activityRoofWaterProofing,
+				MAX(CASE WHEN InsD_Code = 'EPN' THEN InsD_Prg END) as activityExternalPaint,
+				MAX(CASE WHEN InsD_Code = 'IPN' THEN InsD_Prg END) as activityInternalPaint,
+				MAX(CASE WHEN InsD_Code = 'WND' THEN InsD_Prg END) as activityWindows,
+				MAX(CASE WHEN InsD_Code = 'DR' THEN InsD_Prg END) as activityDoors,
+				MAX(CASE WHEN InsD_Code = 'HNDR' THEN InsD_Prg END) as activityHandlRails,
+				MAX(CASE WHEN InsD_Code = 'MCHF' THEN InsD_Prg END) as activityMechanical,
+				MAX(CASE WHEN InsD_Code = 'ELEF' THEN InsD_Prg END) as activityElectrical,
+				MAX(CASE WHEN InsD_Code = 'KTC' THEN InsD_Prg END) as activityKitchen,
+				MAX(CASE WHEN InsD_Code = 'OTH' THEN InsD_Prg END) as activityOthers
+	`;
+
+	return "";
 };
 
 export const getReportProgressDetailController = async (req: RequestAuthInterface, res: Response): Promise<void> => {
@@ -195,10 +225,6 @@ export const getReportProgressSummaryController = async (req: RequestAuthInterfa
 			? (JSON.parse(req.query.filter as string) as ReportFilterType)
 			: defaultReportFilters;
 		const { queryFilter, queryBindings } = getReportFilter(filters);
-
-		console.log("@getReportProgressSummaryController filters", filters);
-		console.log("@getReportProgressSummaryController queryFilter", queryFilter);
-		console.log("@getReportProgressSummaryController queryBindings", queryBindings);
 
 		const results = await knexMySQL.raw(
 			`

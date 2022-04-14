@@ -52,6 +52,9 @@ export const TABLE_HEADER_REPORTING_SUMMARY_PROGRESS = {
 	unit: "Units",
 	module: "Modules",
 	isCancelled: "Is cancelled?",
+};
+
+export const TABLE_HEADER_REPORTING_SUMMARY_PROGRESS_ACTIVITY_CONSTRUCTION = {
 	activityFoundation: "Foundation",
 	activitySuperStructure: "Super Structure",
 	activityPartitionBlockWorkPlaster: "Partition Blockwork Plaster",
