@@ -1,4 +1,6 @@
-export * from "./api";
-export * from "./report";
-export * from "./token";
-export * from "./user";
+export interface ResponseInterface<T> {
+	success: boolean;
+	message: string;
+	data?: T;
+	error?: Error;
+}

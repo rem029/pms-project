@@ -31,7 +31,7 @@ import {
 	URL_REPORTING_FILTER_TYPE,
 	URL_REPORTING_FILTER_ZONE,
 } from "utils/constants";
-import { ReportFilterType, ReportFilter } from "types";
+import { ReportFilterType, ReportFilter } from "@wakra-project/common";
 import { getToken } from "utils/storage";
 import { AxiosRequestConfig } from "axios";
 

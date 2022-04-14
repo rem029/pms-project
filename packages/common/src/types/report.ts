@@ -47,7 +47,32 @@ export interface ReportProgressDetailInterface extends ReportInterface {
 	activities: ReportProgressDetailActivity[];
 }
 
-export interface ReportProgressSummaryInterface extends ReportInterface {
+export interface ReportProgressSummaryConstructionInterface extends ReportInterface {
+	activityFoundation: number;
+	activitySuperStructure: number;
+	activityPartitionBlockWorkPlaster: number;
+	activityElectricalFirstFix: number;
+	activityMechanicalFirstFix: number;
+	activityWetAreaProofing: number;
+	activityScreed: number;
+	activityFlooringTerrazzoEpoxy: number;
+	activityWallCladding: number;
+	activityElectricalSecondFix: number;
+	activityMechanicalSecondFix: number;
+	activityRoofWaterProofing: number;
+	activityExternalPaint: number;
+	activityInternalPaint: number;
+	activityWindows: number;
+	activityDoors: number;
+	activityHandlRails: number;
+	activityMechanical: number;
+	activityElectrical: number;
+	activityKitchen: number;
+	activityOthers: number;
+}
+
+export interface ReportProgressSummaryTestingCommissioningInterface
+	extends ReportInterface {
 	activityFoundation: number;
 	activitySuperStructure: number;
 	activityPartitionBlockWorkPlaster: number;

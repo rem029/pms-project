@@ -1,7 +1,8 @@
 import { NextFunction, Response } from "express";
 import jwt from "jsonwebtoken";
 import { logger } from "utilities/logger";
-import { RequestAuthInterface, UserInfo } from "types";
+import { UserInfo } from "@wakra-project/common";
+import { RequestAuthInterface } from "types";
 import { handleServerError } from "helpers/serverResponse";
 
 export interface TokenInterface {
@@ -9,10 +10,7 @@ export interface TokenInterface {
 	expiresIn: string;
 }
 
-export const generateAccessToken = (
-	payload: object,
-	expiresIn = "24h"
-): TokenInterface => {
+export const generateAccessToken = (payload: object, expiresIn = "24h"): TokenInterface => {
 	console.log("@generateAccessToken", payload);
 	return {
 		token: jwt.sign(payload, process.env.API_TOKEN_SECRET as jwt.Secret, {
@@ -22,10 +20,7 @@ export const generateAccessToken = (
 	};
 };
 
-export const generateRefreshToken = (
-	payload: object,
-	expiresIn = "1y"
-): TokenInterface => {
+export const generateRefreshToken = (payload: object, expiresIn = "1y"): TokenInterface => {
 	return {
 		token: jwt.sign(payload, process.env.API_TOKEN_REFRESH as jwt.Secret, {
 			expiresIn: expiresIn,
@@ -37,11 +32,7 @@ export const generateRefreshToken = (
 export const decodeToken = (token: string): string | jwt.JwtPayload =>
 	jwt.verify(token, process.env.API_TOKEN_SECRET as jwt.Secret);
 
-export const authenticateToken = (
-	req: RequestAuthInterface,
-	res: Response,
-	next: NextFunction
-): void => {
+export const authenticateToken = (req: RequestAuthInterface, res: Response, next: NextFunction): void => {
 	logger.info("@middleware authenticateToken");
 	const tokenFromHeader = req.headers["authorization"];
 	const token = tokenFromHeader && tokenFromHeader.split(" ")[1];

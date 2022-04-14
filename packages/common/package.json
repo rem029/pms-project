@@ -1,0 +1,23 @@
+{
+	"name": "@wakra-project/common",
+	"version": "0.0.1",
+	"description": "common types/functions for frontend and backend",
+	"main": "src/index.ts",
+	"files": [
+		"src"
+	],
+	"author": "rem029",
+	"license": "MIT",
+	"private": true,
+	"scripts": {
+		"start": "tsc --watch",
+		"build": "tsc -b",
+		"lint": "eslint src/**/*.ts"
+	},
+	"devDependencies": {
+		"ts-node": "^8.6.2"
+	},
+	"dependencies": {
+		"typescript": "^4.6.3"
+	}
+}

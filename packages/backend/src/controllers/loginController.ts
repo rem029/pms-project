@@ -2,13 +2,11 @@ import { Response } from "express";
 import { knexMySQL } from "services/database";
 import { logger } from "utilities/logger";
 import { handleServerResponse, handleServerError } from "helpers/serverResponse";
-import { RequestAuthInterface, UserInfo } from "types";
+import { UserInfo } from "@wakra-project/common";
+import { RequestAuthInterface } from "types";
 import { generateAccessToken } from "middlewares/authToken";
 
-export const loginController = async (
-	req: RequestAuthInterface,
-	res: Response
-): Promise<void> => {
+export const loginController = async (req: RequestAuthInterface, res: Response): Promise<void> => {
 	try {
 		logger.info("@loginControllers");
 		const { userId, password } = req.user ? req.user : { userId: "", password: "" };

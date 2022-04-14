@@ -5,13 +5,13 @@ import { logger } from "utilities/logger";
 import { handleServerResponse, handleServerError } from "helpers/serverResponse";
 import { REPORT_FILTER } from "utilities/constants";
 import {
-	RequestAuthInterface,
 	ReportFilter,
-	ReportFilterItem,
 	ReportFilterType,
 	ReportProgressDetailInterface,
-	ReportProgressSummaryInterface,
-} from "types";
+	ReportProgressSummaryConstructionInterface,
+} from "@wakra-project/common";
+
+import { RequestAuthInterface } from "types";
 
 const formatReportProgressDetailController = (
 	response: ReportProgressDetailInterface[]
@@ -301,7 +301,7 @@ export const getReportProgressSummaryController = async (req: RequestAuthInterfa
 		console.log("@getReportProgressSummaryController filters", filters);
 		console.log("@getReportProgressSummaryController getReportFilter", getReportFilter(filters));
 
-		const response = results[0] as ReportProgressSummaryInterface[];
+		const response = results[0] as ReportProgressSummaryConstructionInterface[];
 
 		console.log("response", response);
 
@@ -342,7 +342,7 @@ export const getReportFilterController = async (req: RequestAuthInterface, res: 
 			`
 		);
 
-		const response = results[0] as ReportFilterItem[];
+		const response = results[0] as ReportFilter[];
 
 		handleServerResponse(res, 200, {
 			success: true,

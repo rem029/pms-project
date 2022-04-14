@@ -24,7 +24,7 @@ import {
 	InfoOutlined,
 } from "@mui/icons-material";
 import { useAxios } from "hooks/useAxios";
-import { UserInfo } from "types";
+import { UserInfo } from "@wakra-project/common";
 import { useNavigate } from "react-router-dom";
 import { URL_USER } from "utils/constants";
 import { getToken } from "utils/storage";

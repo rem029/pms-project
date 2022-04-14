@@ -6,7 +6,7 @@ import { ReportFilters } from "../filters/reportFilters";
 
 import { URL_REPORTING_PROGRESS_DETAILED } from "utils/constants";
 import { useAxios } from "hooks/useAxios";
-import { ReportFilterType, ReportProgressDetailInterface } from "types";
+import { ReportFilterType, ReportProgressDetailInterface } from "@wakra-project/common";
 import { getToken } from "utils/storage";
 
 export const DetailProgressReport = (): JSX.Element => {

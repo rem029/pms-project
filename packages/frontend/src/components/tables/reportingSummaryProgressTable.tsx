@@ -14,7 +14,7 @@ import {
 	TABLE_HEADER_REPORTING_SUMMARY_PROGRESS_ACTIVITY_CONSTRUCTION,
 } from "utils/constants";
 
-import { ReportProgressSummaryInterface } from "types";
+import { ReportProgressSummaryConstructionInterface } from "@wakra-project/common";
 
 import {
 	Button,
@@ -37,7 +37,7 @@ type TableOrderBy = "asc" | "desc";
 const tableMaxHeight = 720;
 
 interface ReportingTableProps {
-	data?: ReportProgressSummaryInterface[];
+	data?: ReportProgressSummaryConstructionInterface[];
 	success: boolean;
 	message: string;
 	loading: boolean;
@@ -53,13 +53,13 @@ export const ReportingSummaryProgressTable = ({
 	classificationName,
 	phaseName,
 }: ReportingTableProps): JSX.Element => {
-	const [report, setReport] = useState<ReportProgressSummaryInterface[]>([]);
+	const [report, setReport] = useState<ReportProgressSummaryConstructionInterface[]>([]);
 	const [reportHTMLCSSString, setReportHTMLCSSString] = useState("");
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [isModalExportOpen, setIsModalExportOpen] = useState(false);
 	const [sort, setSort] = useState<{
-		key: keyof ReportProgressSummaryInterface;
+		key: keyof ReportProgressSummaryConstructionInterface;
 		order: TableOrderBy;
 	}>({ key: "inspectionDate", order: "desc" });
 
@@ -108,7 +108,7 @@ export const ReportingSummaryProgressTable = ({
 			});
 		}
 
-		return [] as ReportProgressSummaryInterface[];
+		return [] as ReportProgressSummaryConstructionInterface[];
 	}, [report, sort]);
 
 	useEffect(() => {
@@ -152,7 +152,9 @@ export const ReportingSummaryProgressTable = ({
 		setIsModalExportOpen(true);
 	};
 
-	const handleHeaderSort = (headerName: keyof ReportProgressSummaryInterface): void => {
+	const handleHeaderSort = (
+		headerName: keyof ReportProgressSummaryConstructionInterface
+	): void => {
 		setSort((currentSort) => ({
 			key: headerName,
 			order: currentSort.order === "asc" ? "desc" : "asc",
@@ -283,7 +285,7 @@ export const ReportingSummaryProgressTable = ({
 															direction={sort.key === text ? sort.order : "asc"}
 															onClick={() => {
 																handleHeaderSort(
-																	text as keyof ReportProgressSummaryInterface
+																	text as keyof ReportProgressSummaryConstructionInterface
 																);
 															}}
 														>
@@ -325,7 +327,7 @@ export const ReportingSummaryProgressTable = ({
 													direction={sort.key === text ? sort.order : "asc"}
 													onClick={() => {
 														handleHeaderSort(
-															text as keyof ReportProgressSummaryInterface
+															text as keyof ReportProgressSummaryConstructionInterface
 														);
 													}}
 												>
@@ -398,7 +400,7 @@ export const ReportingSummaryProgressTable = ({
 	);
 };
 
-const Row = (props: { row: ReportProgressSummaryInterface }): JSX.Element => {
+const Row = (props: { row: ReportProgressSummaryConstructionInterface }): JSX.Element => {
 	const { row } = props;
 
 	return (
@@ -417,7 +419,7 @@ const Row = (props: { row: ReportProgressSummaryInterface }): JSX.Element => {
 			<TableCell align="center">{row.unit}</TableCell>
 			<TableCell align="center">{row.module}</TableCell>
 			{Object.keys(row).map((header, index) => {
-				const headerKey = header as keyof ReportProgressSummaryInterface;
+				const headerKey = header as keyof ReportProgressSummaryConstructionInterface;
 				if (header.includes("activity"))
 					return (
 						<TableCell

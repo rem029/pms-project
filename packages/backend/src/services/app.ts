@@ -27,10 +27,7 @@ const initializeAppExpress = (): Express => {
 
 	app.use(
 		responseTime((req, _, time) => {
-			const stat = (req?.method || "" + req?.url || "")
-				.toLowerCase()
-				.replace(/[:.]/g, "")
-				.replace(/\//g, "_");
+			const stat = (req?.method || "" + req?.url || "").toLowerCase().replace(/[:.]/g, "").replace(/\//g, "_");
 			stats.timing(stat, time);
 
 			logger.info(`${req.method} ${req.url} ${time}ms`);
@@ -38,7 +35,7 @@ const initializeAppExpress = (): Express => {
 	);
 
 	//Default routes
-	app.get("/", async (_, res) => {
+	app.get("/test", async (_, res) => {
 		res.send("<h1>Its online!!!</h1>");
 	});
 

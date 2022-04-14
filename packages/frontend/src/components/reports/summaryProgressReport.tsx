@@ -6,7 +6,10 @@ import { ReportFilters } from "../filters/reportFilters";
 
 import { URL_REPORTING_PROGRESS_SUMMARY } from "utils/constants";
 import { useAxios } from "hooks/useAxios";
-import { ReportFilterType, ReportProgressSummaryInterface } from "types";
+import {
+	ReportFilterType,
+	ReportProgressSummaryConstructionInterface,
+} from "@wakra-project/common";
 import { getToken } from "utils/storage";
 import { useState } from "react";
 
@@ -31,7 +34,7 @@ export const SummaryProgressReport = (): JSX.Element => {
 		phaseName: defaultReportFilters.phase?.name,
 	});
 	const { data, loading, success, message, fetch, fetchCancel } = useAxios<
-		ReportProgressSummaryInterface[]
+		ReportProgressSummaryConstructionInterface[]
 	>(URL_REPORTING_PROGRESS_SUMMARY, {
 		method: "get",
 		headers: {

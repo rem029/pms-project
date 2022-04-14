@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 
 import { useAxios } from "../hooks/useAxios";
-import { Token } from "types";
+import { Token } from "@wakra-project/common";
 import { saveToken } from "utils/storage";
 import { URL_LOGIN } from "utils/constants";
 import logo from "assets/logo-qpm-large.jpeg";
