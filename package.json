@@ -1,7 +1,13 @@
 {
-  "name": "wakra-project",
+  "name": "@wakra-project/wakra-project",
   "description": "Project Management System",
   "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/backend/*",
+      "packages/frontend/*"
+    ]
+  },
   "scripts": {
     "kill-ports": "kill-port --port 3030 && kill-port --port 6060",
     "bootstrap": "lerna bootstrap",
