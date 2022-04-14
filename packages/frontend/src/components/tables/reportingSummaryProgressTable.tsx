@@ -425,7 +425,7 @@ const Row = (props: { row: ReportProgressSummaryInterface }): JSX.Element => {
 							align="center"
 							sx={{ backgroundColor: getCSSReportColor(row[headerKey] as number) }}
 						>
-							{row[headerKey]}%
+							{`${row[headerKey]}%`}
 						</TableCell>
 					);
 			})}
