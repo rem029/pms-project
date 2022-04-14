@@ -234,11 +234,15 @@ export const ReportingDetailProgressTable = ({
 																handleHeaderSort(text as TableSortBy);
 															}}
 														>
-															{
-																TABLE_HEADER_REPORTING_DETAIL_PROGRESS[
+															<Typography
+																variant="overline"
+																fontSize={12}
+																lineHeight={1.2}
+															>
+																{TABLE_HEADER_REPORTING_DETAIL_PROGRESS[
 																	text as keyof typeof TABLE_HEADER_REPORTING_DETAIL_PROGRESS
-																]
-															}
+																].toString()}
+															</Typography>
 														</TableSortLabel>
 													</TableCell>
 												)
