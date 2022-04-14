@@ -1,5 +1,4 @@
-import dotEnv from "dotenv";
-dotEnv.config();
+import "dotenv/config";
 
 import { httpServer } from "services/server";
 import { Server as IOServer } from "socket.io";
