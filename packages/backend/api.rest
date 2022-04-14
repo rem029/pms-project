@@ -5,7 +5,7 @@ law     123
 @username = sahar
 @password = 789
 
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc3JfSWQiOiJzYWhhciIsIlVzcl9OYW1lIjoiU2FoYXIgVGFoYSIsIlVzcl9FbWFpbCI6Im4vYUBnbWFpbC5jb20iLCJVc3JfUGgiOiIrOTc0IDExMjIzMzQ0IiwiSXNBZG1pbiI6MCwiSXNBY3RpdmUiOjEsIklzQWRkIjowLCJJc0VkaXQiOjAsIklzQ2FuY2VsIjowLCJJc0RlbGV0ZSI6MCwiaWF0IjoxNjQ5ODQ0MDYwLCJleHAiOjE2NDk5MzA0NjB9.peMiRc4ekR-Q9bTuJ_cIVkIYt9fF1Rl3VknGsFLL2lE
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc3JfSWQiOiJzYWhhciIsIlVzcl9OYW1lIjoiU2FoYXIgVGFoYSIsIlVzcl9FbWFpbCI6Im4vYUBnbWFpbC5jb20iLCJVc3JfUGgiOiIrOTc0IDExMjIzMzQ0IiwiSXNBZG1pbiI6MCwiSXNBY3RpdmUiOjEsIklzQWRkIjowLCJJc0VkaXQiOjAsIklzQ2FuY2VsIjowLCJJc0RlbGV0ZSI6MCwiaWF0IjoxNjQ5OTIwNjUzLCJleHAiOjE2NTAwMDcwNTN9.qA8CwSHl7PbwIaKBirk5u3kppUclZBZhnRm7QpZU3F8
 
 ### LOGIN
 POST http://localhost:6060/login/
@@ -66,5 +66,4 @@ Authorization: Token {{token}}
 
 ### BUILDING
 GET http://localhost:6060/report/filter/building
-
 Authorization: Token {{token}}
