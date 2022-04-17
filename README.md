@@ -30,8 +30,36 @@ yarn start
 ```
 
 9. (Optional) On VSCode. install the following extensions:
+
    - Prettier
    - ESLint
+
+## Branch naming (MUST FOLLOW)
+
+To easily generate changelog we must follow branch naming as per below:
+
+```sh
+<feature | fix | tech>(<title>): <Description>
+```
+
+- feature - new/additional features.
+- fix - improvement/bug fix on existing features.
+- tech - refactor code, etc.
+
+Ex.
+
+```
+// new features
+feature(dashboard): improved UI.
+feature(login): added login UI.
+
+// bug fixing
+fix(dashboard): Bug fix.
+fix(login): improve performance login.
+
+// refactor or etc.
+tech(user-input): refactor debounce.
+```
 
 ## Usage
 
