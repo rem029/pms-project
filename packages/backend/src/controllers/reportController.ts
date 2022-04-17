@@ -1,5 +1,4 @@
 import { Response } from "express";
-import moment from "moment-timezone";
 import { knexMySQL } from "services/database";
 import { logger } from "utilities/logger";
 import { handleServerResponse, handleServerError } from "helpers/serverResponse";
@@ -98,32 +97,16 @@ const getReportSummaryColumns = (phaseId: string): string => {
 				MAX(CASE WHEN InsD_Code = 'MCHF' THEN InsD_Prg END) as activityMechanical,
 				MAX(CASE WHEN InsD_Code = 'ELEF' THEN InsD_Prg END) as activityElectrical,
 				MAX(CASE WHEN InsD_Code = 'KTC' THEN InsD_Prg END) as activityKitchen,
-				MAX(CASE WHEN InsD_Code = 'OTH' THEN InsD_Prg END) as activityOthers
+				MAX(CASE WHEN InsD_Code = 'OTH' THEN InsD_Prg END) as activityOthers,
 			`;
 	if (phaseId === "07T")
 		return `
-				MAX(CASE WHEN InsD_Code = 'BPITP' THEN InsD_Prg END) as activityFoundation,
-				MAX(CASE WHEN InsD_Code = 'BPRWT' THEN InsD_Prg END) as activitySuperStructure,
-				MAX(CASE WHEN InsD_Code = 'PRT' THEN InsD_Prg END) as activityPartitionBlockWorkPlaster,
-				MAX(CASE WHEN InsD_Code = 'ELE1' THEN InsD_Prg END) as activityElectricalFirstFix,
-				MAX(CASE WHEN InsD_Code = 'MCH1' THEN InsD_Prg END) as activityMechanicalFirstFix,
-				MAX(CASE WHEN InsD_Code = 'WTP' THEN InsD_Prg END) as activityWetAreaProofing,
-				MAX(CASE WHEN InsD_Code = 'SRD' THEN InsD_Prg END) as activityScreed,
-				MAX(CASE WHEN InsD_Code = 'TIL' THEN InsD_Prg END) as activityFlooringTerrazzoEpoxy,
-				MAX(CASE WHEN InsD_Code = 'WAL' THEN InsD_Prg END) as activityWallCladding,
-				MAX(CASE WHEN InsD_Code = 'ELE2' THEN InsD_Prg END) as activityElectricalSecondFix,
-				MAX(CASE WHEN InsD_Code = 'MCH2' THEN InsD_Prg END) as activityMechanicalSecondFix,
-				MAX(CASE WHEN InsD_Code = 'RWP' THEN InsD_Prg END) as activityRoofWaterProofing,
-				MAX(CASE WHEN InsD_Code = 'EPN' THEN InsD_Prg END) as activityExternalPaint,
-				MAX(CASE WHEN InsD_Code = 'IPN' THEN InsD_Prg END) as activityInternalPaint,
-				MAX(CASE WHEN InsD_Code = 'WND' THEN InsD_Prg END) as activityWindows,
-				MAX(CASE WHEN InsD_Code = 'DR' THEN InsD_Prg END) as activityDoors,
-				MAX(CASE WHEN InsD_Code = 'HNDR' THEN InsD_Prg END) as activityHandlRails,
-				MAX(CASE WHEN InsD_Code = 'MCHF' THEN InsD_Prg END) as activityMechanical,
-				MAX(CASE WHEN InsD_Code = 'ELEF' THEN InsD_Prg END) as activityElectrical,
-				MAX(CASE WHEN InsD_Code = 'KTC' THEN InsD_Prg END) as activityKitchen,
-				MAX(CASE WHEN InsD_Code = 'OTH' THEN InsD_Prg END) as activityOthers
-	`;
+				MAX(CASE WHEN InsD_Code = 'BPITP' THEN InsD_Prg END) as activityFoundationTNC,
+				MAX(CASE WHEN InsD_Code = 'BPRWT' THEN InsD_Prg END) as activitySuperStructureTNC,
+				MAX(CASE WHEN InsD_Code = 'PRT' THEN InsD_Prg END) as activityPartitionBlockWorkPlasterTNC,
+				MAX(CASE WHEN InsD_Code = 'ELE1' THEN InsD_Prg END) as activityElectricalFirstFixTNC,
+				MAX(CASE WHEN InsD_Code = 'MCH1' THEN InsD_Prg END) as activityMechanicalFirstFixTNC,
+			`;
 
 	return "";
 };
@@ -228,7 +211,8 @@ export const getReportProgressSummaryController = async (req: RequestAuthInterfa
 
 		const results = await knexMySQL.raw(
 			`
-			SELECT 
+			SELECT
+				${getReportSummaryColumns(filters.phase?.id || "")}
 				InsH_No as inspectionNumber,
 				InsH_Dt as inspectionDate,   
 				InsH_Bld as bldgCode,
@@ -239,28 +223,7 @@ export const getReportProgressSummaryController = async (req: RequestAuthInterfa
 				pmsysdb.buildm.Mst_Cd as milestoneCode,
 				pmsysdb.buildm.Unit as unit,
 				pmsysdb.buildm.Mode as module,
-				InsH_Cancelled as isCancelled,
-				MAX(CASE WHEN InsD_Code = 'FND' THEN InsD_Prg END) as activityFoundation,
-				MAX(CASE WHEN InsD_Code = 'SUP' THEN InsD_Prg END) as activitySuperStructure,
-				MAX(CASE WHEN InsD_Code = 'PRT' THEN InsD_Prg END) as activityPartitionBlockWorkPlaster,
-				MAX(CASE WHEN InsD_Code = 'ELE1' THEN InsD_Prg END) as activityElectricalFirstFix,
-				MAX(CASE WHEN InsD_Code = 'MCH1' THEN InsD_Prg END) as activityMechanicalFirstFix,
-				MAX(CASE WHEN InsD_Code = 'WTP' THEN InsD_Prg END) as activityWetAreaProofing,
-				MAX(CASE WHEN InsD_Code = 'SRD' THEN InsD_Prg END) as activityScreed,
-				MAX(CASE WHEN InsD_Code = 'TIL' THEN InsD_Prg END) as activityFlooringTerrazzoEpoxy,
-				MAX(CASE WHEN InsD_Code = 'WAL' THEN InsD_Prg END) as activityWallCladding,
-				MAX(CASE WHEN InsD_Code = 'ELE2' THEN InsD_Prg END) as activityElectricalSecondFix,
-				MAX(CASE WHEN InsD_Code = 'MCH2' THEN InsD_Prg END) as activityMechanicalSecondFix,
-				MAX(CASE WHEN InsD_Code = 'RWP' THEN InsD_Prg END) as activityRoofWaterProofing,
-				MAX(CASE WHEN InsD_Code = 'EPN' THEN InsD_Prg END) as activityExternalPaint,
-				MAX(CASE WHEN InsD_Code = 'IPN' THEN InsD_Prg END) as activityInternalPaint,
-				MAX(CASE WHEN InsD_Code = 'WND' THEN InsD_Prg END) as activityWindows,
-				MAX(CASE WHEN InsD_Code = 'DR' THEN InsD_Prg END) as activityDoors,
-				MAX(CASE WHEN InsD_Code = 'HNDR' THEN InsD_Prg END) as activityHandlRails,
-				MAX(CASE WHEN InsD_Code = 'MCHF' THEN InsD_Prg END) as activityMechanical,
-				MAX(CASE WHEN InsD_Code = 'ELEF' THEN InsD_Prg END) as activityElectrical,
-				MAX(CASE WHEN InsD_Code = 'KTC' THEN InsD_Prg END) as activityKitchen,
-				MAX(CASE WHEN InsD_Code = 'OTH' THEN InsD_Prg END) as activityOthers
+				InsH_Cancelled as isCancelled
 			FROM 
 				pmsysdb.insentryh
 			LEFT JOIN

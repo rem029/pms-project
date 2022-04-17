@@ -5,7 +5,7 @@ law     123
 @username = sahar
 @password = 789
 
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc3JfSWQiOiJzYWhhciIsIlVzcl9OYW1lIjoiU2FoYXIgVGFoYSIsIlVzcl9FbWFpbCI6Im4vYUBnbWFpbC5jb20iLCJVc3JfUGgiOiIrOTc0IDExMjIzMzQ0IiwiSXNBZG1pbiI6MCwiSXNBY3RpdmUiOjEsIklzQWRkIjowLCJJc0VkaXQiOjAsIklzQ2FuY2VsIjowLCJJc0RlbGV0ZSI6MCwiaWF0IjoxNjQ5OTMzNzAwLCJleHAiOjE2NTAwMjAxMDB9.Lg8rt2cG9UJLpwVLBOOY4aWzWg1wavk8eLcsxOTrFBI
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc3JfSWQiOiJzYWhhciIsIlVzcl9OYW1lIjoiU2FoYXIgVGFoYSIsIlVzcl9FbWFpbCI6Im4vYUBnbWFpbC5jb20iLCJVc3JfUGgiOiIrOTc0IDExMjIzMzQ0IiwiSXNBZG1pbiI6MCwiSXNBY3RpdmUiOjEsIklzQWRkIjowLCJJc0VkaXQiOjAsIklzQ2FuY2VsIjowLCJJc0RlbGV0ZSI6MCwiaWF0IjoxNjUwMTk0MDMyLCJleHAiOjE2NTAyODA0MzJ9.zbib686turpfrUEac_SDM3FD312_T527PHeFx6mpfo0
 
 ### LOGIN
 POST http://localhost:6060/login/
@@ -14,13 +14,23 @@ Authorization: Basic {{username}}:{{password}}
 GET http://localhost:6060/user/
 Authorization: Token {{token}}
 
-### GET REPORT PROGRESS DETAIL
-GET http://localhost:6060/report/progress-detail
+### GET REPORT PROGRESS DETAIL CONSTRUCTION
+GET http://localhost:6060/report/progress-detail?filter={"phase":{"id":"06C","name":null} ,"showCancelledDocs":false}
 Authorization: Token {{token}}
 
-### GET REPORT PROGRESS SUMMARY
-GET http://localhost:6060/report/progress-summary
+
+### GET REPORT PROGRESS DETAIL TNC
+GET http://localhost:6060/report/progress-detail?filter={"phase":{"id":"07T","name":null} ,"showCancelledDocs":false}
 Authorization: Token {{token}}
+
+### GET REPORT PROGRESS SUMMARY CONSTRUCTION
+GET http://localhost:6060/report/progress-summary?filter={"phase":{"id":"06C","name":null} ,"showCancelledDocs":false}
+Authorization: Token {{token}}
+
+### GET REPORT PROGRESS SUMMARY TNC
+GET http://localhost:6060/report/progress-summary?filter={"phase":{"id":"07T","name":null} ,"showCancelledDocs":false}
+Authorization: Token {{token}}
+
 
 ### GET REPORT FILTER
 
