@@ -2,6 +2,7 @@
   "name": "@wakra-project/wakra-project",
   "description": "Project Management System",
   "private": true,
+  "repository": "https://github.com/rem029/wakra-project",
   "workspaces": {
     "packages": [
       "packages/*"
@@ -12,11 +13,13 @@
     "bootstrap": "lerna bootstrap",
     "start": "yarn kill-ports && lerna run start --parallel --scope @wakra-project/*",
     "eslint": "lerna eslint",
-    "publish-wizard": "lerna-wizard"
+    "wizard": "lerna-wizard",
+    "generate-changelog": "lerna-changelog"
   },
   "devDependencies": {
     "kill-port": "^1.6.1",
     "lerna": "^4.0.0",
+    "lerna-changelog": "^2.2.0",
     "lerna-wizard": "^1.1.1"
   },
   "changelog": {
