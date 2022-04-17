@@ -21,7 +21,7 @@
   },
   "changelog": {
     "labels": {
-      "feat": "New Features",
+      "feature": "New Features",
       "fix": "Bug Fix",
       "tech": "Tech"
     }
