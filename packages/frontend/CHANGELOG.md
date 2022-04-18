@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.6](https://github.com/rem029/wakra-project/compare/v1.0.0-alpha.5...v1.0.0-alpha.6) (2022-04-18)
+
+
+### Bug Fixes
+
+* **report-progress-summary:** fixed activity header names ([e2abe48](https://github.com/rem029/wakra-project/commit/e2abe484e75d3af5ef95f8b320fba5249c5c98db))
+
+
+
+
+
+
 # [1.0.0-alpha.5](https://github.com/rem029/wakra-project/compare/v1.0.0-alpha.4...v1.0.0-alpha.5) (2022-04-18)
 
 
