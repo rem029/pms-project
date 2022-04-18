@@ -68,5 +68,12 @@
 		"eslint-plugin-react": "^7.29.4",
 		"eslint-plugin-react-hooks": "^4.4.0",
 		"prettier": "^2.6.2"
+	},
+	"changelog": {
+		"labels": {
+			"feature": "New Feature",
+			"fix": "Bug Fix",
+			"tech": "Tech"
+		}
 	}
 }

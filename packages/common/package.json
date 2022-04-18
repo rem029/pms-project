@@ -19,5 +19,12 @@
 	},
 	"dependencies": {
 		"typescript": "^4.6.3"
+	},
+	"changelog": {
+		"labels": {
+			"feature": "New Feature",
+			"fix": "Bug Fix",
+			"tech": "Tech"
+		}
 	}
 }
