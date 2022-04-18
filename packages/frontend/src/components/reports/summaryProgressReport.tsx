@@ -16,7 +16,7 @@ import { useState } from "react";
 const defaultReportFilters = {
 	date: null,
 	phase: { id: "06C", name: "Construction" },
-	// phase: { id: "07T", name: "Testing & Commissioning" }, for T&C
+	// phase: { id: "07T", name: "Testing & Commissioning" },
 	classification: { id: "TP", name: "Typical Buildings" },
 	project: null,
 	milestone: null,
@@ -33,6 +33,7 @@ export const SummaryProgressReport = (): JSX.Element => {
 		classificationName: defaultReportFilters.classification?.name,
 		phaseName: defaultReportFilters.phase?.name,
 	});
+
 	const { data, loading, success, message, fetch, fetchCancel } = useAxios<
 		ReportProgressSummaryConstructionInterface[]
 	>(URL_REPORTING_PROGRESS_SUMMARY, {
@@ -40,6 +41,7 @@ export const SummaryProgressReport = (): JSX.Element => {
 		headers: {
 			Authorization: `Token ${getToken()}`,
 		},
+		params: { filter: defaultReportFilters },
 	});
 
 	const handleOnSubmit = (filter: ReportFilterType): void => {

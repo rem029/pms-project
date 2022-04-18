@@ -8,6 +8,7 @@ import {
 	ReportFilterType,
 	ReportProgressDetailInterface,
 	ReportProgressSummaryConstructionInterface,
+	ReportProgressSummaryTestingCommissioningInterface,
 } from "@wakra-project/common";
 
 import { RequestAuthInterface } from "types";
@@ -77,35 +78,60 @@ const getReportFilter = (filters: ReportFilterType): { queryFilter: string; quer
 const getReportSummaryColumns = (phaseId: string): string => {
 	if (phaseId === "06C")
 		return `
-				MAX(CASE WHEN InsD_Code = 'FND' THEN InsD_Prg END) as activityFoundation,
-				MAX(CASE WHEN InsD_Code = 'SUP' THEN InsD_Prg END) as activitySuperStructure,
-				MAX(CASE WHEN InsD_Code = 'PRT' THEN InsD_Prg END) as activityPartitionBlockWorkPlaster,
-				MAX(CASE WHEN InsD_Code = 'ELE1' THEN InsD_Prg END) as activityElectricalFirstFix,
-				MAX(CASE WHEN InsD_Code = 'MCH1' THEN InsD_Prg END) as activityMechanicalFirstFix,
-				MAX(CASE WHEN InsD_Code = 'WTP' THEN InsD_Prg END) as activityWetAreaProofing,
-				MAX(CASE WHEN InsD_Code = 'SRD' THEN InsD_Prg END) as activityScreed,
-				MAX(CASE WHEN InsD_Code = 'TIL' THEN InsD_Prg END) as activityFlooringTerrazzoEpoxy,
-				MAX(CASE WHEN InsD_Code = 'WAL' THEN InsD_Prg END) as activityWallCladding,
-				MAX(CASE WHEN InsD_Code = 'ELE2' THEN InsD_Prg END) as activityElectricalSecondFix,
-				MAX(CASE WHEN InsD_Code = 'MCH2' THEN InsD_Prg END) as activityMechanicalSecondFix,
-				MAX(CASE WHEN InsD_Code = 'RWP' THEN InsD_Prg END) as activityRoofWaterProofing,
-				MAX(CASE WHEN InsD_Code = 'EPN' THEN InsD_Prg END) as activityExternalPaint,
-				MAX(CASE WHEN InsD_Code = 'IPN' THEN InsD_Prg END) as activityInternalPaint,
-				MAX(CASE WHEN InsD_Code = 'WND' THEN InsD_Prg END) as activityWindows,
-				MAX(CASE WHEN InsD_Code = 'DR' THEN InsD_Prg END) as activityDoors,
-				MAX(CASE WHEN InsD_Code = 'HNDR' THEN InsD_Prg END) as activityHandlRails,
-				MAX(CASE WHEN InsD_Code = 'MCHF' THEN InsD_Prg END) as activityMechanical,
-				MAX(CASE WHEN InsD_Code = 'ELEF' THEN InsD_Prg END) as activityElectrical,
-				MAX(CASE WHEN InsD_Code = 'KTC' THEN InsD_Prg END) as activityKitchen,
-				MAX(CASE WHEN InsD_Code = 'OTH' THEN InsD_Prg END) as activityOthers,
+		
+				MAX(CASE WHEN InsD_Code = 'FND' THEN COALESCE(InsD_Prg,0) END) as activityFoundation,
+				MAX(CASE WHEN InsD_Code = 'SUP' THEN COALESCE(InsD_Prg,0) END) as activitySuperStructure,
+				MAX(CASE WHEN InsD_Code = 'PRT' THEN COALESCE(InsD_Prg,0) END) as activityPartitionBlockWorkPlaster,
+				MAX(CASE WHEN InsD_Code = 'ELE1' THEN COALESCE(InsD_Prg,0) END) as activityElectricalFirstFix,
+				MAX(CASE WHEN InsD_Code = 'MCH1' THEN COALESCE(InsD_Prg,0) END) as activityMechanicalFirstFix,
+				MAX(CASE WHEN InsD_Code = 'WTP' THEN COALESCE(InsD_Prg,0) END) as activityWetAreaProofing,
+				MAX(CASE WHEN InsD_Code = 'SRD' THEN COALESCE(InsD_Prg,0) END) as activityScreed,
+				MAX(CASE WHEN InsD_Code = 'TIL' THEN COALESCE(InsD_Prg,0) END) as activityFlooringTerrazzoEpoxy,
+				MAX(CASE WHEN InsD_Code = 'WAL' THEN COALESCE(InsD_Prg,0) END) as activityWallCladding,
+				MAX(CASE WHEN InsD_Code = 'ELE2' THEN COALESCE(InsD_Prg,0) END) as activityElectricalSecondFix,
+				MAX(CASE WHEN InsD_Code = 'MCH2' THEN COALESCE(InsD_Prg,0) END) as activityMechanicalSecondFix,
+				MAX(CASE WHEN InsD_Code = 'RWP' THEN COALESCE(InsD_Prg,0) END) as activityRoofWaterProofing,
+				MAX(CASE WHEN InsD_Code = 'EPN' THEN COALESCE(InsD_Prg,0) END) as activityExternalPaint,
+				MAX(CASE WHEN InsD_Code = 'IPN' THEN COALESCE(InsD_Prg,0) END) as activityInternalPaint,
+				MAX(CASE WHEN InsD_Code = 'WND' THEN COALESCE(InsD_Prg,0) END) as activityWindows,
+				MAX(CASE WHEN InsD_Code = 'DR' THEN COALESCE(InsD_Prg,0) END) as activityDoors,
+				MAX(CASE WHEN InsD_Code = 'HNDR' THEN COALESCE(InsD_Prg,0) END) as activityHandlRails,
+				MAX(CASE WHEN InsD_Code = 'MCHF' THEN COALESCE(InsD_Prg,0) END) as activityMechanical,
+				MAX(CASE WHEN InsD_Code = 'ELEF' THEN COALESCE(InsD_Prg,0) END) as activityElectrical,
+				MAX(CASE WHEN InsD_Code = 'KTC' THEN COALESCE(InsD_Prg,0) END) as activityKitchen,
+				MAX(CASE WHEN InsD_Code = 'OTH' THEN COALESCE(InsD_Prg,0) END) as activityOthers,
 			`;
 	if (phaseId === "07T")
 		return `
-				MAX(CASE WHEN InsD_Code = 'BPITP' THEN InsD_Prg END) as activityFoundationTNC,
-				MAX(CASE WHEN InsD_Code = 'BPRWT' THEN InsD_Prg END) as activitySuperStructureTNC,
-				MAX(CASE WHEN InsD_Code = 'PRT' THEN InsD_Prg END) as activityPartitionBlockWorkPlasterTNC,
-				MAX(CASE WHEN InsD_Code = 'ELE1' THEN InsD_Prg END) as activityElectricalFirstFixTNC,
-				MAX(CASE WHEN InsD_Code = 'MCH1' THEN InsD_Prg END) as activityMechanicalFirstFixTNC,
+			COALESCE(MAX(CASE WHEN InsD_Code = 'BPITP' THEN InsD_Prg END),0) as activityBuildingPreComm,
+			COALESCE(MAX(CASE WHEN InsD_Code = 'BPRWT' THEN InsD_Prg END),0) as activityBooster,
+			COALESCE(MAX(CASE WHEN InsD_Code = 'CCSYS' THEN InsD_Prg END),0) as activityCctv,
+			COALESCE(MAX(CASE WHEN InsD_Code = 'CLAFC' THEN InsD_Prg END),0) as activityCivilArchFinishes,
+			COALESCE(MAX(CASE WHEN InsD_Code = 'DCTVO' THEN InsD_Prg END),0) as activityDataCablingTV,
+			COALESCE(MAX(CASE WHEN InsD_Code = 'DFCHS' THEN InsD_Prg END),0) as activityDisinfectionChemmical,
+			COALESCE(MAX(CASE WHEN InsD_Code = 'DISTB' THEN InsD_Prg END),0) as activityDistributionBoards,
+			COALESCE(MAX(CASE WHEN InsD_Code = 'ELEWH' THEN InsD_Prg END),0) as activityelectricalWaterHeat,
+			COALESCE(MAX(CASE WHEN InsD_Code = 'ELSYS' THEN InsD_Prg END),0) as activityEmergencyLighting,
+			COALESCE(MAX(CASE WHEN InsD_Code = 'ELVNT' THEN InsD_Prg END),0) as activityElvNetwork,
+			COALESCE(MAX(CASE WHEN InsD_Code = 'EXFAN' THEN InsD_Prg END),0) as activityExhaustFans,
+			COALESCE(MAX(CASE WHEN InsD_Code = 'FASYS' THEN InsD_Prg END),0) as activityFireAlarmSystem,
+			COALESCE(MAX(CASE WHEN InsD_Code = 'FDPLR' THEN InsD_Prg END),0) as activityFeederPillars,
+			COALESCE(MAX(CASE WHEN InsD_Code = 'FIREX' THEN InsD_Prg END),0) as activityFireExtinguishersAndFireBlankets,
+			COALESCE(MAX(CASE WHEN InsD_Code = 'FLMST' THEN InsD_Prg END),0) as activityFeederPillar,
+			COALESCE(MAX(CASE WHEN InsD_Code = 'FNLIT' THEN InsD_Prg END),0) as activityFinalIntegreationAllSystems,
+			COALESCE(MAX(CASE WHEN InsD_Code = 'FNLTC' THEN InsD_Prg END),0) as activityFinalTncLV,
+			COALESCE(MAX(CASE WHEN InsD_Code = 'KVNET' THEN InsD_Prg END),0) as activityElevenKvNetwork,
+			COALESCE(MAX(CASE WHEN InsD_Code = 'LTSYS' THEN InsD_Prg END),0) as activityLightingSystems,
+			COALESCE(MAX(CASE WHEN InsD_Code = 'LVNET' THEN InsD_Prg END),0) as activityLvNetwork,
+			COALESCE(MAX(CASE WHEN InsD_Code = 'MEINS' THEN InsD_Prg END),0) as activityMechEleInstallation,
+			COALESCE(MAX(CASE WHEN InsD_Code = 'MFTCC' THEN InsD_Prg END),0) as activityManufacturerTncCertificate,
+			COALESCE(MAX(CASE WHEN InsD_Code = 'PWIME' THEN InsD_Prg END),0) as activityPowerIsolatorsForMech,
+			COALESCE(MAX(CASE WHEN InsD_Code = 'PWSYS' THEN InsD_Prg END),0) as activityPowerSystems,
+			COALESCE(MAX(CASE WHEN InsD_Code = 'SLVAC' THEN InsD_Prg END),0) as activitySleevesForAC,
+			COALESCE(MAX(CASE WHEN InsD_Code = 'SUBDB' THEN InsD_Prg END),0) as activitySubmainDB,
+			COALESCE(MAX(CASE WHEN InsD_Code = 'SWARE' THEN InsD_Prg END),0) as activitySanitaryWare,
+			COALESCE(MAX(CASE WHEN InsD_Code = 'TCDSG' THEN InsD_Prg END),0) as activityTncDeSnagggingComplete,
+			COALESCE(MAX(CASE WHEN InsD_Code = 'WMEOP' THEN InsD_Prg END),0) as activityWaterMeter,
 			`;
 
 	return "";
@@ -264,15 +290,28 @@ export const getReportProgressSummaryController = async (req: RequestAuthInterfa
 		console.log("@getReportProgressSummaryController filters", filters);
 		console.log("@getReportProgressSummaryController getReportFilter", getReportFilter(filters));
 
-		const response = results[0] as ReportProgressSummaryConstructionInterface[];
+		const success = true;
+		const message = "Get report progress summary success";
 
-		console.log("response", response);
+		if (filters.phase?.id === "06C") {
+			handleServerResponse(res, 200, {
+				success: success,
+				message: message,
+				data: results[0] as ReportProgressSummaryConstructionInterface[],
+			});
+			return;
+		}
 
-		handleServerResponse(res, 200, {
-			success: true,
-			message: "Get report progress summary success",
-			data: response,
-		});
+		if (filters.phase?.id === "07T") {
+			handleServerResponse(res, 200, {
+				success: success,
+				message: message,
+				data: results[0] as ReportProgressSummaryTestingCommissioningInterface[],
+			});
+			return;
+		}
+
+		throw new Error("Unknown phase id");
 	} catch (error) {
 		logger.error(`@getReportProgressSummaryController error ${error}`);
 		handleServerError(res, 500, {

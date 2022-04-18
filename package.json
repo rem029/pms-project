@@ -12,9 +12,7 @@
     "kill-ports": "kill-port --port 3030 && kill-port --port 6060",
     "bootstrap": "lerna bootstrap",
     "start": "yarn kill-ports && lerna run start --parallel --scope @wakra-project/*",
-    "eslint": "lerna eslint",
-    "wizard": "lerna-wizard",
-    "generate-changelog": "lerna-changelog"
+    "eslint": "lerna eslint"
   },
   "devDependencies": {
     "kill-port": "^1.6.1",

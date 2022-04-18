@@ -26,6 +26,7 @@ export const useAxios = <T>(
 	const axiosConfig = useMemo(() => {
 		return config;
 	}, [config]);
+
 	const [axiosController, setAxiosController] = useState<AbortController>();
 	const { logout } = getUserContext();
 	const { enqueueSnackbar } = useSnackbar();

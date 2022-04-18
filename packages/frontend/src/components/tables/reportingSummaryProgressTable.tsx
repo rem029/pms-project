@@ -12,9 +12,13 @@ import Paper from "@mui/material/Paper";
 import {
 	TABLE_HEADER_REPORTING_SUMMARY_PROGRESS,
 	TABLE_HEADER_REPORTING_SUMMARY_PROGRESS_ACTIVITY_CONSTRUCTION,
+	TABLE_HEADER_REPORTING_SUMMARY_PROGRESS_ACTIVITY_TNC,
 } from "utils/constants";
 
-import { ReportProgressSummaryConstructionInterface } from "@wakra-project/common";
+import {
+	ReportProgressSummaryConstructionInterface,
+	ReportProgressSummaryTestingCommissioningInterface,
+} from "@wakra-project/common";
 
 import {
 	Button,
@@ -110,10 +114,6 @@ export const ReportingSummaryProgressTable = ({
 
 		return [] as ReportProgressSummaryConstructionInterface[];
 	}, [report, sort]);
-
-	useEffect(() => {
-		console.log("reportSorted", reportSorted);
-	}, [reportSorted]);
 
 	// const reportSortedCSV = useMemo(() => {
 	// 	let csvData = "";

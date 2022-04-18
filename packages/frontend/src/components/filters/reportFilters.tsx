@@ -35,7 +35,7 @@ import { ReportFilterType, ReportFilter } from "@wakra-project/common";
 import { getToken } from "utils/storage";
 import { AxiosRequestConfig } from "axios";
 
-// const defaultItem: ReportFilter = { id: "-1", name: " " };
+const defaultFilterItem = { id: "-1", name: "" } as ReportFilter;
 
 const defaultReportFilters = {
 	date: null,
@@ -223,8 +223,9 @@ export const ReportFilters = ({
 									disablePortal
 									options={getListItems(filterPhaseData)}
 									getOptionLabel={(option) => option.name}
+									value={filterPhaseData ? reportFilters.phase : defaultFilterItem}
+									isOptionEqualToValue={(option, value) => option.id === value.id}
 									loading
-									inputValue={filter?.phase?.name}
 									onChange={(_, value) => {
 										handleReportFilterAutoCompleteChange("phase", value);
 									}}
@@ -256,7 +257,10 @@ export const ReportFilters = ({
 									options={getListItems(filterClassificationData)}
 									getOptionLabel={(option) => option.name}
 									loading
-									inputValue={filter?.classification?.name}
+									value={
+										filterPhaseData ? reportFilters.classification : defaultFilterItem
+									}
+									isOptionEqualToValue={(option, value) => option.id === value.id}
 									onChange={(_, value) => {
 										handleReportFilterAutoCompleteChange("classification", value);
 									}}
