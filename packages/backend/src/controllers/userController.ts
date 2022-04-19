@@ -36,7 +36,7 @@ export const getUserInfoController = async (req: RequestAuthInterface, res: Resp
 
 		const returnUser = { ...results[0][0] } as UserInfo;
 
-		handleServerResponse(res, 200, {
+		handleServerResponse(res, req, 200, {
 			__typename: returnUser.__typename,
 			success: true,
 			message: "Get user info success",
@@ -45,7 +45,7 @@ export const getUserInfoController = async (req: RequestAuthInterface, res: Resp
 	} catch (error) {
 		logger.error(`@getUserInfoController Error ${error}`);
 
-		handleServerError(res, 500, {
+		handleServerError(res, req, 500, {
 			success: false,
 			message: "Get user info error",
 			error: error as Error,

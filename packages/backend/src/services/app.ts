@@ -22,9 +22,10 @@ const initializeAppExpress = (): Express => {
 	app.use(express.json());
 	app.use(cors(corsOptions));
 
-	app.all("*", (req: RequestWithMetrics, res, next) => {
+	app.all("*", (req: RequestWithMetrics, _, next) => {
 		req.startTime = new Date();
-		logger.info("@@@ENTRY FN HERE");
+		logger.info(`URL: ${req.url}:`);
+		logger.info(`${req.startTime}:`);
 		next();
 	});
 

@@ -37,7 +37,7 @@ export const loginController = async (req: RequestAuthInterface, res: Response):
 		const returnUser = { ...results[0][0] } as UserInfo;
 		const returnToken = generateAccessToken(returnUser);
 
-		handleServerResponse(res, 200, {
+		handleServerResponse(res, req, 200, {
 			__typename: returnToken.__typename,
 			success: true,
 			message: "Login success",
@@ -45,7 +45,7 @@ export const loginController = async (req: RequestAuthInterface, res: Response):
 		});
 	} catch (error) {
 		logger.error(`@loginControllers Error ${error}`);
-		handleServerError(res, 500, {
+		handleServerError(res, req, 500, {
 			success: false,
 			message: "Login error",
 			error: error as Error,

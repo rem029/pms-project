@@ -210,7 +210,7 @@ export const getReportProgressDetailController = async (req: RequestAuthInterfac
 
 		console.log("response", response);
 
-		handleServerResponse(res, 200, {
+		handleServerResponse(res, req, 200, {
 			__typename: response.length > 0 ? response[0].__typename : "",
 			success: true,
 			message: "Get report progress detail success",
@@ -218,7 +218,7 @@ export const getReportProgressDetailController = async (req: RequestAuthInterfac
 		});
 	} catch (error) {
 		logger.error(`@reportProgressDetailController error ${error}`);
-		handleServerError(res, 500, {
+		handleServerError(res, req, 500, {
 			success: false,
 			message: "Get report progress detail error",
 			error: error as Error,
@@ -294,7 +294,7 @@ export const getReportProgressSummaryController = async (req: RequestAuthInterfa
 
 		if (filters.phase?.id === "06C") {
 			data = results[0] as ReportProgressSummaryConstruction[];
-			handleServerResponse(res, 200, {
+			handleServerResponse(res, req, 200, {
 				__typename: data.length > 0 ? data[0].__typename : "",
 				success: success,
 				message: message,
@@ -305,7 +305,7 @@ export const getReportProgressSummaryController = async (req: RequestAuthInterfa
 
 		if (filters.phase?.id === "07T") {
 			data = results[0] as ReportProgressSummaryTestingCommissioning[];
-			handleServerResponse(res, 200, {
+			handleServerResponse(res, req, 200, {
 				__typename: data.length > 0 ? data[0].__typename : "",
 				success: success,
 				message: message,
@@ -317,7 +317,7 @@ export const getReportProgressSummaryController = async (req: RequestAuthInterfa
 		throw new Error("Unknown phase id");
 	} catch (error) {
 		logger.error(`@getReportProgressSummaryController error ${error}`);
-		handleServerError(res, 500, {
+		handleServerError(res, req, 500, {
 			success: false,
 			message: "Get report progress summary error",
 			error: error as Error,
@@ -349,14 +349,14 @@ export const getReportFilterController = async (req: RequestAuthInterface, res: 
 
 		const response = results[0] as ReportFilter[];
 
-		handleServerResponse(res, 200, {
+		handleServerResponse(res, req, 200, {
 			success: true,
 			message: "Get filters success",
 			data: response,
 		});
 	} catch (error) {
 		logger.error(`@getReportFilterController error ${error}`);
-		handleServerError(res, 500, {
+		handleServerError(res, req, 500, {
 			success: false,
 			message: "Get filters error",
 			error: error as Error,

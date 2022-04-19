@@ -33,7 +33,7 @@ export const authenticateToken = (req: RequestAuthInterface, res: Response, next
 	const token = tokenFromHeader && tokenFromHeader.split(" ")[1];
 
 	if (!token)
-		return handleServerError(res, 403, {
+		return handleServerError(res, req, 403, {
 			success: false,
 			message: "A token is required for authentication",
 		});
@@ -44,7 +44,7 @@ export const authenticateToken = (req: RequestAuthInterface, res: Response, next
 		req.user = { userId: decodedUser.Usr_Id };
 	} catch (error) {
 		logger.error(`@middleware authenticateToken error: ${JSON.stringify(error)}`);
-		return handleServerError(res, 401, {
+		return handleServerError(res, req, 401, {
 			success: false,
 			message: "Token has expired or invalid.",
 		});

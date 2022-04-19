@@ -8,17 +8,13 @@ const verifyBodyCreateUser = (reqBody: any): { isAccepted: boolean; message: str
 	const hasEmail = reqBody.email && reqBody.email;
 	const hasPassword = reqBody.password && reqBody.password;
 
-	return hasEmail && hasPassword
-		? { isAccepted: true, message: "" }
-		: { isAccepted: false, message: "Invalid body" };
+	return hasEmail && hasPassword ? { isAccepted: true, message: "" } : { isAccepted: false, message: "Invalid body" };
 };
 
 const passwordEncrypt = (password: string): Promise<string> => bcrypt.hash(password, 10);
 
-export const passwordCompare = (
-	password: string,
-	passwordHashed: string
-): Promise<boolean> => bcrypt.compare(password, passwordHashed);
+export const passwordCompare = (password: string, passwordHashed: string): Promise<boolean> =>
+	bcrypt.compare(password, passwordHashed);
 
 export const authenticateLogin = async (
 	req: RequestAuthInterface,
@@ -32,7 +28,7 @@ export const authenticateLogin = async (
 			: "";
 
 	if (!user)
-		return handleServerError(res, 400, {
+		return handleServerError(res, req, 400, {
 			success: false,
 			message: "Credentials are required",
 		});
@@ -46,16 +42,12 @@ export const authenticateLogin = async (
 	next();
 };
 
-export const authenticateCreateUser = async (
-	req: Request,
-	res: Response,
-	next: NextFunction
-): Promise<void> => {
+export const authenticateCreateUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 	logger.info(`@middleware authenticateCreateUser ${JSON.stringify(req.body)}`);
 	const verifyBodyCreateUserResponse = verifyBodyCreateUser(req.body);
 
 	if (!verifyBodyCreateUserResponse.isAccepted)
-		return handleServerError(res, 400, {
+		return handleServerError(res, req, 400, {
 			success: false,
 			message: verifyBodyCreateUserResponse.message,
 		});
