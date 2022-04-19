@@ -37,6 +37,7 @@ export const getUserInfoController = async (req: RequestAuthInterface, res: Resp
 		const returnUser = { ...results[0][0] } as UserInfo;
 
 		handleServerResponse(res, 200, {
+			__typename: returnUser.__typename,
 			success: true,
 			message: "Get user info success",
 			data: returnUser,

@@ -93,7 +93,7 @@ export const TABLE_HEADER_REPORTING_SUMMARY_PROGRESS_ACTIVITY_TNC = {
 	activityFireAlarmSystem: "FIRE ALARM SYSTEM (STANDALONE)",
 	activityFeederPillars: "FEEDER PILLARS",
 	activityFireExtinguishersAndFireBlankets: "FIRE EXTINGUISIHERS & FIRE BLANKETS",
-	activityFeederPillar:
+	activityFeederPillarLvMwPanels:
 		"FEEDER PILLARS, LV, MW PANELS & ELECTRICAL SYSTEMS FOR SUBSTATIONS",
 	activityFinalIntegreationAllSystems:
 		"FINAL INTEGRATION FOR ALL SYSTEMS(FIRE ALARM, CCTV, BMS ETC)",

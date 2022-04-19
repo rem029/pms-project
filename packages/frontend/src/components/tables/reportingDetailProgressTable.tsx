@@ -17,7 +17,7 @@ import { TABLE_HEADER_REPORTING_DETAIL_PROGRESS } from "utils/constants";
 import { parse } from "json2csv";
 import { CSVLink } from "react-csv";
 
-import { ReportProgressDetailInterface } from "@wakra-project/common";
+import { ReportProgressDetail } from "@wakra-project/common";
 
 import {
 	Button,
@@ -54,7 +54,7 @@ type TableOrderBy = "asc" | "desc";
 const tableMaxHeight = 720;
 
 interface ReportingTableProps {
-	data?: ReportProgressDetailInterface[];
+	data?: ReportProgressDetail[];
 	success: boolean;
 	message: string;
 	loading: boolean;
@@ -66,15 +66,14 @@ export const ReportingDetailProgressTable = ({
 	message,
 	loading,
 }: ReportingTableProps): JSX.Element => {
-	const [report, setReport] = useState<ReportProgressDetailInterface[]>([]);
+	const [report, setReport] = useState<ReportProgressDetail[]>([]);
 	const [reportHTMLCSSString, setReportHTMLCSSString] = useState("");
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [openAll, setOpenAll] = useState(false);
 	const [isModalExportOpen, setIsModalExportOpen] = useState(false);
 
-	const [sortBy, setSortBy] =
-		useState<keyof ReportProgressDetailInterface>("inspectionDate");
+	const [sortBy, setSortBy] = useState<keyof ReportProgressDetail>("inspectionDate");
 	const [orderBy, setOrderBy] = useState<TableOrderBy>("desc");
 
 	const tableRef = useRef<HTMLDivElement>(null);
@@ -82,6 +81,8 @@ export const ReportingDetailProgressTable = ({
 	const reportSorted = useMemo(() => {
 		if (report.length > 0) {
 			return [...report].sort((compareReportA, compareReportB) => {
+				if (sortBy === "__typename") return 0;
+
 				const compareA =
 					sortBy === "inspectionDate"
 						? new Date(compareReportA[sortBy]).getTime()
@@ -102,7 +103,7 @@ export const ReportingDetailProgressTable = ({
 			});
 		}
 
-		return [] as ReportProgressDetailInterface[];
+		return [] as ReportProgressDetail[];
 	}, [report, orderBy]);
 
 	// const reportSortedCSV = useMemo(() => {
@@ -304,10 +305,7 @@ export const ReportingDetailProgressTable = ({
 	);
 };
 
-const Row = (props: {
-	openAll: boolean;
-	row: ReportProgressDetailInterface;
-}): JSX.Element => {
+const Row = (props: { openAll: boolean; row: ReportProgressDetail }): JSX.Element => {
 	const { row, openAll } = props;
 	const [open, setOpen] = useState(openAll);
 

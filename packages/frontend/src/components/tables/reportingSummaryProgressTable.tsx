@@ -16,8 +16,8 @@ import {
 } from "utils/constants";
 
 import {
-	ReportProgressSummaryConstructionInterface,
-	ReportProgressSummaryTestingCommissioningInterface,
+	ReportProgressSummaryConstruction,
+	ReportProgressSummaryTestingCommissioning,
 } from "@wakra-project/common";
 
 import {
@@ -36,12 +36,14 @@ import { dateHelperFormat } from "helpers/dateHelper";
 import { Preview } from "@mui/icons-material";
 import { ReportingPrintPreviewModal } from "components/utilities/reportingPrintPreviewModal";
 import { TablePaginationActions } from "components/utilities/tablePaginationActions";
+import { TableOrderBy, sortTableHelper } from "helpers/tableHelper";
 
-type TableOrderBy = "asc" | "desc";
 const tableMaxHeight = 720;
 
 interface ReportingTableProps {
-	data?: ReportProgressSummaryConstructionInterface[];
+	data?:
+		| ReportProgressSummaryConstruction[]
+		| ReportProgressSummaryTestingCommissioning[];
 	success: boolean;
 	message: string;
 	loading: boolean;
@@ -57,13 +59,17 @@ export const ReportingSummaryProgressTable = ({
 	classificationName,
 	phaseName,
 }: ReportingTableProps): JSX.Element => {
-	const [report, setReport] = useState<ReportProgressSummaryConstructionInterface[]>([]);
+	const [report, setReport] = useState<
+		ReportProgressSummaryConstruction[] | ReportProgressSummaryTestingCommissioning[]
+	>([]);
 	const [reportHTMLCSSString, setReportHTMLCSSString] = useState("");
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [isModalExportOpen, setIsModalExportOpen] = useState(false);
 	const [sort, setSort] = useState<{
-		key: keyof ReportProgressSummaryConstructionInterface;
+		key:
+			| keyof ReportProgressSummaryConstruction
+			| keyof ReportProgressSummaryTestingCommissioning;
 		order: TableOrderBy;
 	}>({ key: "inspectionDate", order: "desc" });
 
@@ -73,46 +79,34 @@ export const ReportingSummaryProgressTable = ({
 		if (report.length > 0) {
 			return [...report].sort((compareReportA, compareReportB) => {
 				const { key, order } = sort;
-				if (key === "inspectionDate") {
-					//compare dates
-
-					if (order === "asc")
-						return (
-							new Date(compareReportA[key]).getTime() -
-							new Date(compareReportB[key]).getTime()
-						);
-					if (order === "desc")
-						return (
-							new Date(compareReportB[key]).getTime() -
-							new Date(compareReportA[key]).getTime()
-						);
+				if (compareReportA.__typename === "ReportProgressSummaryConstruction") {
+					return sortTableHelper(
+						compareReportA,
+						compareReportB as ReportProgressSummaryConstruction,
+						{
+							key: key as keyof ReportProgressSummaryConstruction,
+							order: order,
+						}
+					);
 				}
-				if (typeof compareReportA[key] === "number") {
-					if (order === "asc")
-						return Number(compareReportA[key]) - Number(compareReportB[key]);
-					if (order === "desc")
-						return Number(compareReportB[key]) - Number(compareReportA[key]);
-				}
-				if (typeof compareReportA[key] !== "number") {
-					if (
-						order === "asc" &&
-						compareReportA[key].toString().toLowerCase() >
-							compareReportB[key].toString().toLowerCase()
-					)
-						return 1;
-					if (
-						order === "desc" &&
-						compareReportA[key].toString().toLowerCase() <
-							compareReportB[key].toString().toLowerCase()
-					)
-						return -1;
+				if (compareReportA.__typename === "ReportProgressSummaryTestingCommissioning") {
+					return sortTableHelper(
+						compareReportA,
+						compareReportB as ReportProgressSummaryTestingCommissioning,
+						{
+							key: key as keyof ReportProgressSummaryTestingCommissioning,
+							order: order,
+						}
+					);
 				}
 
 				return 0;
 			});
 		}
 
-		return [] as ReportProgressSummaryConstructionInterface[];
+		return [] as
+			| ReportProgressSummaryConstruction[]
+			| ReportProgressSummaryTestingCommissioning[];
 	}, [report, sort]);
 
 	// const reportSortedCSV = useMemo(() => {
@@ -153,7 +147,9 @@ export const ReportingSummaryProgressTable = ({
 	};
 
 	const handleHeaderSort = (
-		headerName: keyof ReportProgressSummaryConstructionInterface
+		headerName:
+			| keyof ReportProgressSummaryConstruction
+			| keyof ReportProgressSummaryTestingCommissioning
 	): void => {
 		setSort((currentSort) => ({
 			key: headerName,
@@ -285,7 +281,9 @@ export const ReportingSummaryProgressTable = ({
 															direction={sort.key === text ? sort.order : "asc"}
 															onClick={() => {
 																handleHeaderSort(
-																	text as keyof ReportProgressSummaryConstructionInterface
+																	text as
+																		| keyof ReportProgressSummaryConstruction
+																		| keyof ReportProgressSummaryTestingCommissioning
 																);
 															}}
 														>
@@ -308,7 +306,9 @@ export const ReportingSummaryProgressTable = ({
 									)}
 
 									{Object.keys(
-										TABLE_HEADER_REPORTING_SUMMARY_PROGRESS_ACTIVITY_CONSTRUCTION
+										phaseName === "Construction"
+											? TABLE_HEADER_REPORTING_SUMMARY_PROGRESS_ACTIVITY_CONSTRUCTION
+											: TABLE_HEADER_REPORTING_SUMMARY_PROGRESS_ACTIVITY_TNC
 									).map((text, index) => {
 										return (
 											<TableCell
@@ -327,7 +327,9 @@ export const ReportingSummaryProgressTable = ({
 													direction={sort.key === text ? sort.order : "asc"}
 													onClick={() => {
 														handleHeaderSort(
-															text as keyof ReportProgressSummaryConstructionInterface
+															text as
+																| keyof ReportProgressSummaryConstruction
+																| keyof ReportProgressSummaryTestingCommissioning
 														);
 													}}
 												>
@@ -336,11 +338,13 @@ export const ReportingSummaryProgressTable = ({
 														sx={{ transform: "rotate(-90deg)" }}
 														lineHeight={1.2}
 													>
-														{
-															TABLE_HEADER_REPORTING_SUMMARY_PROGRESS_ACTIVITY_CONSTRUCTION[
-																text as keyof typeof TABLE_HEADER_REPORTING_SUMMARY_PROGRESS_ACTIVITY_CONSTRUCTION
-															]
-														}
+														{phaseName === "Construction"
+															? TABLE_HEADER_REPORTING_SUMMARY_PROGRESS_ACTIVITY_CONSTRUCTION[
+																	text as keyof typeof TABLE_HEADER_REPORTING_SUMMARY_PROGRESS_ACTIVITY_CONSTRUCTION
+															  ]
+															: TABLE_HEADER_REPORTING_SUMMARY_PROGRESS_ACTIVITY_TNC[
+																	text as keyof typeof TABLE_HEADER_REPORTING_SUMMARY_PROGRESS_ACTIVITY_TNC
+															  ]}
 													</Typography>
 												</TableSortLabel>
 											</TableCell>
@@ -400,32 +404,45 @@ export const ReportingSummaryProgressTable = ({
 	);
 };
 
-const Row = (props: { row: ReportProgressSummaryConstructionInterface }): JSX.Element => {
+const Row = <
+	T extends ReportProgressSummaryConstruction | ReportProgressSummaryTestingCommissioning
+>(props: {
+	row: T;
+}): JSX.Element => {
 	const { row } = props;
+	const rowWithType = useMemo(() => {
+		if (row["__typename"] === "ReportProgressSummaryConstruction")
+			return row as unknown as ReportProgressSummaryConstruction;
+
+		return row as unknown as ReportProgressSummaryTestingCommissioning;
+	}, [row]);
 
 	return (
 		<TableRow>
 			<TableCell component="th" scope="row" align="center">
-				{row.inspectionNumber}
+				{rowWithType.inspectionNumber}
 			</TableCell>
 			<TableCell align="center">
-				{dateHelperFormat(new Date(row.inspectionDate))}
+				{dateHelperFormat(new Date(rowWithType.inspectionDate))}
 			</TableCell>
-			<TableCell align="center">{row.bldgCode}</TableCell>
-			<TableCell align="center">{row.ownerName}</TableCell>
-			<TableCell align="center">{row.typeCode}</TableCell>
-			<TableCell align="center">{row.constructionMethodName}</TableCell>
-			<TableCell align="center">{row.milestoneCode}</TableCell>
-			<TableCell align="center">{row.unit}</TableCell>
-			<TableCell align="center">{row.module}</TableCell>
+			<TableCell align="center">{rowWithType.bldgCode}</TableCell>
+			<TableCell align="center">{rowWithType.ownerName}</TableCell>
+			<TableCell align="center">{rowWithType.typeCode}</TableCell>
+			<TableCell align="center">{rowWithType.constructionMethodName}</TableCell>
+			<TableCell align="center">{rowWithType.milestoneCode}</TableCell>
+			<TableCell align="center">{rowWithType.unit}</TableCell>
+			<TableCell align="center">{rowWithType.module}</TableCell>
 			{Object.keys(row).map((header, index) => {
-				const headerKey = header as keyof ReportProgressSummaryConstructionInterface;
+				const headerKey = header as keyof T;
+
 				if (header.includes("activity"))
 					return (
 						<TableCell
 							key={header + index}
 							align="center"
-							sx={{ backgroundColor: getCSSReportColor(row[headerKey] as number) }}
+							sx={{
+								backgroundColor: getCSSReportColor(row[headerKey] as unknown as number),
+							}}
 						>
 							{`${row[headerKey]}%`}
 						</TableCell>

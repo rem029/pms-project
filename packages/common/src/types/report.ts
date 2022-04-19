@@ -1,4 +1,5 @@
-export type ReportFilterType = {
+export interface ReportFilters {
+	__typename?: "ReportFilters";
 	date: Date | null;
 	phase: ReportFilter | null;
 	classification: ReportFilter | null;
@@ -11,24 +12,28 @@ export type ReportFilterType = {
 	building: ReportFilter | null;
 	showCancelledDocs: boolean;
 	// sortBy: "Date" | "Building" | "Owner" | "Milestone" | "Zone";
-};
+}
 
 export interface ReportFilter {
+	__typename?: "ReportFilter";
 	id: string;
 	name: string;
 }
 
 export type ReportProgressSummaryActivity = {
+	__typename?: "ReportProgressSummaryActivity";
 	id: number;
 	progress: number;
 };
 
 export type ReportProgressDetailActivity = ReportProgressSummaryActivity & {
+	__typename?: "ReportProgressDetailActivity";
 	code: string;
 	name: string;
 	comments: string;
 };
-export interface ReportInterface {
+export interface Report {
+	__typename?: "Report";
 	inspectionNumber: number;
 	inspectionDate: Date;
 	bldgCode: string;
@@ -43,11 +48,13 @@ export interface ReportInterface {
 	classificationName: string;
 	isCancelled: number;
 }
-export interface ReportProgressDetailInterface extends ReportInterface {
+export interface ReportProgressDetail extends Omit<Report, "__typename"> {
+	__typename?: "ReportProgressDetail";
 	activities: ReportProgressDetailActivity[];
 }
 
-export interface ReportProgressSummaryConstructionInterface extends ReportInterface {
+export interface ReportProgressSummaryConstruction extends Omit<Report, "__typename"> {
+	__typename?: "ReportProgressSummaryConstruction";
 	activityFoundation: number;
 	activitySuperStructure: number;
 	activityPartitionBlockWorkPlaster: number;
@@ -71,8 +78,9 @@ export interface ReportProgressSummaryConstructionInterface extends ReportInterf
 	activityOthers: number;
 }
 
-export interface ReportProgressSummaryTestingCommissioningInterface
-	extends ReportInterface {
+export interface ReportProgressSummaryTestingCommissioning
+	extends Omit<Report, "__typename"> {
+	__typename?: "ReportProgressSummaryTestingCommissioning";
 	activityBuildingPreComm: number;
 	activityBooster: number;
 	activityCctv: number;
@@ -87,7 +95,7 @@ export interface ReportProgressSummaryTestingCommissioningInterface
 	activityFireAlarmSystem: number;
 	activityFeederPillars: number;
 	activityFireExtinguishersAndFireBlankets: number;
-	activityFeederPillar: number;
+	activityFeederPillarLvMwPanels: number;
 	activityFinalIntegreationAllSystems: number;
 	activityFinalTncLV: number;
 	activityElevenKvNetwork: number;

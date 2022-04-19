@@ -6,12 +6,15 @@ import { ReportFilters } from "../filters/reportFilters";
 
 import { URL_REPORTING_PROGRESS_DETAILED } from "utils/constants";
 import { useAxios } from "hooks/useAxios";
-import { ReportFilterType, ReportProgressDetailInterface } from "@wakra-project/common";
+import {
+	ReportFilters as ReportFilterFields,
+	ReportProgressDetail,
+} from "@wakra-project/common";
 import { getToken } from "utils/storage";
 
 export const DetailProgressReport = (): JSX.Element => {
 	const { data, loading, success, message, fetch, fetchCancel } = useAxios<
-		ReportProgressDetailInterface[]
+		ReportProgressDetail[]
 	>(URL_REPORTING_PROGRESS_DETAILED, {
 		method: "get",
 		headers: {
@@ -19,7 +22,7 @@ export const DetailProgressReport = (): JSX.Element => {
 		},
 	});
 
-	const handleOnSubmit = (filter: ReportFilterType): void => {
+	const handleOnSubmit = (filter: ReportFilterFields): void => {
 		fetchCancel();
 		fetch({ params: { filter: filter } });
 	};

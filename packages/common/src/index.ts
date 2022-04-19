@@ -1,12 +1,12 @@
 export type {
 	ReportFilter,
-	ReportFilterType,
-	ReportInterface,
+	ReportFilters,
+	Report,
 	ReportProgressDetailActivity,
-	ReportProgressDetailInterface,
+	ReportProgressDetail,
 	ReportProgressSummaryActivity,
-	ReportProgressSummaryConstructionInterface,
-	ReportProgressSummaryTestingCommissioningInterface,
+	ReportProgressSummaryConstruction,
+	ReportProgressSummaryTestingCommissioning,
 } from "./types/report";
 
 export type { Token } from "./types/token";

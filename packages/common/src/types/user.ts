@@ -1,4 +1,5 @@
 export interface UserInfo {
+	__typename?: "UserInfo";
 	Usr_Id: string;
 	Usr_Name: string;
 	Usr_Email: string;

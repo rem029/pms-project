@@ -35,11 +35,13 @@ export const loginController = async (req: RequestAuthInterface, res: Response):
 		if (results.length && results[0][0].IsActive < 1) throw new Error("User not active.");
 
 		const returnUser = { ...results[0][0] } as UserInfo;
+		const returnToken = generateAccessToken(returnUser);
 
 		handleServerResponse(res, 200, {
+			__typename: returnToken.__typename,
 			success: true,
 			message: "Login success",
-			data: generateAccessToken(returnUser),
+			data: returnToken,
 		});
 	} catch (error) {
 		logger.error(`@loginControllers Error ${error}`);

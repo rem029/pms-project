@@ -7,6 +7,7 @@ import { loginRoute } from "routes/loginRoutes";
 import { userRoutes } from "routes/userRoutes";
 import { reportRoutes } from "routes/reportRoutes";
 import { logger } from "utilities/logger";
+import { RequestWithMetrics } from "types";
 
 const initializeAppExpress = (): Express => {
 	const app = express();
@@ -21,18 +22,15 @@ const initializeAppExpress = (): Express => {
 	app.use(express.json());
 	app.use(cors(corsOptions));
 
+	app.all("*", (req: RequestWithMetrics, res, next) => {
+		req.startTime = new Date();
+		logger.info("@@@ENTRY FN HERE");
+		next();
+	});
+
 	app.use("/login", loginRoute);
 	app.use("/user", userRoutes);
 	app.use("/report", reportRoutes);
-
-	app.use(
-		responseTime((req, _, time) => {
-			const stat = (req?.method || "" + req?.url || "").toLowerCase().replace(/[:.]/g, "").replace(/\//g, "_");
-			stats.timing(stat, time);
-
-			logger.info(`${req.method} ${req.url} ${time}ms`);
-		})
-	);
 
 	//Default routes
 	app.get("/test", async (_, res) => {

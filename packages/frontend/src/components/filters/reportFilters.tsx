@@ -31,7 +31,7 @@ import {
 	URL_REPORTING_FILTER_TYPE,
 	URL_REPORTING_FILTER_ZONE,
 } from "utils/constants";
-import { ReportFilterType, ReportFilter } from "@wakra-project/common";
+import { ReportFilters as ReportFilterFields, ReportFilter } from "@wakra-project/common";
 import { getToken } from "utils/storage";
 import { AxiosRequestConfig } from "axios";
 
@@ -49,11 +49,11 @@ const defaultReportFilters = {
 	owner: null,
 	building: null,
 	showCancelledDocs: false,
-} as ReportFilterType;
+} as ReportFilterFields;
 
 interface ReportFiltersInterface {
-	filter?: ReportFilterType;
-	onSubmit?: (filter: ReportFilterType) => void;
+	filter?: ReportFilterFields;
+	onSubmit?: (filter: ReportFilterFields) => void;
 	disableButtonApply?: boolean;
 }
 
@@ -62,7 +62,7 @@ export const ReportFilters = ({
 	onSubmit,
 	disableButtonApply,
 }: ReportFiltersInterface): JSX.Element => {
-	const [reportFilters, setReportFilters] = useState<ReportFilterType>(
+	const [reportFilters, setReportFilters] = useState<ReportFilterFields>(
 		filter ? filter : defaultReportFilters
 	);
 	const [showMore, setShowMore] = useState(false);

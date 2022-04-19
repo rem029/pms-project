@@ -7,8 +7,9 @@ import { ReportFilters } from "../filters/reportFilters";
 import { URL_REPORTING_PROGRESS_SUMMARY } from "utils/constants";
 import { useAxios } from "hooks/useAxios";
 import {
-	ReportFilterType,
-	ReportProgressSummaryConstructionInterface,
+	ReportFilters as ReportFieldFields,
+	ReportProgressSummaryConstruction,
+	ReportProgressSummaryTestingCommissioning,
 } from "@wakra-project/common";
 import { getToken } from "utils/storage";
 import { useState } from "react";
@@ -26,7 +27,7 @@ const defaultReportFilters = {
 	owner: null,
 	building: null,
 	showCancelledDocs: false,
-} as ReportFilterType;
+} as ReportFieldFields;
 
 export const SummaryProgressReport = (): JSX.Element => {
 	const [reportName, setReportName] = useState({
@@ -35,7 +36,7 @@ export const SummaryProgressReport = (): JSX.Element => {
 	});
 
 	const { data, loading, success, message, fetch, fetchCancel } = useAxios<
-		ReportProgressSummaryConstructionInterface[]
+		ReportProgressSummaryConstruction[] | ReportProgressSummaryTestingCommissioning[]
 	>(URL_REPORTING_PROGRESS_SUMMARY, {
 		method: "get",
 		headers: {
@@ -44,7 +45,7 @@ export const SummaryProgressReport = (): JSX.Element => {
 		params: { filter: defaultReportFilters },
 	});
 
-	const handleOnSubmit = (filter: ReportFilterType): void => {
+	const handleOnSubmit = (filter: ReportFieldFields): void => {
 		fetchCancel();
 		setReportName({
 			classificationName: filter.classification?.name,

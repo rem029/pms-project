@@ -5,18 +5,16 @@ import { handleServerResponse, handleServerError } from "helpers/serverResponse"
 import { REPORT_FILTER } from "utilities/constants";
 import {
 	ReportFilter,
-	ReportFilterType,
-	ReportProgressDetailInterface,
-	ReportProgressSummaryConstructionInterface,
-	ReportProgressSummaryTestingCommissioningInterface,
+	ReportFilters,
+	ReportProgressDetail,
+	ReportProgressSummaryConstruction,
+	ReportProgressSummaryTestingCommissioning,
 } from "@wakra-project/common";
 
 import { RequestAuthInterface } from "types";
 
-const formatReportProgressDetailController = (
-	response: ReportProgressDetailInterface[]
-): ReportProgressDetailInterface[] => {
-	let returnArray: ReportProgressDetailInterface[] = [];
+const formatReportProgressDetailController = (response: ReportProgressDetail[]): ReportProgressDetail[] => {
+	let returnArray: ReportProgressDetail[] = [];
 
 	for (const items of response) {
 		returnArray = [...returnArray, { ...items, activities: JSON.parse(items.activities.toString()) }];
@@ -25,7 +23,7 @@ const formatReportProgressDetailController = (
 	return returnArray;
 };
 
-const defaultReportFilters: ReportFilterType = {
+const defaultReportFilters: ReportFilters = {
 	date: null,
 	phase: null,
 	classification: null,
@@ -37,9 +35,10 @@ const defaultReportFilters: ReportFilterType = {
 	owner: null,
 	building: null,
 	showCancelledDocs: false,
+	__typename: "ReportFilters",
 };
 
-const getReportFilter = (filters: ReportFilterType): { queryFilter: string; queryBindings: any[] } => {
+const getReportFilter = (filters: ReportFilters): { queryFilter: string; queryBindings: any[] } => {
 	const queryFilter = `
 				WHERE ${filters.date ? "DATE(InsH_Dt) = Date(?)" : "TRUE"}
 				AND ${filters.phase ? "pmsysdb.phasem.Phs_Cd = ?" : "TRUE"}
@@ -57,7 +56,7 @@ const getReportFilter = (filters: ReportFilterType): { queryFilter: string; quer
 	const queryBindings: any[] = [];
 
 	for (const keys in filters) {
-		const keyItem = keys as keyof ReportFilterType;
+		const keyItem = keys as keyof ReportFilters;
 		const currentItem = filters[keyItem];
 
 		if (currentItem !== null && keyItem !== "zone" && keyItem !== "section") {
@@ -140,9 +139,7 @@ const getReportSummaryColumns = (phaseId: string): string => {
 export const getReportProgressDetailController = async (req: RequestAuthInterface, res: Response): Promise<void> => {
 	try {
 		logger.info("@reportProgressDetailController");
-		const filters = req.query.filter
-			? (JSON.parse(req.query.filter as string) as ReportFilterType)
-			: defaultReportFilters;
+		const filters = req.query.filter ? (JSON.parse(req.query.filter as string) as ReportFilters) : defaultReportFilters;
 		const { queryFilter, queryBindings } = getReportFilter(filters);
 
 		const results = await knexMySQL.raw(
@@ -205,14 +202,16 @@ export const getReportProgressDetailController = async (req: RequestAuthInterfac
 			queryBindings
 		);
 
-		console.log("@reportProgressDetailController filters", filters);
-		console.log("@reportProgressDetailController getReportFilter", getReportFilter(filters));
+		logger.info(`@reportProgressDetailController filters ${JSON.stringify(filters)}`);
+		logger.info(`@reportProgressDetailController queryFilter ${queryFilter}`);
+		logger.info(`@reportProgressDetailController queryBindings ${queryBindings}`);
 
-		const response = formatReportProgressDetailController(results[0] as ReportProgressDetailInterface[]);
+		const response = formatReportProgressDetailController(results[0] as ReportProgressDetail[]);
 
 		console.log("response", response);
 
 		handleServerResponse(res, 200, {
+			__typename: response.length > 0 ? response[0].__typename : "",
 			success: true,
 			message: "Get report progress detail success",
 			data: response,
@@ -230,9 +229,7 @@ export const getReportProgressDetailController = async (req: RequestAuthInterfac
 export const getReportProgressSummaryController = async (req: RequestAuthInterface, res: Response): Promise<void> => {
 	try {
 		logger.info("@getReportProgressSummaryController");
-		const filters = req.query.filter
-			? (JSON.parse(req.query.filter as string) as ReportFilterType)
-			: defaultReportFilters;
+		const filters = req.query.filter ? (JSON.parse(req.query.filter as string) as ReportFilters) : defaultReportFilters;
 		const { queryFilter, queryBindings } = getReportFilter(filters);
 
 		const results = await knexMySQL.raw(
@@ -287,26 +284,32 @@ export const getReportProgressSummaryController = async (req: RequestAuthInterfa
 		// ********TBD ZONE FILTER
 		// ********TBD SECTION FILTER
 
-		console.log("@getReportProgressSummaryController filters", filters);
-		console.log("@getReportProgressSummaryController getReportFilter", getReportFilter(filters));
+		logger.info(`@getReportProgressSummaryController filters ${JSON.stringify(filters)}`);
+		logger.info(`@getReportProgressSummaryController queryFilter ${queryFilter}`);
+		logger.info(`@getReportProgressSummaryController queryBindings ${queryBindings}`);
 
 		const success = true;
 		const message = "Get report progress summary success";
+		let data: ReportProgressSummaryConstruction[] | ReportProgressSummaryTestingCommissioning[] = [];
 
 		if (filters.phase?.id === "06C") {
+			data = results[0] as ReportProgressSummaryConstruction[];
 			handleServerResponse(res, 200, {
+				__typename: data.length > 0 ? data[0].__typename : "",
 				success: success,
 				message: message,
-				data: results[0] as ReportProgressSummaryConstructionInterface[],
+				data: data,
 			});
 			return;
 		}
 
 		if (filters.phase?.id === "07T") {
+			data = results[0] as ReportProgressSummaryTestingCommissioning[];
 			handleServerResponse(res, 200, {
+				__typename: data.length > 0 ? data[0].__typename : "",
 				success: success,
 				message: message,
-				data: results[0] as ReportProgressSummaryTestingCommissioningInterface[],
+				data: data,
 			});
 			return;
 		}
