@@ -26,5 +26,6 @@
       "fix": "Bug Fix",
       "tech": "Tech"
     }
-  }
+  },
+  "version": "0.0.0"
 }
