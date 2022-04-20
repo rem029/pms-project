@@ -34,17 +34,38 @@ yarn start
    - Prettier
    - ESLint
 
-## Branch naming (MUST FOLLOW)
+## Branch naming and commit message (MUST FOLLOW)
 
-To easily generate changelog we must follow branch naming as per below:
-
-```sh
-<feat | fix | tech>(<title>): <Description>
-```
+Types
 
 - feat - new/additional features.
 - fix - improvement/bug fix on existing features.
 - tech - refactor code, etc.
+
+# Branch naming
+
+```sh
+<type>/<title>
+```
+
+Ex.
+
+```
+feat/dashboard
+feat/login
+fix/dashboard
+fix/login
+fix/login-performance
+tech/user-input
+```
+
+# Commit messages
+
+To easily generate changelog we must follow branch naming as per below:
+
+```sh
+<type>(<title>): <Description>
+```
 
 Ex.
 
