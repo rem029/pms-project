@@ -29,7 +29,7 @@ import { useNavigate } from "react-router-dom";
 import { URL_USER } from "utils/constants";
 import { getToken } from "utils/storage";
 import { getUserContext } from "store/userProvider";
-import { dateHelperFormatProper, dayNames } from "helpers/dateHelper";
+import { dateHelperFormatProper } from "helpers/dateHelper";
 import { OpenWeatherResponse } from "types";
 
 interface AppDrawerProps extends MuiAppBarProps {
