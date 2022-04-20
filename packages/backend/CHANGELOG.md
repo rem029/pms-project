@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0](https://github.com/rem029/wakra-project/compare/v1.0.0-alpha.10...v1.0.0) (2022-04-20)
+
+
+### Features
+
+* update package.json ([fe6e0bb](https://github.com/rem029/wakra-project/commit/fe6e0bbf720e81eac3c05ab7f7552b4f3954ca6b))
+
+
+
+
+
 # [1.0.0-alpha.9](https://github.com/rem029/wakra-project/compare/v1.0.0-alpha.8...v1.0.0-alpha.9) (2022-04-20)
 
 
