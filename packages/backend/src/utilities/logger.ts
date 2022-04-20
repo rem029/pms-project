@@ -2,7 +2,6 @@ import winston from "winston";
 import fs from "fs";
 import { get } from "helpers/now";
 import path from "path";
-import moment from "moment-timezone";
 const logDir = "__logs";
 
 if (!fs.existsSync(logDir)) {

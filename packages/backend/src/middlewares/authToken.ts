@@ -32,11 +32,13 @@ export const authenticateToken = (req: RequestAuthInterface, res: Response, next
 	const tokenFromHeader = req.headers["authorization"];
 	const token = tokenFromHeader && tokenFromHeader.split(" ")[1];
 
-	if (!token)
-		return handleServerError(res, req, 403, {
+	if (!token) {
+		handleServerError(res, req, 403, {
 			success: false,
 			message: "A token is required for authentication",
 		});
+		return;
+	}
 
 	try {
 		const decodedUser = decodeToken(token) as UserInfo;

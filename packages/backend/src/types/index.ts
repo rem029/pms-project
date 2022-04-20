@@ -13,5 +13,5 @@ export interface ResponseInterface<T> {
 	message: string;
 	__typename?: string;
 	data?: T;
-	error?: Error;
+	errorMessage?: string;
 }

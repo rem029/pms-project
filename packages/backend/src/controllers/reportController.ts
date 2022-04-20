@@ -47,7 +47,7 @@ const getReportFilter = (filters: ReportFilters): { queryFilter: string; queryBi
 				AND ${filters.milestone ? "pmsysdb.buildm.Mst_Cd = ?" : "TRUE"}
 				AND ${filters.type ? "pmsysdb.buildm.Typ_Cd = ?" : "TRUE"}
 				AND ${filters.owner ? "pmsysdb.ownm.Own_Cd = ?" : "TRUE"}
-				AND  InsH_Cancelled = ?
+				AND  ${filters.showCancelledDocs ? "TRUE" : "InsH_Cancelled = FALSE"}
 	`;
 
 	// ********TBD ZONE FILTER
@@ -58,9 +58,15 @@ const getReportFilter = (filters: ReportFilters): { queryFilter: string; queryBi
 	for (const keys in filters) {
 		const keyItem = keys as keyof ReportFilters;
 		const currentItem = filters[keyItem];
-
-		if (currentItem !== null && keyItem !== "zone" && keyItem !== "section") {
-			if (keyItem !== "date" && keyItem !== "showCancelledDocs") {
+		console.log("@getReportFilter loop", keyItem, currentItem);
+		if (
+			currentItem !== null &&
+			keyItem !== "__typename" &&
+			keyItem !== "zone" &&
+			keyItem !== "section" &&
+			keyItem !== "showCancelledDocs"
+		) {
+			if (keyItem !== "date") {
 				queryBindings.push((currentItem as ReportFilter).id);
 			} else {
 				queryBindings.push(currentItem);
@@ -142,6 +148,9 @@ export const getReportProgressDetailController = async (req: RequestAuthInterfac
 		const filters = req.query.filter ? (JSON.parse(req.query.filter as string) as ReportFilters) : defaultReportFilters;
 		const { queryFilter, queryBindings } = getReportFilter(filters);
 
+		logger.info(`@reportProgressDetailController queryFilter ${queryFilter}`);
+		logger.info(`@reportProgressDetailController queryBindings ${JSON.stringify(queryBindings)}`);
+
 		const results = await knexMySQL.raw(
 			`
 				SELECT 
@@ -202,13 +211,7 @@ export const getReportProgressDetailController = async (req: RequestAuthInterfac
 			queryBindings
 		);
 
-		logger.info(`@reportProgressDetailController filters ${JSON.stringify(filters)}`);
-		logger.info(`@reportProgressDetailController queryFilter ${queryFilter}`);
-		logger.info(`@reportProgressDetailController queryBindings ${queryBindings}`);
-
 		const response = formatReportProgressDetailController(results[0] as ReportProgressDetail[]);
-
-		console.log("response", response);
 
 		handleServerResponse(res, req, 200, {
 			__typename: response.length > 0 ? response[0].__typename : "",
@@ -221,7 +224,7 @@ export const getReportProgressDetailController = async (req: RequestAuthInterfac
 		handleServerError(res, req, 500, {
 			success: false,
 			message: "Get report progress detail error",
-			error: error as Error,
+			errorMessage: (error as Error).message,
 		});
 	}
 };
@@ -231,6 +234,9 @@ export const getReportProgressSummaryController = async (req: RequestAuthInterfa
 		logger.info("@getReportProgressSummaryController");
 		const filters = req.query.filter ? (JSON.parse(req.query.filter as string) as ReportFilters) : defaultReportFilters;
 		const { queryFilter, queryBindings } = getReportFilter(filters);
+
+		logger.info(`@getReportProgressSummaryController queryFilter ${queryFilter}`);
+		logger.info(`@getReportProgressSummaryController queryBindings ${JSON.stringify(queryBindings)}`);
 
 		const results = await knexMySQL.raw(
 			`
@@ -284,10 +290,6 @@ export const getReportProgressSummaryController = async (req: RequestAuthInterfa
 		// ********TBD ZONE FILTER
 		// ********TBD SECTION FILTER
 
-		logger.info(`@getReportProgressSummaryController filters ${JSON.stringify(filters)}`);
-		logger.info(`@getReportProgressSummaryController queryFilter ${queryFilter}`);
-		logger.info(`@getReportProgressSummaryController queryBindings ${queryBindings}`);
-
 		const success = true;
 		const message = "Get report progress summary success";
 		let data: ReportProgressSummaryConstruction[] | ReportProgressSummaryTestingCommissioning[] = [];
@@ -320,7 +322,7 @@ export const getReportProgressSummaryController = async (req: RequestAuthInterfa
 		handleServerError(res, req, 500, {
 			success: false,
 			message: "Get report progress summary error",
-			error: error as Error,
+			errorMessage: (error as Error).message,
 		});
 	}
 };
@@ -359,7 +361,7 @@ export const getReportFilterController = async (req: RequestAuthInterface, res: 
 		handleServerError(res, req, 500, {
 			success: false,
 			message: "Get filters error",
-			error: error as Error,
+			errorMessage: (error as Error).message,
 		});
 	}
 };

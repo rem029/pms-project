@@ -15,7 +15,7 @@ GET http://localhost:6060/user/
 Authorization: Token {{token}}
 
 ### GET REPORT PROGRESS DETAIL CONSTRUCTION
-GET http://localhost:6060/report/progress-detail?filter={"phase":{"id":"06C","name":null} ,"showCancelledDocs":false}
+GET http://localhost:6060/report/progress-detail?filter={"phase":{"id":"06C","name":null}}
 Authorization: Token {{token}}
 
 

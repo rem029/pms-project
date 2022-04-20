@@ -538,31 +538,6 @@ export const ReportFilters = ({
 							/>
 						</Grid>
 
-						{/* <Grid item xs={6} md={12}>
-							<FormControl>
-								<FormLabel id="sortBy">Sort By</FormLabel>
-								<RadioGroup
-									row
-									defaultValue={reportFilters.sortBy}
-									name="radio-buttons-group"
-								>
-									<FormControlLabel value="Date" control={<Radio />} label="Date" />
-									<FormControlLabel
-										value="Building"
-										control={<Radio />}
-										label="Building"
-									/>
-									<FormControlLabel value="Owner" control={<Radio />} label="Owner" />
-									<FormControlLabel
-										value="Milestone"
-										control={<Radio />}
-										label="Milestone"
-									/>
-									<FormControlLabel value="Zone" control={<Radio />} label="Zone" />
-								</RadioGroup>
-							</FormControl>
-						</Grid> */}
-
 						<Grid item xs={12} md={6} lg={6} xl={6} justifyContent="space-evenly">
 							<Button
 								variant="contained"

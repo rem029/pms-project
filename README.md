@@ -1,6 +1,6 @@
 # Welcome to wakra-project 👋
 
-> ReactTS + NodeTS
+> Typescript React + Node
 
 ## Install
 
@@ -14,7 +14,7 @@ Apps required (skip if already installed in your workstation)
 6. Install lerna
 
 ```sh
-npm -g i lerna
+yarn add global lerna
 ```
 
 7. on root folder run to install packages:
@@ -60,6 +60,21 @@ fix(login): improve performance login.
 // refactor or etc.
 tech(user-input): refactor debounce.
 ```
+
+## Packages guide
+
+Path
+
+```
+wakra-project/packages/
+```
+
+- backend
+  - Backend server for wakra-project
+- frontend
+  - Frontend UI for wakra-project
+- common
+  - Shared types between backend and frontend. Mostly used to API response data types.
 
 ## Usage
 

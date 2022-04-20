@@ -10,9 +10,9 @@ export const handleServerResponse = <T>(
 ): void => {
 	const endTime = new Date();
 	const startTime = req.startTime ? req.startTime.getTime() : 0;
-	logger.info(`URL: ${req.url}:`);
-	logger.info(`startTime: ${req.startTime?.toUTCString()}`);
-	logger.info(`endTime: ${endTime.toUTCString()}`);
+	logger.info(`Route: ${req.url}`);
+	logger.info(`Start time: ${req.startTime}`);
+	logger.info(`End Time: ${endTime}`);
 	logger.info(`responseTime(ms): ${endTime.getTime() - startTime}`);
 	res.status(code).json(payload);
 };
@@ -25,10 +25,10 @@ export const handleServerError = <T>(
 ): void => {
 	const endTime = new Date();
 	const startTime = req.startTime ? req.startTime.getTime() : 0;
-	logger.info(`URL: ${req.url}:`);
-	logger.info(`startTime: ${req.startTime?.toUTCString()}`);
-	logger.info(`endTime: ${endTime.toUTCString()}`);
-	logger.info(`responseTime(ms): ${endTime.getTime() - startTime}`);
-	logger.info(`@handleError ${code} payload: ${JSON.stringify(payload)}`);
+	logger.error(`Route: ${req.url}`);
+	logger.error(`Start time: ${req.startTime}`);
+	logger.error(`End Time: ${endTime}`);
+	logger.error(`responseTime(ms): ${endTime.getTime() - startTime}`);
+	logger.error(`@handleError ${code} payload: ${JSON.stringify(payload)}`);
 	res.status(code).json(payload);
 };
