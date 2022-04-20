@@ -39,10 +39,10 @@ yarn start
 To easily generate changelog we must follow branch naming as per below:
 
 ```sh
-<feature | fix | tech>(<title>): <Description>
+<feat | fix | tech>(<title>): <Description>
 ```
 
-- feature - new/additional features.
+- feat - new/additional features.
 - fix - improvement/bug fix on existing features.
 - tech - refactor code, etc.
 
@@ -50,8 +50,8 @@ Ex.
 
 ```
 // new features
-feature(dashboard): improved UI.
-feature(login): added login UI.
+feat(dashboard): improved UI.
+feat(login): added login UI.
 
 // bug fixing
 fix(dashboard): Bug fix.
