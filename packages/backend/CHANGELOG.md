@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.9](https://github.com/rem029/wakra-project/compare/v1.0.0-alpha.8...v1.0.0-alpha.9) (2022-04-20)
+
+
+### Bug Fixes
+
+* **backend-user-login:** controller response types fix ([4b82df2](https://github.com/rem029/wakra-project/commit/4b82df28a96ff6a896d522b77d25da8f32822530))
+
+
+
+
+
 # [1.0.0-alpha.8](https://github.com/rem029/wakra-project/compare/v1.0.0-alpha.7...v1.0.0-alpha.8) (2022-04-20)
 
 

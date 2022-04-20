@@ -1,7 +1,7 @@
 {
 	"name": "@wakra-project/frontend",
 	"description": "Frontend for wakra project",
-	"version": "1.0.0-alpha.8",
+	"version": "1.0.0-alpha.9",
 	"private": true,
 	"dependencies": {
 		"@emotion/react": "^11.9.0",
