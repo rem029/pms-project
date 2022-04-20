@@ -1,7 +1,7 @@
 {
 	"name": "@wakra-project/backend",
 	"description": "Backend for wakra project",
-	"version": "1.0.0-alpha.7",
+	"version": "1.0.0-alpha.8",
 	"main": "src/index.js",
 	"private": true,
 	"scripts": {

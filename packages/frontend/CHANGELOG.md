@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.8](https://github.com/rem029/wakra-project/compare/v1.0.0-alpha.7...v1.0.0-alpha.8) (2022-04-20)
+
+
+### Bug Fixes
+
+* **report-progress-detail:** fix error on initial load of report progress detail. updated root README.md ([60231c8](https://github.com/rem029/wakra-project/commit/60231c82a5f57b7f368ea13c4612c52e8e26395b))
+
+
+
+
+
 # [1.0.0-alpha.7](https://github.com/rem029/wakra-project/compare/v1.0.0-alpha.6...v1.0.0-alpha.7) (2022-04-19)
 
 **Note:** Version bump only for package @wakra-project/frontend
