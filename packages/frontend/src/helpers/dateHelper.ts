@@ -1,3 +1,28 @@
+export const monthNames = [
+	"Jan",
+	"Feb",
+	"Mar",
+	"Apr",
+	"May",
+	"Jun",
+	"July",
+	"Aug",
+	"Sep",
+	"Oct",
+	"Nov",
+	"Dec",
+];
+
+export const dayNames = [
+	"Monday",
+	"Tuesday",
+	"Wednesday",
+	"Thursday",
+	"Friday",
+	"Saturday",
+	"Sunday",
+];
+
 export const dateHelperFormat = (date: Date): string => {
 	const day =
 		date.getDate().toLocaleString().length > 1
@@ -13,31 +38,6 @@ export const dateHelperFormat = (date: Date): string => {
 };
 
 export const dateHelperFormatProper = (date: Date): string => {
-	const monthNames = [
-		"Jan",
-		"Feb",
-		"Mar",
-		"Apr",
-		"May",
-		"Jun",
-		"July",
-		"Aug",
-		"Sep",
-		"Oct",
-		"Nov",
-		"Dec",
-	];
-
-	const dayNames = [
-		"Monday",
-		"Tuesday",
-		"Wednesday",
-		"Thursday",
-		"Friday",
-		"Saturday",
-		"Sunday",
-	];
-
 	const day =
 		date.getDate().toString().length > 1
 			? date.getDate().toString()

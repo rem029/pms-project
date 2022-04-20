@@ -11,8 +11,13 @@ import {
 import { Main } from "pages/main";
 import { NotFound } from "pages/notFound";
 import { StoreProvider } from "store";
+import { useEffect } from "react";
 
 export const Routing = (): JSX.Element => {
+	useEffect(() => {
+		console.log("Routing rendered");
+	}, []);
+
 	return (
 		<BrowserRouter>
 			<StoreProvider maxNotification={3}>

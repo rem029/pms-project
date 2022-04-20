@@ -4,17 +4,21 @@ import { useSnackbar } from "notistack";
 import { getUserContext } from "store/userProvider";
 import { NOTISTACK_AUTO_HIDE_MS } from "utils/constants";
 
+export interface AxiosRequestCustomConfig extends AxiosRequestConfig {
+	dontLogoutOnAuthError?: boolean;
+}
+
 export const useAxios = <T>(
 	url: string,
-	config?: AxiosRequestConfig
+	config?: AxiosRequestCustomConfig
 ): {
 	data: T | undefined;
 	error: AxiosError | undefined;
 	message: string;
 	success: boolean;
 	loading: boolean;
-	config: AxiosRequestConfig | undefined;
-	fetch: (config?: AxiosRequestConfig) => void;
+	config: AxiosRequestCustomConfig | undefined;
+	fetch: (config?: AxiosRequestCustomConfig) => void;
 	fetchCancel: () => void;
 } => {
 	const [loading, setLoading] = useState(false);
@@ -49,7 +53,7 @@ export const useAxios = <T>(
 		if (axiosController) axiosController.abort();
 	};
 
-	const fetch = (config?: AxiosRequestConfig): void => {
+	const fetch = (config?: AxiosRequestCustomConfig): void => {
 		resetState();
 
 		const controller = new AbortController();
@@ -65,9 +69,9 @@ export const useAxios = <T>(
 		request(url)
 			.then((response) => {
 				setLoading(false);
-				setData(response.data.data);
-				setMessage(response.data.message);
-				setSuccess(response.data.success);
+				setData(response.data.data ? response.data.data : response.data);
+				setMessage(response.data.message ? response.data.message : response.statusText);
+				setSuccess(true);
 			})
 			.catch((error: AxiosError) => {
 				if (error) {
@@ -78,11 +82,13 @@ export const useAxios = <T>(
 
 					if (error.response?.status === 401 || error.response?.status === 403) {
 						resetState();
-						logout();
+						if (config && !config.dontLogoutOnAuthError) {
+							logout();
+						}
 						return;
 					}
 					setData(error.response?.data?.data || undefined);
-					setSuccess(error.response?.data.success);
+					setSuccess(false);
 					setMessage(error.response?.data.message || error.message);
 					setError(error);
 					setLoading(false);

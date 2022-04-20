@@ -29,7 +29,9 @@ import { useNavigate } from "react-router-dom";
 import { URL_USER } from "utils/constants";
 import { getToken } from "utils/storage";
 import { getUserContext } from "store/userProvider";
-import { dateHelperFormatProper } from "helpers/dateHelper";
+import { dateHelperFormatProper, dayNames } from "helpers/dateHelper";
+import { OpenWeatherResponse } from "types";
+
 interface AppDrawerProps extends MuiAppBarProps {
 	open?: boolean;
 	setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -55,6 +57,7 @@ export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element
 	const [userName, setUserName] = useState("");
 	const [subMenuOpenReporting, setSubMenuOpenReporting] = useState<boolean>(false);
 	const { logout } = getUserContext();
+	const [weatherStats, setWeatherStats] = useState({} as OpenWeatherResponse);
 
 	const {
 		data: userData,
@@ -68,9 +71,36 @@ export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element
 		},
 	});
 
+	const {
+		data: weatherData,
+		loading: weatherLoading,
+		success: weatherSuccess,
+		error: weatherError,
+		fetch: weatherFetch,
+	} = useAxios<OpenWeatherResponse>(`https://api.openweathermap.org/data/2.5/weather`);
+
 	useEffect(() => {
-		console.log("appDrawer", process.env.OPEN_WEATHER_API_KEY);
+		navigator.geolocation.getCurrentPosition((position) => {
+			weatherFetch({
+				method: "GET",
+				dontLogoutOnAuthError: true,
+				params: {
+					lat: position.coords.latitude,
+					lon: position.coords.longitude,
+					units: "metric",
+					appid: process.env.REACT_APP_OPEN_WEATHER_API_KEY,
+				},
+			});
+		});
 	}, []);
+
+	useEffect(() => {
+		// if (weatherError)
+
+		if (!weatherLoading && weatherSuccess && weatherData) {
+			setWeatherStats(weatherData);
+		}
+	}, [weatherData, weatherLoading, weatherSuccess, weatherError]);
 
 	useEffect(() => {
 		if (userError) setUserName("Error");
@@ -78,7 +108,7 @@ export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element
 		if (!userLoading && userSuccess && userData) {
 			setUserName(userData.Usr_Name);
 		}
-	}, [userData, userLoading, userSuccess]);
+	}, [userData, userLoading, userSuccess, userError]);
 
 	const handleDrawerClose = (): void => {
 		if (setOpen) setOpen(false);
@@ -121,8 +151,7 @@ export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element
 				<ListItem>
 					<ListItemText>
 						<Typography variant="body1" noWrap letterSpacing={1}>
-							Hello,
-							{userLoading ? <CircularProgress size={24} /> : userName}
+							{userLoading ? <CircularProgress size={24} /> : `Hello, ${userName}`}
 						</Typography>
 					</ListItemText>
 
@@ -135,12 +164,26 @@ export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element
 					</ListItemIcon>
 				</ListItem>
 				<ListItem>
+					<ListItemText>
+						<Typography variant="caption" noWrap letterSpacing={1}>
+							{`${
+								weatherStats?.main?.temp ? Math.round(weatherStats.main.temp) + "C" : ""
+							}, Feels like ${
+								weatherStats?.main?.feels_like
+									? Math.round(weatherStats.main.feels_like) + "C"
+									: ""
+							}`}
+						</Typography>
+					</ListItemText>
+
 					<ListItemIcon>
 						<WbSunny htmlColor={yellow[600]} />
 					</ListItemIcon>
+				</ListItem>
+				<ListItem>
 					<ListItemText>
-						<Typography variant="body1" noWrap letterSpacing={1}>
-							24C, Thursday
+						<Typography variant="caption" noWrap letterSpacing={1}>
+							{weatherStats?.name + ", " + weatherStats?.sys?.country}
 						</Typography>
 					</ListItemText>
 				</ListItem>
