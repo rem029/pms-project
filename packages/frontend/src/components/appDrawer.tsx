@@ -69,6 +69,10 @@ export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element
 	});
 
 	useEffect(() => {
+		console.log("appDrawer", process.env.OPEN_WEATHER_API_KEY);
+	}, []);
+
+	useEffect(() => {
 		if (userError) setUserName("Error");
 
 		if (!userLoading && userSuccess && userData) {

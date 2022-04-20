@@ -48,7 +48,7 @@ export const getUserInfoController = async (req: RequestAuthInterface, res: Resp
 		handleServerError(res, req, 500, {
 			success: false,
 			message: "Get user info error",
-			error: error as Error,
+			errorMessage: (error as Error).message,
 		});
 	}
 };
