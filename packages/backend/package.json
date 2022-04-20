@@ -50,7 +50,7 @@
 	},
 	"changelog": {
 		"labels": {
-			"feat": "New Feature",
+			"feature": "New Feature",
 			"fix": "Bug Fix",
 			"tech": "Tech"
 		}
