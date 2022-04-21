@@ -37,3 +37,17 @@ export const getCSSReportColor = (value: number): string => {
 
 	return "primary";
 };
+
+export const getCSSTempColor = (value: number): string => {
+	const valueRounded = Math.round(value);
+
+	const backgroundOpacity = 400;
+
+	if (valueRounded <= 0) return blue[backgroundOpacity];
+	if (valueRounded >= 1 && valueRounded < 50) return yellow[backgroundOpacity];
+	if (valueRounded >= 50 && valueRounded < 75) return orange[backgroundOpacity];
+	if (valueRounded > 75 && valueRounded < 100) return blue[backgroundOpacity];
+	if (valueRounded === 100) return green[backgroundOpacity];
+
+	return "primary";
+};
