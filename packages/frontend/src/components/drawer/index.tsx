@@ -11,11 +11,10 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { yellow, grey } from "@mui/material/colors";
+import { grey } from "@mui/material/colors";
 import { CircularProgress, Collapse, Link, ListItemButton, Tooltip } from "@mui/material";
 import {
 	Summarize,
-	WbSunny,
 	ExitToApp,
 	ExpandLess,
 	ExpandMore,
@@ -30,7 +29,6 @@ import { URL_USER } from "utils/constants";
 import { getToken } from "utils/storage";
 import { getUserContext } from "store/userProvider";
 import { dateHelperFormatProper } from "helpers/dateHelper";
-import { OpenWeatherResponse } from "types";
 import { DrawerListItemWeather } from "./drawerListItemWeather";
 
 interface AppDrawerProps extends MuiAppBarProps {

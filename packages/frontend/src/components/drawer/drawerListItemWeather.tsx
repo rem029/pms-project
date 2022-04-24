@@ -1,6 +1,5 @@
-import { WbSunny } from "@mui/icons-material";
 import { ListItem, ListItemText, Typography, ListItemIcon } from "@mui/material";
-import { yellow } from "@mui/material/colors";
+import { WeatherIcon } from "components/utilities/weatherIcon";
 import { useAxios } from "hooks/useAxios";
 import { useEffect, useState } from "react";
 import { OpenWeatherResponse } from "types";
@@ -58,7 +57,7 @@ export const DrawerListItemWeather = (): JSX.Element => {
 						</ListItemText>
 
 						<ListItemIcon>
-							<WbSunny htmlColor={yellow[600]} />
+							<WeatherIcon temperature={weatherStats.main.feels_like} />
 						</ListItemIcon>
 					</ListItem>
 

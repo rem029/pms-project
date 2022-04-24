@@ -14,6 +14,7 @@ export { Project } from "./project";
 export { ProtectedRoute } from "./utilities/protectedRoute";
 export { PageContainer } from "./utilities/pageContainer";
 export { Routing } from "./utilities/routing";
+export { WeatherIcon } from "./utilities/weatherIcon";
 
 export { LineChart } from "./charts/lineChart";
 export { HistogramChart } from "./charts/histogramChart";
