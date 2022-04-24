@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-alpha.0](https://github.com/rem029/wakra-project/compare/v1.0.1-alpha.0...v1.1.0-alpha.0) (2022-04-24)
+
+
+### Bug Fixes
+
+* **frontend-drawer:** file/folder refactor. fix useAxios logout on auth error 401 or 403 ([f1e1d9b](https://github.com/rem029/wakra-project/commit/f1e1d9b77d6ccfb5579a9e35d875794343e707de))
+
+
+### Features
+
+* temperature color WIP ([e67baf2](https://github.com/rem029/wakra-project/commit/e67baf29f97f30de28e907244aa8bebdf71aff95))
+
+
+
+
+
+
 # [1.0.0-alpha.10](https://github.com/rem029/wakra-project/compare/v1.0.0-alpha.9...v1.0.0-alpha.10) (2022-04-20)
 
 **Note:** Version bump only for package @wakra-project/wakra-project
