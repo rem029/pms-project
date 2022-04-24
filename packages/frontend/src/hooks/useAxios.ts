@@ -54,16 +54,16 @@ export const useAxios = <T>(
 	};
 
 	const fetch = (config?: AxiosRequestCustomConfig): void => {
-		resetState();
-
 		const controller = new AbortController();
-		setAxiosController(controller);
-		const request = axios.create({
+		const configMerged = {
 			...axiosConfig,
 			...config,
 			signal: controller.signal,
-		});
+		} as AxiosRequestCustomConfig;
+		setAxiosController(controller);
+		const request = axios.create(configMerged);
 
+		resetState();
 		setLoading(true);
 
 		request(url)
@@ -81,10 +81,10 @@ export const useAxios = <T>(
 					});
 
 					if (error.response?.status === 401 || error.response?.status === 403) {
-						resetState();
-						if (config && !config.dontLogoutOnAuthError) {
+						if (!configMerged.dontLogoutOnAuthError) {
 							logout();
 						}
+						resetState();
 						return;
 					}
 					setData(error.response?.data?.data || undefined);

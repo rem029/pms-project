@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
-import Drawer from "@mui/material/Drawer";
+import { Drawer as DrawerMUI } from "@mui/material";
 import { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
@@ -31,6 +31,7 @@ import { getToken } from "utils/storage";
 import { getUserContext } from "store/userProvider";
 import { dateHelperFormatProper } from "helpers/dateHelper";
 import { OpenWeatherResponse } from "types";
+import { DrawerListItemWeather } from "./drawerListItemWeather";
 
 interface AppDrawerProps extends MuiAppBarProps {
 	open?: boolean;
@@ -51,14 +52,12 @@ const colorIcon = grey[500];
 const colorLabel = grey[700];
 const colorLabelSub = grey[600];
 
-export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element => {
+export const Drawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element => {
 	const theme = useTheme();
 	const navigate = useNavigate();
 	const [userName, setUserName] = useState("");
 	const [subMenuOpenReporting, setSubMenuOpenReporting] = useState<boolean>(false);
 	const { logout } = getUserContext();
-	const [weatherStats, setWeatherStats] = useState({} as OpenWeatherResponse);
-
 	const {
 		data: userData,
 		loading: userLoading,
@@ -69,38 +68,8 @@ export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element
 		headers: {
 			Authorization: `Token ${getToken()}`,
 		},
+		// dontLogoutOnAuthError: true,
 	});
-
-	const {
-		data: weatherData,
-		loading: weatherLoading,
-		success: weatherSuccess,
-		error: weatherError,
-		fetch: weatherFetch,
-	} = useAxios<OpenWeatherResponse>(`https://api.openweathermap.org/data/2.5/weather`);
-
-	useEffect(() => {
-		navigator.geolocation.getCurrentPosition((position) => {
-			weatherFetch({
-				method: "GET",
-				dontLogoutOnAuthError: true,
-				params: {
-					lat: position.coords.latitude,
-					lon: position.coords.longitude,
-					units: "metric",
-					appid: process.env.REACT_APP_OPEN_WEATHER_API_KEY,
-				},
-			});
-		});
-	}, []);
-
-	useEffect(() => {
-		// if (weatherError)
-
-		if (!weatherLoading && weatherSuccess && weatherData) {
-			setWeatherStats(weatherData);
-		}
-	}, [weatherData, weatherLoading, weatherSuccess, weatherError]);
 
 	useEffect(() => {
 		if (userError) setUserName("Error");
@@ -128,7 +97,7 @@ export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element
 	};
 
 	return (
-		<Drawer
+		<DrawerMUI
 			sx={{
 				width: width,
 				flexShrink: 0,
@@ -163,30 +132,9 @@ export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element
 						</Tooltip>
 					</ListItemIcon>
 				</ListItem>
-				<ListItem>
-					<ListItemText>
-						<Typography variant="caption" noWrap letterSpacing={1}>
-							{`${
-								weatherStats?.main?.temp ? Math.round(weatherStats.main.temp) + "C" : ""
-							}, Feels like ${
-								weatherStats?.main?.feels_like
-									? Math.round(weatherStats.main.feels_like) + "C"
-									: ""
-							}`}
-						</Typography>
-					</ListItemText>
 
-					<ListItemIcon>
-						<WbSunny htmlColor={yellow[600]} />
-					</ListItemIcon>
-				</ListItem>
-				<ListItem>
-					<ListItemText>
-						<Typography variant="caption" noWrap letterSpacing={1}>
-							{weatherStats?.name + ", " + weatherStats?.sys?.country}
-						</Typography>
-					</ListItemText>
-				</ListItem>
+				<DrawerListItemWeather />
+
 				<ListItem>
 					<Typography variant="caption" noWrap letterSpacing={1}>
 						{dateHelperFormatProper(new Date())}
@@ -270,6 +218,6 @@ export const AppDrawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element
 				</Collapse>
 			</List>
 			<Divider />
-		</Drawer>
+		</DrawerMUI>
 	);
 };

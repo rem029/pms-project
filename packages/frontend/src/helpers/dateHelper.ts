@@ -45,5 +45,5 @@ export const dateHelperFormatProper = (date: Date): string => {
 
 	const month = monthNames[date.getMonth() + 1];
 
-	return `${day}-${month}-${date.getFullYear()}, ${dayNames[date.getDay() - 1]}`;
+	return `${day}-${month}-${date.getFullYear()}, ${dayNames[date.getDay()]}`;
 };

@@ -1,5 +1,5 @@
 export { AppHeader } from "./appHeader";
-export { AppDrawer } from "./appDrawer";
+export { Drawer } from "./drawer";
 
 export { Login } from "./login";
 

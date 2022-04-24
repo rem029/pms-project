@@ -1,4 +1,5 @@
 export const URL_BASE = "http://10.9.46.132:6060";
+export const URL_OPEN_WEATHER = "https://api.openweathermap.org/data/2.5/weather";
 
 export const URL_LOGIN = URL_BASE + "/login";
 export const URL_USER = URL_BASE + "/user";
