@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-alpha.1](https://github.com/rem029/wakra-project/compare/v1.1.0-alpha.0...v1.1.0-alpha.1) (2022-04-24)
+
+
+### Features
+
+* **weather:** icon is now dynamic based on temperature ([69fff20](https://github.com/rem029/wakra-project/commit/69fff20ef7d91b4777fc658e543f1d25a971e0ba))
+
+
+
+
+
 # [1.1.0-alpha.0](https://github.com/rem029/wakra-project/compare/v1.0.1-alpha.0...v1.1.0-alpha.0) (2022-04-24)
 
 
