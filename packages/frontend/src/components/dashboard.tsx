@@ -3,7 +3,7 @@ import {
 	LineChart,
 	BarChart,
 	HistogramChart,
-	ProgressCards,
+	// ProgressCards,
 	DiamondTileMap,
 } from "components";
 

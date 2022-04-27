@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
-import { AppHeader, Drawer } from "components";
+import { Header, Drawer } from "components";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
 
 const drawerWidth = 240;
@@ -48,7 +48,7 @@ export const Main = (): JSX.Element => {
 	return (
 		<Box sx={{ display: "flex" }}>
 			<CssBaseline />
-			<AppHeader open={open} setOpen={setOpen} width={drawerWidth} />
+			<Header open={open} setOpen={setOpen} width={drawerWidth} />
 			<Drawer open={open} setOpen={setOpen} width={drawerWidth} />
 			<MainContainer open={open} drawer={drawerWidth} screen={screenWidth}>
 				<DrawerHeader />

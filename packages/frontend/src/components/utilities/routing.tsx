@@ -3,8 +3,6 @@ import {
 	Dashboard,
 	ProtectedRoute,
 	Login,
-	Master,
-	Project,
 	DetailProgressReport,
 	SummaryProgressReport,
 } from "components";
@@ -33,8 +31,6 @@ export const Routing = (): JSX.Element => {
 					>
 						<Route path="/" element={<Dashboard />} />
 						<Route path={"dashboard"} element={<Dashboard />} />
-						<Route path={"master"} element={<Master />} />
-						<Route path={"projects"} element={<Project />} />
 
 						<Route path={"report/"} element={<NotFound />} />
 						<Route path={"report/detail-progress"} element={<DetailProgressReport />} />

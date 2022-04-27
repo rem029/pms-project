@@ -27,7 +27,7 @@ const AppBar = styled(MuiAppBar, {
 	}),
 }));
 
-export const AppHeader = ({ open, setOpen, width }: AppBarProps): JSX.Element => {
+export const Header = ({ open, setOpen, width }: AppBarProps): JSX.Element => {
 	const handleDrawerOpen = (): void => {
 		if (setOpen) setOpen(true);
 	};
