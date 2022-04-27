@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-alpha.2](https://github.com/rem029/wakra-project/compare/v1.1.0-alpha.1...v1.1.0-alpha.2) (2022-04-27)
+
+
+### Bug Fixes
+
+* rename and moved some folders/file ([a7916a9](https://github.com/rem029/wakra-project/commit/a7916a960c75ee8f2a649c1c19cbb4f01fc61169))
+
+
+
+
+
 # [1.1.0-alpha.1](https://github.com/rem029/wakra-project/compare/v1.1.0-alpha.0...v1.1.0-alpha.1) (2022-04-24)
 
 
