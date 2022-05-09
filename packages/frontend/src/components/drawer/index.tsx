@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import { Drawer as DrawerMUI } from "@mui/material";
 import { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
@@ -54,7 +54,7 @@ export const Drawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element =>
 	const theme = useTheme();
 	const navigate = useNavigate();
 	const [userName, setUserName] = useState("");
-	const [subMenuOpenReporting, setSubMenuOpenReporting] = useState<boolean>(false);
+	const [subMenuCollapsed, setSubMenuCollapsed] = useState<Record<string, boolean>>({});
 	const { logout } = getUserContext();
 	const {
 		data: userData,
@@ -90,8 +90,60 @@ export const Drawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element =>
 		navigate("/" + link.toLowerCase());
 	};
 
-	const handleSubMenuOpen = (): void => {
-		setSubMenuOpenReporting((currentValue) => !currentValue);
+	const handleSubMenuOpen = (linkText: string): void => {
+		setSubMenuCollapsed((currentValue) => ({
+			...currentValue,
+			[linkText]: !currentValue[linkText],
+		}));
+	};
+
+	const collapsibleList = (
+		linkText: string,
+		linkTextIcon: JSX.Element,
+		subList?: { label: string; url: string; icon: JSX.Element }[]
+	): JSX.Element => {
+		const hasSublist: boolean = subList ? subList.length > 0 : false;
+
+		return (
+			<>
+				<ListItem
+					button
+					key={linkText}
+					onClick={
+						hasSublist
+							? () => handleSubMenuOpen(linkText)
+							: () => handleChangePage(linkText)
+					}
+				>
+					<ListItemIcon>{linkTextIcon}</ListItemIcon>
+					<ListItemText>
+						<Link sx={{ textDecoration: "none", color: colorLabel }}>
+							<Typography variant="body1">{linkText}</Typography>
+						</Link>
+					</ListItemText>
+					{hasSublist && (
+						<>{subMenuCollapsed[linkText] ? <ExpandLess /> : <ExpandMore />}</>
+					)}
+				</ListItem>
+				<Collapse in={subMenuCollapsed[linkText]} timeout="auto" unmountOnExit>
+					<List component="div" disablePadding>
+						{subList &&
+							subList.map((item, index) => (
+								<ListItemButton
+									key={index + item.label}
+									sx={{ pl: 3, color: colorLabelSub }}
+									onClick={() => handleChangePage(item.url)}
+								>
+									<ListItemIcon>{item.icon}</ListItemIcon>
+									<ListItemText
+										primary={<Typography variant="body2">{item.label}</Typography>}
+									/>
+								</ListItemButton>
+							))}
+					</List>
+				</Collapse>
+			</>
+		);
 	};
 
 	return (
@@ -151,69 +203,34 @@ export const Drawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element =>
 						</Link>
 					</ListItemText>
 				</ListItem>
-				<ListItem
-					button
-					disabled
-					key={"Projects"}
-					onClick={() => handleChangePage("Projects")}
-				>
-					<ListItemIcon>
-						<Summarize htmlColor={colorIcon} />
-					</ListItemIcon>
-					<ListItemText>
-						<Link sx={{ textDecoration: "none", color: colorLabel }}>
-							<Typography variant="body1">Projects (WIP)</Typography>
-						</Link>
-					</ListItemText>
-				</ListItem>
-				<ListItem
-					button
-					disabled
-					key={"Master"}
-					onClick={() => handleChangePage("Master")}
-				>
-					<ListItemIcon>
-						<Summarize htmlColor={colorIcon} />
-					</ListItemIcon>
-					<ListItemText>
-						<Link sx={{ textDecoration: "none", color: colorLabel }}>
-							<Typography variant="body1">Masters (WIP)</Typography>
-						</Link>
-					</ListItemText>
-				</ListItem>
-				<ListItem button key="Reporting" onClick={() => handleSubMenuOpen()}>
-					<ListItemIcon>
-						<InfoOutlined htmlColor={colorIcon} />
-					</ListItemIcon>
-					<ListItemText>
-						<Link sx={{ textDecoration: "none", color: colorLabel }}>
-							<Typography variant="body1">Reporting</Typography>
-						</Link>
-					</ListItemText>
-					{subMenuOpenReporting ? <ExpandLess /> : <ExpandMore />}
-				</ListItem>
 
-				<Collapse in={subMenuOpenReporting} timeout="auto" unmountOnExit>
-					<List component="div" disablePadding>
-						{[
-							{ label: "Progress Detail Report", url: "report/detail-progress" },
-							{ label: "Progress Summary Report", url: "report/summary-progress" },
-						].map((item, index) => (
-							<ListItemButton
-								key={index + item.label}
-								sx={{ pl: 3, color: colorLabelSub }}
-								onClick={() => handleChangePage(item.url)}
-							>
-								<ListItemIcon>
-									<TableRowsOutlined htmlColor={colorIcon} fontSize="small" />
-								</ListItemIcon>
-								<ListItemText
-									primary={<Typography variant="body2">{item.label}</Typography>}
-								/>
-							</ListItemButton>
-						))}
-					</List>
-				</Collapse>
+				{collapsibleList("Projects", <InfoOutlined htmlColor={colorIcon} />)}
+
+				{collapsibleList("Masters", <InfoOutlined htmlColor={colorIcon} />, [
+					{
+						label: "Deliverables",
+						url: "master/deliverables",
+						icon: <TableRowsOutlined htmlColor={colorIcon} fontSize="small" />,
+					},
+					{
+						label: "Activity",
+						url: "master/activities",
+						icon: <TableRowsOutlined htmlColor={colorIcon} fontSize="small" />,
+					},
+				])}
+
+				{collapsibleList("Reporting", <InfoOutlined htmlColor={colorIcon} />, [
+					{
+						label: "Progress Detail Report",
+						url: "report/detail-progress",
+						icon: <TableRowsOutlined htmlColor={colorIcon} fontSize="small" />,
+					},
+					{
+						label: "Progress Summary Report",
+						url: "report/summary-progress",
+						icon: <TableRowsOutlined htmlColor={colorIcon} fontSize="small" />,
+					},
+				])}
 			</List>
 			<Divider />
 		</DrawerMUI>
