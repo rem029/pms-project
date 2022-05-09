@@ -14,13 +14,13 @@ export const monthNames = [
 ];
 
 export const dayNames = [
+	"Sunday",
 	"Monday",
 	"Tuesday",
 	"Wednesday",
 	"Thursday",
 	"Friday",
 	"Saturday",
-	"Sunday",
 ];
 
 export const dateHelperFormat = (date: Date): string => {
@@ -43,7 +43,10 @@ export const dateHelperFormatProper = (date: Date): string => {
 			? date.getDate().toString()
 			: `0${date.getDate()}`;
 
-	const month = monthNames[date.getMonth() + 1];
+	console.log("date.getMonth()", date.getMonth());
+	console.log("date.getDay()", date.getDay());
 
-	return `${day}-${month}-${date.getFullYear()}, ${dayNames[date.getDay() - 1]}`;
+	const month = monthNames[date.getMonth()];
+
+	return `${day}-${month}-${date.getFullYear()}, ${dayNames[date.getDay()]}`;
 };
