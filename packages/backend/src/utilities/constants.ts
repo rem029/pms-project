@@ -37,4 +37,8 @@ export const REPORT_FILTER: Record<string, ReportFilterTableInfo> = {
 		columnName: "Bld",
 		tableName: "buildm",
 	},
+	construction: {
+		columnName: "Cns",
+		tableName: "consysm",
+	},
 };

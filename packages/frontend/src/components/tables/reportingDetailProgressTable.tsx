@@ -93,9 +93,6 @@ export const ReportingDetailProgressTable = ({
 						? new Date(compareReportB[sortBy]).getTime()
 						: compareReportB[sortBy];
 
-				console.log("compareA", sortBy, typeof compareA, compareA);
-				console.log("compareB", sortBy, typeof compareB, compareB);
-
 				if (orderBy === "desc" && compareA > compareB) return -1;
 				if (orderBy === "asc" && compareB < compareA) return 1;
 

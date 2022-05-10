@@ -5,7 +5,7 @@ law     123
 @username = sahar
 @password = 789
 
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc3JfSWQiOiJzYWhhciIsIlVzcl9OYW1lIjoiU2FoYXIgVGFoYSIsIlVzcl9FbWFpbCI6Im4vYUBnbWFpbC5jb20iLCJVc3JfUGgiOiIrOTc0IDExMjIzMzQ0IiwiSXNBZG1pbiI6MCwiSXNBY3RpdmUiOjEsIklzQWRkIjowLCJJc0VkaXQiOjAsIklzQ2FuY2VsIjowLCJJc0RlbGV0ZSI6MCwiaWF0IjoxNjUwMzY4MDI1LCJleHAiOjE2NTA0NTQ0MjV9.XFW8o2dff_b9nEX1i3zLJpYWBpnKOUctSrW4atpX2Ng
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc3JfSWQiOiJzYWhhciIsIlVzcl9OYW1lIjoiU2FoYXIgVGFoYSIsIlVzcl9FbWFpbCI6Im4vYUBnbWFpbC5jb20iLCJVc3JfUGgiOiIrOTc0IDExMjIzMzQ0IiwiSXNBZG1pbiI6MCwiSXNBY3RpdmUiOjEsIklzQWRkIjowLCJJc0VkaXQiOjAsIklzQ2FuY2VsIjowLCJJc0RlbGV0ZSI6MCwiaWF0IjoxNjUyMTczNTk1LCJleHAiOjE2NTIyNTk5OTV9.B-FM2YPGIVT5__qqvi4-npQtiZX8me6XQ0w6x5LSg6c
 
 ### LOGIN
 POST http://localhost:6060/login/
@@ -40,6 +40,10 @@ Authorization: Token {{token}}
 
 ### PHASE
 GET http://localhost:6060/report/filter/phase
+Authorization: Token {{token}}
+
+### PHASE
+GET http://localhost:6060/report/filter/construction
 Authorization: Token {{token}}
 
 ### CLASSIFICATION

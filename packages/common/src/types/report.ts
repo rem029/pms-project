@@ -14,6 +14,15 @@ export interface ReportFilters {
 	// sortBy: "Date" | "Building" | "Owner" | "Milestone" | "Zone";
 }
 
+export interface DeliverablesMaster extends Omit<ReportFilters, "__typename"> {
+	__typename?: "DeliverablesMaster";
+	code: string;
+	name: string;
+	units: number;
+	modules: number;
+	construction: ReportFilter | null;
+}
+
 export interface ReportFilter {
 	__typename?: "ReportFilter";
 	id: string;

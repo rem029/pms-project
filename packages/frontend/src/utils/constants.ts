@@ -7,6 +7,8 @@ export const URL_USER = URL_BASE + "/user";
 export const URL_REPORTING_PROGRESS_DETAILED = URL_BASE + "/report/progress-detail";
 export const URL_REPORTING_PROGRESS_SUMMARY = URL_BASE + "/report/progress-summary";
 
+export const URL_REPORTING_FILTER = URL_BASE + "/report/filter";
+export const URL_REPORTING_FILTER_CONSTRUCTION = URL_BASE + "/report/filter/construction";
 export const URL_REPORTING_FILTER_PHASE = URL_BASE + "/report/filter/phase";
 export const URL_REPORTING_FILTER_CLASSIFICATION =
 	URL_BASE + "/report/filter/classification";
