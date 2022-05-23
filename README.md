@@ -103,6 +103,9 @@ wakra-project/packages/
 yarn start
 ```
 
+## Jira Link
+https://elawrenceponce.atlassian.net/jira/software/projects/APM/boards/3/roadmap
+
 ## Author
 
 - Website: https://github.com/rem029
