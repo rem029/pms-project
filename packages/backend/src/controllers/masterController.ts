@@ -4,51 +4,52 @@ import { logger } from "utilities/logger";
 import { handleServerResponse, handleServerError } from "helpers/serverResponse";
 import { DeliverablesMaster } from "@wakra-project/common";
 import { RequestWithMetrics } from "types";
-import { generateAccessToken } from "middlewares/authToken";
 
 export const addDeliverables = async (req: RequestWithMetrics, res: Response): Promise<void> => {
 	try {
-		logger.info("@loginControllers");
+		logger.info("@addDeliverables");
 
-		console.log("@addDeliverables req data", req.body);
+		const fields = (
+			req.body.addDeliverables ? req.body.addDeliverables : JSON.parse(req.headers["data"] as string)
+		) as DeliverablesMaster;
 
-		// // const results = await knexMySQL.raw(
-		// // 	`
-		// // 	SELECT
-		// // 		Usr_Id,
-		// // 		Usr_Name,
-		// // 		Usr_Email,
-		// // 		Usr_Ph,
-		// // 		IsAdmin,
-		// // 		IsActive,
-		// // 		IsAdd,
-		// // 		IsEdit,
-		// // 		IsCancel,
-		// // 		IsDelete
-		// // 	FROM
-		// // 		userm
-		// // 	WHERE
-		// // 		Usr_Id=0 AND Usr_pwd=0;`,
-		// // 	[]
-		// // );
+		// : JSON.parse(req.headers["data"] as string);
 
-		// // if (!results[0].length) throw new Error("No user found");
-		// // if (results.length && results[0][0].IsActive < 1) throw new Error("User not active.");
+		console.log("@addDeliverables fields", fields);
+		console.log("@addDeliverables fields name", fields.name);
 
-		// const returnUser = { ...results[0][0] };
-		// const returnToken = generateAccessToken(returnUser);
+		await knexMySQL.raw(
+			`
+			INSERT INTO pmsysdb.buildm VALUES
+			-- projectCode, code, name, mstCode, zoneCode, secCode, typeCode, ownCode, cnsCode, unit, module, isActive
+			(?,?,?,?,?,?,?,?,?,?,?,1);
+			`,
+			[
+				fields.project?.id as unknown as string,
+				fields.code,
+				fields.name,
+				fields.milestone?.id as unknown as string,
+				fields.zone?.id as unknown as string,
+				fields.section?.id as unknown as string,
+				fields.type?.id as unknown as string,
+				fields.owner?.id as unknown as string,
+				fields.construction?.id as unknown as string,
+				fields.units,
+				fields.modules,
+			]
+		);
 
 		handleServerResponse(res, req, 200, {
 			__typename: "sample",
 			success: true,
-			message: "Login success",
-			data: req.body,
+			message: "Add Deliverables success",
+			data: "Add Deliverables success",
 		});
 	} catch (error) {
-		logger.error(`@loginControllers Error ${error}`);
+		logger.error(`@addDeliverables Error ${error}`);
 		handleServerError(res, req, 500, {
 			success: false,
-			message: "Login error",
+			message: "Deliverables error",
 			errorMessage: (error as Error).message,
 		});
 	}

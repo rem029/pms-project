@@ -15,8 +15,8 @@ const initializeAppExpress = (): Express => {
 		optionsSuccessStatus: 200,
 	};
 
-	app.use(express.json());
 	app.use(express.urlencoded({ extended: true }));
+	app.use(express.json());
 	app.use(cors(corsOptions));
 
 	app.all("*", (req: RequestWithMetrics, _, next) => {

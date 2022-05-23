@@ -1,5 +1,5 @@
 import { Box, Button, Divider, Grid, Paper, TextField, Typography } from "@mui/material";
-import { AxiosRequestConfig, AxiosRequestHeaders } from "axios";
+import axios, { AxiosRequestConfig, AxiosRequestHeaders } from "axios";
 import { AutoCompleteInputOptions } from "components/utilities/autoCompleteInput";
 import { useAxios } from "hooks/useAxios";
 import { useMemo, useState } from "react";
@@ -105,14 +105,14 @@ export const DeliverablesMaster = (): JSX.Element => {
 	const handleFormSubmit = (event: React.FormEvent<HTMLDivElement>): void => {
 		event.preventDefault();
 
-		console.log("@handleFormSubmit", fields);
 		addDeliverablesPost({
 			method: "POST",
 			headers: {
 				Authorization: `Token ${getToken()}`,
-				"content-type": "application/json",
+				Accept: "application/json",
+				"Content-type": "application/json",
+				data: JSON.stringify({ ...fields, date: new Date() }),
 			},
-			data: { addDeliverables: { name: "test", code: "123456Testing" } },
 		});
 	};
 
