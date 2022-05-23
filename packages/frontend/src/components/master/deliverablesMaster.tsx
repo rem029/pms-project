@@ -1,5 +1,5 @@
 import { Box, Button, Divider, Grid, Paper, TextField, Typography } from "@mui/material";
-import { AxiosRequestConfig } from "axios";
+import { AxiosRequestConfig, AxiosRequestHeaders } from "axios";
 import { AutoCompleteInputOptions } from "components/utilities/autoCompleteInput";
 import { useAxios } from "hooks/useAxios";
 import { useMemo, useState } from "react";
@@ -11,6 +11,7 @@ import {
 	URL_REPORTING_FILTER_SECTION,
 	URL_REPORTING_FILTER_TYPE,
 	URL_REPORTING_FILTER_ZONE,
+	URL_REPORTING_MASTER_DETAILED,
 } from "utils/constants";
 import { getToken } from "utils/storage";
 import { AutoCompleteInput } from "..";
@@ -20,6 +21,10 @@ import { RestartAlt, SaveAlt } from "@mui/icons-material";
 
 const defaultFields = {
 	date: null,
+	code: null,
+	name: null,
+	units: null,
+	modules: null,
 	phase: null,
 	classification: null,
 	construction: null,
@@ -80,6 +85,16 @@ export const DeliverablesMaster = (): JSX.Element => {
 	>(URL_REPORTING_FILTER_CONSTRUCTION, axiosConfigReportFilter);
 
 	/**
+	 * API Posting
+	 */
+	const {
+		error: addDeliverablesError,
+		message: addDeliverablesMessage,
+		loading: addDeliverablesLoading,
+		fetch: addDeliverablesPost,
+	} = useAxios<AutoCompleteInputOptions[]>(URL_REPORTING_MASTER_DETAILED);
+
+	/**
 	 * Event Handlers
 	 */
 	const handleFormReset = (event: React.FormEvent<HTMLDivElement>): void => {
@@ -89,11 +104,21 @@ export const DeliverablesMaster = (): JSX.Element => {
 
 	const handleFormSubmit = (event: React.FormEvent<HTMLDivElement>): void => {
 		event.preventDefault();
+
+		console.log("@handleFormSubmit", fields);
+		addDeliverablesPost({
+			method: "POST",
+			headers: {
+				Authorization: `Token ${getToken()}`,
+				"content-type": "application/json",
+			},
+			data: { addDeliverables: { name: "test", code: "123456Testing" } },
+		});
 	};
 
-	const handleReportFilterAutoCompleteChange = (
+	const handleFormChange = (
 		name: string,
-		value: AutoCompleteInputOptions | null
+		value: AutoCompleteInputOptions | string | number | null
 	): void => {
 		setFields((currentFields) => ({
 			...currentFields,
@@ -124,137 +149,155 @@ export const DeliverablesMaster = (): JSX.Element => {
 							</Typography>
 						</Grid>
 
-						<Grid item xs={12}>
+						<Grid item lg={3} sm={12} xs={12}>
 							<AutoCompleteInput
 								name="project"
 								label="Project"
 								loading={filterProjectLoading}
 								options={filterProjectData as AutoCompleteInputOptions[]}
 								value={fields?.project as AutoCompleteInputOptions}
-								handleChange={handleReportFilterAutoCompleteChange}
+								handleChange={handleFormChange}
 							/>
 						</Grid>
+						<Grid item lg={9} sm={12} xs={12} />
 
-						<Grid item xs={6}>
+						<Grid item lg={3} sm={12} xs={12}>
 							<TextField
 								fullWidth
 								name="code"
 								label="Code#"
+								value={fields.code || ""}
 								placeholder="Enter entry code#"
+								onChange={(e) =>
+									handleFormChange(e.target.name, e.target.value as string)
+								}
 							/>
 						</Grid>
 
-						<Grid item xs={12}>
+						<Grid item lg={9} sm={12} xs={12}>
 							<TextField
 								fullWidth
 								name="name"
 								label="Name"
+								value={fields.name || ""}
 								placeholder="Enter entry name"
+								multiline
+								onChange={(e) =>
+									handleFormChange(e.target.name, e.target.value as string)
+								}
 							/>
 						</Grid>
 
-						<Grid component={Box} xs={12} sx={{ p: 1 }}>
+						<Grid component={Box} item xs={12} sx={{ p: 1 }}>
 							<Divider sx={{ width: "100%" }} />
 						</Grid>
 
-						<Grid item xs={3}>
+						<Grid item lg={3} sm={6} xs={12}>
 							<TextField
 								fullWidth
 								name="units"
 								label="Units"
+								value={fields.units || ""}
 								placeholder="Enter entry units"
 								type="number"
+								onChange={(e) =>
+									handleFormChange(e.target.name, e.target.value as string)
+								}
 							/>
 						</Grid>
-						<Grid item xs={3}>
+						<Grid item lg={3} sm={6} xs={12}>
 							<TextField
 								fullWidth
 								name="modules"
 								label="Modules"
+								value={fields.modules || ""}
 								placeholder="Enter entry modules"
 								type="number"
+								onChange={(e) =>
+									handleFormChange(e.target.name, e.target.value as string)
+								}
 							/>
 						</Grid>
 
-						<Grid component={Box} xs={12} sx={{ p: 1 }}>
+						<Grid component={Box} item xs={12} sx={{ p: 1 }}>
 							<Divider sx={{ width: "100%" }} />
 						</Grid>
 
-						<Grid item xs={6}>
+						<Grid item lg={6} sm={6} xs={12}>
 							<AutoCompleteInput
 								name="section"
 								label="Section"
 								loading={filterSectionLoading}
 								options={filterSectionData as AutoCompleteInputOptions[]}
 								value={fields?.section as AutoCompleteInputOptions}
-								handleChange={handleReportFilterAutoCompleteChange}
+								handleChange={handleFormChange}
 							/>
 						</Grid>
 
-						<Grid item xs={6}>
+						<Grid item lg={6} sm={6} xs={12}>
 							<AutoCompleteInput
 								name="type"
 								label="Type"
 								loading={filterTypeLoading}
 								options={filterTypeData as AutoCompleteInputOptions[]}
 								value={fields?.type as AutoCompleteInputOptions}
-								handleChange={handleReportFilterAutoCompleteChange}
+								handleChange={handleFormChange}
 							/>
 						</Grid>
 
-						<Grid item xs={6}>
+						<Grid item lg={6} sm={6} xs={12}>
 							<AutoCompleteInput
 								name="owner"
 								label="Owner"
 								loading={filterOwnerLoading}
 								options={filterOwnerData as AutoCompleteInputOptions[]}
 								value={fields?.owner as AutoCompleteInputOptions}
-								handleChange={handleReportFilterAutoCompleteChange}
+								handleChange={handleFormChange}
 							/>
 						</Grid>
 
-						<Grid component={Box} xs={12} sx={{ p: 1 }}>
+						<Grid component={Box} item xs={12} sx={{ p: 1 }}>
 							<Divider sx={{ width: "100%" }} />
 						</Grid>
 
-						<Grid item xs={6}>
+						<Grid item lg={6} sm={6} xs={12}>
 							<AutoCompleteInput
 								name="milestone"
 								label="Milestone"
 								loading={filterMilestoneLoading}
 								options={filterMilestoneData as AutoCompleteInputOptions[]}
 								value={fields?.milestone as AutoCompleteInputOptions}
-								handleChange={handleReportFilterAutoCompleteChange}
+								handleChange={handleFormChange}
 							/>
 						</Grid>
 
-						<Grid item xs={6}>
+						<Grid item lg={6} sm={6} xs={12}>
 							<AutoCompleteInput
 								name="zone"
 								label="Zone"
 								loading={filterZoneLoading}
 								options={filterZoneData as AutoCompleteInputOptions[]}
 								value={fields?.zone as AutoCompleteInputOptions}
-								handleChange={handleReportFilterAutoCompleteChange}
+								handleChange={handleFormChange}
 							/>
 						</Grid>
 
-						<Grid item xs={6}>
+						<Grid item lg={6} sm={6} xs={12}>
 							<AutoCompleteInput
 								name="construction"
 								label="Construction"
 								loading={filterConstructionLoading}
 								options={filterConstructionData as AutoCompleteInputOptions[]}
 								value={fields?.construction as AutoCompleteInputOptions}
-								handleChange={handleReportFilterAutoCompleteChange}
+								handleChange={handleFormChange}
 							/>
 						</Grid>
 
-						<Grid component={Box} xs={12} sx={{ p: 1 }}>
+						<Grid component={Box} item xs={12} sx={{ p: 1 }}>
 							<Divider sx={{ width: "100%" }} />
 						</Grid>
 
-						<Grid item xs={6}>
+						<Grid item lg={6} sm={6} xs={12}>
 							<Button
 								variant="contained"
 								size="large"
@@ -266,7 +309,7 @@ export const DeliverablesMaster = (): JSX.Element => {
 								Save
 							</Button>
 						</Grid>
-						<Grid item xs={6}>
+						<Grid item lg={6} sm={6} xs={12}>
 							<Button
 								variant="outlined"
 								size="large"

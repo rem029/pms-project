@@ -62,7 +62,7 @@ export const useAxios = <T>(
 		} as AxiosRequestCustomConfig;
 		setAxiosController(controller);
 		const request = axios.create(configMerged);
-
+		console.log("@configMerged", configMerged);
 		resetState();
 		setLoading(true);
 

@@ -5,7 +5,7 @@ law     123
 @username = sahar
 @password = 789
 
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc3JfSWQiOiJzYWhhciIsIlVzcl9OYW1lIjoiU2FoYXIgVGFoYSIsIlVzcl9FbWFpbCI6Im4vYUBnbWFpbC5jb20iLCJVc3JfUGgiOiIrOTc0IDExMjIzMzQ0IiwiSXNBZG1pbiI6MCwiSXNBY3RpdmUiOjEsIklzQWRkIjowLCJJc0VkaXQiOjAsIklzQ2FuY2VsIjowLCJJc0RlbGV0ZSI6MCwiaWF0IjoxNjUyMTczNTk1LCJleHAiOjE2NTIyNTk5OTV9.B-FM2YPGIVT5__qqvi4-npQtiZX8me6XQ0w6x5LSg6c
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc3JfSWQiOiJzYWhhciIsIlVzcl9OYW1lIjoiU2FoYXIgVGFoYSIsIlVzcl9FbWFpbCI6Im4vYUBnbWFpbC5jb20iLCJVc3JfUGgiOiIrOTc0IDExMjIzMzQ0IiwiSXNBZG1pbiI6MCwiSXNBY3RpdmUiOjEsIklzQWRkIjowLCJJc0VkaXQiOjAsIklzQ2FuY2VsIjowLCJJc0RlbGV0ZSI6MCwiaWF0IjoxNjUyMjczODY5LCJleHAiOjE2NTIzNjAyNjl9.bD3F8pyydOXj9EmdpqcGkBeNBYshnKQ6vHGDuAHmLiA
 
 ### LOGIN
 POST http://localhost:6060/login/
@@ -13,6 +13,18 @@ Authorization: Basic {{username}}:{{password}}
 ### GET USER INFO BY TOKEN
 GET http://localhost:6060/user/
 Authorization: Token {{token}}
+
+### ADD DELIVERABLES
+POST http://localhost:6060/master/deliverables
+Content-Type: application/json
+Authorization: Token {{token}}
+
+{ 
+    "addDeliverables": {
+        "name": "test",
+        "code": "123456Testing"
+    }
+}
 
 ### GET REPORT PROGRESS DETAIL CONSTRUCTION
 GET http://localhost:6060/report/progress-detail?filter={"phase":{"id":"06C","name":null}}
