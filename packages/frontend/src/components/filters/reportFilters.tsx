@@ -9,8 +9,6 @@ import {
 	FormControlLabel,
 	Checkbox,
 	Collapse,
-	Autocomplete,
-	CircularProgress,
 } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -34,8 +32,8 @@ import {
 import { ReportFilters as ReportFilterFields, ReportFilter } from "@wakra-project/common";
 import { getToken } from "utils/storage";
 import { AxiosRequestConfig } from "axios";
-
-const defaultFilterItem = { id: "-1", name: "" } as ReportFilter;
+import { AutoCompleteInput } from "components";
+import { AutoCompleteInputOptions } from "components/utilities/autoCompleteInput";
 
 const defaultReportFilters = {
 	date: null,
@@ -118,11 +116,6 @@ export const ReportFilters = ({
 	const { data: filterBuildingData, loading: filterBuildingLoading } = useAxios<
 		ReportFilter[]
 	>(URL_REPORTING_FILTER_BUILDING, axiosConfigReportFilter);
-
-	const getListItems = (data?: ReportFilter[]): readonly ReportFilter[] => {
-		const items: readonly ReportFilter[] = data ? [...data] : [];
-		return items;
-	};
 
 	const handleReportFilterDateChange = (newValue: Date | null): void => {
 		setReportFilters((currentReportFilters) => ({
@@ -219,70 +212,24 @@ export const ReportFilters = ({
 							</Grid>
 
 							<Grid item xs={12} md={4} lg={4} xl={4}>
-								<Autocomplete
-									disablePortal
-									options={getListItems(filterPhaseData)}
-									getOptionLabel={(option) => option.name}
-									value={filterPhaseData ? reportFilters.phase : defaultFilterItem}
-									isOptionEqualToValue={(option, value) => option.id === value.id}
-									loading
-									onChange={(_, value) => {
-										handleReportFilterAutoCompleteChange("phase", value);
-									}}
-									renderInput={(params) => (
-										<TextField
-											{...params}
-											name="phase"
-											label="Phase"
-											fullWidth
-											InputProps={{
-												...params.InputProps,
-												endAdornment: (
-													<>
-														{filterPhaseLoading ? (
-															<CircularProgress color="inherit" size={20} />
-														) : null}
-														{params.InputProps.endAdornment}
-													</>
-												),
-											}}
-										/>
-									)}
+								<AutoCompleteInput
+									name="phase"
+									label="Phase"
+									loading={filterPhaseLoading}
+									options={filterPhaseData as AutoCompleteInputOptions[]}
+									value={filter?.phase as AutoCompleteInputOptions}
+									handleChange={handleReportFilterAutoCompleteChange}
 								/>
 							</Grid>
 
 							<Grid item xs={12} md={4} lg={4} xl={4}>
-								<Autocomplete
-									disablePortal
-									options={getListItems(filterClassificationData)}
-									getOptionLabel={(option) => option.name}
-									loading
-									value={
-										filterPhaseData ? reportFilters.classification : defaultFilterItem
-									}
-									isOptionEqualToValue={(option, value) => option.id === value.id}
-									onChange={(_, value) => {
-										handleReportFilterAutoCompleteChange("classification", value);
-									}}
-									renderInput={(params) => (
-										<TextField
-											{...params}
-											name="classification"
-											label="Classification"
-											fullWidth
-											InputProps={{
-												...params.InputProps,
-												endAdornment: (
-													<>
-														{filterClassificationLoading ? (
-															<CircularProgress color="inherit" size={20} />
-														) : null}
-														{params.InputProps.endAdornment}
-													</>
-												),
-											}}
-										/>
-									)}
+								<AutoCompleteInput
+									name="classification"
+									label="Classification"
+									loading={filterClassificationLoading}
+									options={filterClassificationData as AutoCompleteInputOptions[]}
+									value={filter?.classification as AutoCompleteInputOptions}
+									handleChange={handleReportFilterAutoCompleteChange}
 								/>
 							</Grid>
 
@@ -308,215 +255,75 @@ export const ReportFilters = ({
 							>
 								<Grid container item spacing={1}>
 									<Grid item xs={12} md={3} lg={4} xl={4}>
-										<Autocomplete
-											disablePortal
-											options={getListItems(filterProjectData)}
-											getOptionLabel={(option) => option.name}
-											loading
-											onChange={(_, value) => {
-												handleReportFilterAutoCompleteChange("project", value);
-											}}
-											renderInput={(params) => (
-												<TextField
-													{...params}
-													name="project"
-													label="Project"
-													fullWidth
-													InputProps={{
-														...params.InputProps,
-														endAdornment: (
-															<>
-																{filterProjectLoading ? (
-																	<CircularProgress color="inherit" size={20} />
-																) : null}
-																{params.InputProps.endAdornment}
-															</>
-														),
-													}}
-												/>
-											)}
+										<AutoCompleteInput
+											name="project"
+											label="Project"
+											loading={filterProjectLoading}
+											options={filterProjectData as AutoCompleteInputOptions[]}
+											value={filter?.project as AutoCompleteInputOptions}
+											handleChange={handleReportFilterAutoCompleteChange}
 										/>
 									</Grid>
 
 									<Grid item xs={12} md={3} lg={4} xl={4}>
-										<Autocomplete
-											disablePortal
-											options={getListItems(filterMilestoneData)}
-											getOptionLabel={(option) => option.name}
-											loading
-											onChange={(_, value) => {
-												handleReportFilterAutoCompleteChange("milestone", value);
-											}}
-											renderInput={(params) => (
-												<TextField
-													{...params}
-													name="milestone"
-													label="Milestone"
-													fullWidth
-													InputProps={{
-														...params.InputProps,
-														endAdornment: (
-															<>
-																{filterMilestoneLoading ? (
-																	<CircularProgress color="inherit" size={20} />
-																) : null}
-																{params.InputProps.endAdornment}
-															</>
-														),
-													}}
-												/>
-											)}
+										<AutoCompleteInput
+											name="milestone"
+											label="Milestone"
+											loading={filterMilestoneLoading}
+											options={filterMilestoneData as AutoCompleteInputOptions[]}
+											value={filter?.milestone as AutoCompleteInputOptions}
+											handleChange={handleReportFilterAutoCompleteChange}
 										/>
 									</Grid>
 									<Grid item xs={12} md={3} lg={4} xl={4}>
-										<Autocomplete
-											disablePortal
-											options={getListItems(filterZoneData)}
-											getOptionLabel={(option) => option.name}
-											loading
-											onChange={(_, value) => {
-												handleReportFilterAutoCompleteChange("zone", value);
-											}}
-											renderInput={(params) => (
-												<TextField
-													{...params}
-													name="zone"
-													label="Zone"
-													fullWidth
-													InputProps={{
-														...params.InputProps,
-														endAdornment: (
-															<>
-																{filterZoneLoading ? (
-																	<CircularProgress color="inherit" size={20} />
-																) : null}
-																{params.InputProps.endAdornment}
-															</>
-														),
-													}}
-												/>
-											)}
+										<AutoCompleteInput
+											name="zone"
+											label="Zone"
+											loading={filterZoneLoading}
+											options={filterZoneData as AutoCompleteInputOptions[]}
+											value={filter?.zone as AutoCompleteInputOptions}
+											handleChange={handleReportFilterAutoCompleteChange}
 										/>
 									</Grid>
 									<Grid item xs={12} md={3} lg={4} xl={4}>
-										<Autocomplete
-											disablePortal
-											options={getListItems(filterSectionData)}
-											getOptionLabel={(option) => option.name}
-											loading
-											onChange={(_, value) => {
-												handleReportFilterAutoCompleteChange("section", value);
-											}}
-											renderInput={(params) => (
-												<TextField
-													{...params}
-													name="section"
-													label="Section"
-													fullWidth
-													InputProps={{
-														...params.InputProps,
-														endAdornment: (
-															<>
-																{filterSectionLoading ? (
-																	<CircularProgress color="inherit" size={20} />
-																) : null}
-																{params.InputProps.endAdornment}
-															</>
-														),
-													}}
-												/>
-											)}
+										<AutoCompleteInput
+											name="section"
+											label="Section"
+											loading={filterSectionLoading}
+											options={filterSectionData as AutoCompleteInputOptions[]}
+											value={filter?.section as AutoCompleteInputOptions}
+											handleChange={handleReportFilterAutoCompleteChange}
 										/>
 									</Grid>
 
 									<Grid item xs={12} md={3} lg={4} xl={4}>
-										<Autocomplete
-											disablePortal
-											options={getListItems(filterTypeData)}
-											getOptionLabel={(option) => option.name}
-											loading
-											onChange={(_, value) => {
-												handleReportFilterAutoCompleteChange("type", value);
-											}}
-											renderInput={(params) => (
-												<TextField
-													{...params}
-													name="type"
-													label="Type"
-													fullWidth
-													InputProps={{
-														...params.InputProps,
-														endAdornment: (
-															<>
-																{filterTypeLoading ? (
-																	<CircularProgress color="inherit" size={20} />
-																) : null}
-																{params.InputProps.endAdornment}
-															</>
-														),
-													}}
-												/>
-											)}
+										<AutoCompleteInput
+											name="type"
+											label="Type"
+											loading={filterTypeLoading}
+											options={filterTypeData as AutoCompleteInputOptions[]}
+											value={filter?.type as AutoCompleteInputOptions}
+											handleChange={handleReportFilterAutoCompleteChange}
 										/>
 									</Grid>
 									<Grid item xs={12} md={3} lg={4} xl={4}>
-										<Autocomplete
-											disablePortal
-											options={getListItems(filterOwnerData)}
-											getOptionLabel={(option) => option.name}
-											loading
-											onChange={(_, value) => {
-												handleReportFilterAutoCompleteChange("owner", value);
-											}}
-											renderInput={(params) => (
-												<TextField
-													{...params}
-													name="owner"
-													label="Owner"
-													fullWidth
-													InputProps={{
-														...params.InputProps,
-														endAdornment: (
-															<>
-																{filterOwnerLoading ? (
-																	<CircularProgress color="inherit" size={20} />
-																) : null}
-																{params.InputProps.endAdornment}
-															</>
-														),
-													}}
-												/>
-											)}
+										<AutoCompleteInput
+											name="owner"
+											label="Owner"
+											loading={filterOwnerLoading}
+											options={filterOwnerData as AutoCompleteInputOptions[]}
+											value={filter?.owner as AutoCompleteInputOptions}
+											handleChange={handleReportFilterAutoCompleteChange}
 										/>
 									</Grid>
 									<Grid item xs={12} md={3} lg={4} xl={4}>
-										<Autocomplete
-											disablePortal
-											options={getListItems(filterBuildingData)}
-											getOptionLabel={(option) => option.name}
-											loading
-											onChange={(_, value) => {
-												handleReportFilterAutoCompleteChange("building", value);
-											}}
-											renderInput={(params) => (
-												<TextField
-													{...params}
-													name="building"
-													label="Building"
-													fullWidth
-													InputProps={{
-														...params.InputProps,
-														endAdornment: (
-															<>
-																{filterBuildingLoading ? (
-																	<CircularProgress color="inherit" size={20} />
-																) : null}
-																{params.InputProps.endAdornment}
-															</>
-														),
-													}}
-												/>
-											)}
+										<AutoCompleteInput
+											name="building"
+											label="Building"
+											loading={filterBuildingLoading}
+											options={filterBuildingData as AutoCompleteInputOptions[]}
+											value={filter?.building as AutoCompleteInputOptions}
+											handleChange={handleReportFilterAutoCompleteChange}
 										/>
 									</Grid>
 								</Grid>

@@ -5,6 +5,8 @@ import {
 	Login,
 	DetailProgressReport,
 	SummaryProgressReport,
+	ActivityMaster,
+	DeliverablesMaster,
 } from "components";
 import { Main } from "pages/main";
 import { NotFound } from "pages/notFound";
@@ -35,6 +37,9 @@ export const Routing = (): JSX.Element => {
 						<Route path={"report/"} element={<NotFound />} />
 						<Route path={"report/detail-progress"} element={<DetailProgressReport />} />
 						<Route path={"report/summary-progress"} element={<SummaryProgressReport />} />
+
+						<Route path={"master/deliverables"} element={<DeliverablesMaster />} />
+						<Route path={"master/activities"} element={<ActivityMaster />} />
 					</Route>
 
 					<Route path="*" element={<NotFound />} />
