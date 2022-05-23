@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-alpha.4](https://github.com/rem029/wakra-project/compare/v1.1.0-alpha.3...v1.1.0-alpha.4) (2022-05-23)
+
+
+### Features
+
+* **APM-5:** Create Deliverables Master WIP. Form done. ([7bd4f27](https://github.com/rem029/wakra-project/commit/7bd4f2746fe3dd2c3faeb768933bf5466f60918f))
+
+
+
+
+
+
 # [1.0.0](https://github.com/rem029/wakra-project/compare/v1.0.0-alpha.10...v1.0.0) (2022-04-20)
 
 **Note:** Version bump only for package @wakra-project/common
