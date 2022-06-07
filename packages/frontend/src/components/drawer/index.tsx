@@ -100,7 +100,8 @@ export const Drawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element =>
 	const collapsibleList = (
 		linkText: string,
 		linkTextIcon: JSX.Element,
-		subList?: { label: string; url: string; icon: JSX.Element }[]
+		subList?: { label: string; url: string; icon: JSX.Element }[],
+		disabled?: boolean
 	): JSX.Element => {
 		const hasSublist: boolean = subList ? subList.length > 0 : false;
 
@@ -109,6 +110,7 @@ export const Drawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element =>
 				<ListItem
 					button
 					key={linkText}
+					disabled={disabled}
 					onClick={
 						hasSublist
 							? () => handleSubMenuOpen(linkText)
@@ -204,7 +206,12 @@ export const Drawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element =>
 					</ListItemText>
 				</ListItem>
 
-				{collapsibleList("Projects", <InfoOutlined htmlColor={colorIcon} />)}
+				{collapsibleList(
+					"Projects (WIP)",
+					<InfoOutlined htmlColor={colorIcon} />,
+					undefined,
+					true
+				)}
 
 				{collapsibleList("Masters", <InfoOutlined htmlColor={colorIcon} />, [
 					{

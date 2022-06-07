@@ -82,14 +82,14 @@ export const Login = (): JSX.Element => {
 					spacing={2}
 					direction="column"
 				>
-					<Grid item xs={12}>
+					{/* <Grid item xs={12}>
 						<Box
 							component="img"
 							src={logo}
 							sx={{ width: "100%", height: "auto", m: "auto" }}
 							alignSelf="center"
 						/>
-					</Grid>
+					</Grid> */}
 
 					<Grid item xs={12}>
 						<Typography variant="h5" align="center" color="primary">

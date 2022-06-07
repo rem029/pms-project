@@ -53,7 +53,7 @@ export const Header = ({ open, setOpen, width }: AppBarProps): JSX.Element => {
 				<Typography variant="body1" noWrap sx={{ width: "95%" }}>
 					Project Management System
 				</Typography>
-				<Box component="img" src={logo} sx={{ width: 72 }} />
+				{/* <Box component="img" src={logo} sx={{ width: 72 }} /> */}
 			</Toolbar>
 		</AppBar>
 	);
