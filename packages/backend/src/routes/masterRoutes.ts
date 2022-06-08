@@ -1,12 +1,15 @@
 import express, { Router } from "express";
 import { authenticateToken } from "middlewares/authToken";
-import { addActivity, addDeliverables } from "controllers/masterController";
+import { addActivity, addDeliverable, getActivities, getDeliverables } from "controllers/masterController";
 
 const initializeRouter = (): Router => {
 	const router = express.Router();
 
-	router.post("/deliverables", authenticateToken, addDeliverables);
+	router.post("/deliverable", authenticateToken, addDeliverable);
+	router.get("/deliverables", authenticateToken, getDeliverables);
+
 	router.post("/activity", authenticateToken, addActivity);
+	router.get("/activities", authenticateToken, getActivities);
 
 	return router;
 };
