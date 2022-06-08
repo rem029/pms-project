@@ -1,5 +1,5 @@
 import { Box, Button, Divider, Grid, Paper, TextField, Typography } from "@mui/material";
-import axios, { AxiosRequestConfig, AxiosRequestHeaders } from "axios";
+import { AxiosRequestConfig } from "axios";
 import { AutoCompleteInputOptions } from "components/utilities/autoCompleteInput";
 import { useAxios } from "hooks/useAxios";
 import { useMemo, useState } from "react";
@@ -11,7 +11,7 @@ import {
 	URL_REPORTING_FILTER_SECTION,
 	URL_REPORTING_FILTER_TYPE,
 	URL_REPORTING_FILTER_ZONE,
-	URL_REPORTING_MASTER_DETAILED,
+	URL_REPORTING_MASTER_DELIVERABLE,
 } from "utils/constants";
 import { getToken } from "utils/storage";
 import { AutoCompleteInput } from "..";
@@ -87,12 +87,9 @@ export const DeliverablesMaster = (): JSX.Element => {
 	/**
 	 * API Posting
 	 */
-	const {
-		error: addDeliverablesError,
-		message: addDeliverablesMessage,
-		loading: addDeliverablesLoading,
-		fetch: addDeliverablesPost,
-	} = useAxios<AutoCompleteInputOptions[]>(URL_REPORTING_MASTER_DETAILED);
+	const { fetch: addDeliverablesPost } = useAxios<AutoCompleteInputOptions[]>(
+		URL_REPORTING_MASTER_DELIVERABLE
+	);
 
 	/**
 	 * Event Handlers
