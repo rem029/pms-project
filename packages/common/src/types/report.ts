@@ -23,6 +23,13 @@ export interface DeliverablesMaster extends Omit<ReportFilters, "__typename"> {
 	construction: ReportFilter | null;
 }
 
+export interface ActivityMaster extends Omit<ReportFilters, "__typename"> {
+	__typename?: "ActivityMaster";
+	code: string | null;
+	name: string | null;
+	activityOrder: number | null;
+}
+
 export interface ReportFilter {
 	__typename?: "ReportFilter";
 	id: string;

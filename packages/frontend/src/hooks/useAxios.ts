@@ -94,6 +94,8 @@ export const useAxios = <T>(
 					setLoading(false);
 				}
 			});
+
+		return;
 	};
 
 	return {
