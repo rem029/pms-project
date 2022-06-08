@@ -5,7 +5,7 @@ law     123
 @username = sahar
 @password = 789
 
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc3JfSWQiOiJzYWhhciIsIlVzcl9OYW1lIjoiU2FoYXIgVGFoYSIsIlVzcl9FbWFpbCI6Im4vYUBnbWFpbC5jb20iLCJVc3JfUGgiOiIrOTc0IDExMjIzMzQ0IiwiSXNBZG1pbiI6MCwiSXNBY3RpdmUiOjEsIklzQWRkIjowLCJJc0VkaXQiOjAsIklzQ2FuY2VsIjowLCJJc0RlbGV0ZSI6MCwiaWF0IjoxNjUzMjg1NDQwLCJleHAiOjE2NTMzNzE4NDB9.ZtcqGsfHp7Jso0npm5-iBhnDxZAWEHQ5zaNh8k_x6vM
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc3JfSWQiOiJzYWhhciIsIlVzcl9OYW1lIjoiU2FoYXIgVGFoYSIsIlVzcl9FbWFpbCI6Im4vYUBnbWFpbC5jb20iLCJVc3JfUGgiOiIrOTc0IDExMjIzMzQ0IiwiSXNBZG1pbiI6MCwiSXNBY3RpdmUiOjEsIklzQWRkIjowLCJJc0VkaXQiOjAsIklzQ2FuY2VsIjowLCJJc0RlbGV0ZSI6MCwiaWF0IjoxNjU0NjgxNzY5LCJleHAiOjE2NTQ3NjgxNjl9.6ESzE_xm3nPEVJLIweJJYJ6tgu-OAIFy5fMkDWJnD9w
 
 ### LOGIN
 POST http://localhost:6060/login/
@@ -21,10 +21,20 @@ Authorization: Token {{token}}
 
 { 
     "addDeliverables": {
-        "name": "test",
-        "code": "123456Testing"
+        "name": "qa123",
+        "code": "qa123test"
     }
 }
+
+### GET DELIVERABLES
+GET http://localhost:6060/master/deliverables
+Content-Type: application/json
+Authorization: Token {{token}}
+
+### GET ACTIVITIES
+GET http://localhost:6060/master/activities
+Content-Type: application/json
+Authorization: Token {{token}}
 
 ### GET REPORT PROGRESS DETAIL CONSTRUCTION
 GET http://localhost:6060/report/progress-detail?filter={"phase":{"id":"06C","name":null}}
