@@ -30,6 +30,38 @@ export interface ActivityMaster extends Omit<ReportFilters, "__typename"> {
 	activityOrder: number | null;
 }
 
+export interface DeliverablesMasterInfo {
+	__typename?: "DeliverablesMasterInfo";
+	projectCode: string;
+	buildingCode: string;
+	buildingName: string;
+	milestoneCode: string;
+	zoneCode: string;
+	sectionCode: string;
+	typeCode: string;
+	ownerCode: string;
+	constructionCode: string;
+	unit: number;
+	module: number;
+	isActive: number;
+}
+
+export interface ActivityMasterItemInfo {
+	__typename?: "ActivityMasterItem";
+	projectCode: string;
+	buildingCode: string;
+	buildingName: string;
+	milestoneCode: string;
+	zoneCode: string;
+	sectionCode: string;
+	typeCode: string;
+	ownerCode: string;
+	constructionCode: string;
+	unit: number;
+	module: number;
+	isActive: number;
+}
+
 export interface ReportFilter {
 	__typename?: "ReportFilter";
 	id: string;

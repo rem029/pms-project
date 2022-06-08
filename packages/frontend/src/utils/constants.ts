@@ -4,8 +4,11 @@ export const URL_OPEN_WEATHER = "https://api.openweathermap.org/data/2.5/weather
 export const URL_LOGIN = URL_BASE + "/login";
 export const URL_USER = URL_BASE + "/user";
 
-export const URL_REPORTING_MASTER_DELIVERABLE = URL_BASE + "/master/deliverables";
+export const URL_REPORTING_MASTER_DELIVERABLE = URL_BASE + "/master/deliverable";
 export const URL_REPORTING_MASTER_ACTIVITY = URL_BASE + "/master/activity";
+
+export const URL_REPORTING_MASTER_DELIVERABLE_GET = URL_BASE + "/master/deliverables";
+export const URL_REPORTING_MASTER_ACTIVITY_GET = URL_BASE + "/master/activities";
 
 export const URL_REPORTING_PROGRESS_DETAILED = URL_BASE + "/report/progress-detail";
 export const URL_REPORTING_PROGRESS_SUMMARY = URL_BASE + "/report/progress-summary";

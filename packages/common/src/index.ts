@@ -9,6 +9,8 @@ export type {
 	ReportProgressSummaryTestingCommissioning,
 	DeliverablesMaster,
 	ActivityMaster,
+	DeliverablesMasterInfo,
+	ActivityMasterItemInfo,
 } from "./types/report";
 
 export type { Token } from "./types/token";

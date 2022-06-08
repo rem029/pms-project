@@ -4,19 +4,93 @@ import { logger } from "utilities/logger";
 import { handleServerResponse, handleServerError } from "helpers/serverResponse";
 import { ActivityMaster, DeliverablesMaster } from "@wakra-project/common";
 import { RequestWithMetrics } from "types";
+import { ActivityMasterItemInfo, DeliverablesMasterInfo } from "@wakra-project/common/src/types/report";
 
-export const addDeliverables = async (req: RequestWithMetrics, res: Response): Promise<void> => {
+export const getDeliverables = async (req: RequestWithMetrics, res: Response): Promise<void> => {
 	try {
-		logger.info("@addDeliverables");
+		logger.info("@getDeliverables");
+
+		const result = await knexMySQL.raw(
+			`
+				SELECT
+					Prj_Cd as projectCode,
+					Bld_Cd as buildingCode,
+					Bld_Name as buildingName,
+					Mst_Cd as milestoneCode,
+					Zon_Cd as zoneCode,
+					Sec_Cd as sectionCode,
+					Typ_Cd as typeCode,
+					Own_Cd as ownerCode,
+					Cns_Cd as constructionCode,
+					unit,
+					mode as module,
+					IsActive as isActive
+				FROM pmsysdb.buildm		
+			`,
+			[]
+		);
+
+		const response = result[0] as DeliverablesMasterInfo[];
+
+		handleServerResponse(res, req, 200, {
+			__typename: "DeliverablesMasterInfo",
+			success: true,
+			message: "Get Deliverables success",
+			data: response,
+		});
+	} catch (error) {
+		logger.error(`@getDeliverables Error ${error}`);
+		handleServerError(res, req, 500, {
+			success: false,
+			message: "Deliverable error",
+			errorMessage: (error as Error).message,
+		});
+	}
+};
+export const getActivities = async (req: RequestWithMetrics, res: Response): Promise<void> => {
+	try {
+		logger.info("@getActivities");
+
+		const result = await knexMySQL.raw(
+			`
+				SELECT
+					Prj_Cd as projectCode,
+					Phs_Cd as phaseCode,
+					Cls_Cd as classificationCode,
+					Act_Cd as activityCode,
+					Act_Name as activityName,
+					Act_PosId as activityOrder,
+					IsActive as isActive
+				FROM pmsysdb.activitym		
+			`,
+			[]
+		);
+
+		const response = result[0] as ActivityMasterItemInfo[];
+
+		handleServerResponse(res, req, 200, {
+			__typename: "ActivityMasterItemInfo",
+			success: true,
+			message: "Get activities success",
+			data: response,
+		});
+	} catch (error) {
+		logger.error(`@getActivities Error ${error}`);
+		handleServerError(res, req, 500, {
+			success: false,
+			message: "Activities error",
+			errorMessage: (error as Error).message,
+		});
+	}
+};
+
+export const addDeliverable = async (req: RequestWithMetrics, res: Response): Promise<void> => {
+	try {
+		logger.info("@addDeliverable");
 
 		const fields = (
-			req.body.addDeliverables ? req.body.addDeliverables : JSON.parse(req.headers["data"] as string)
+			req.body.addDeliverable ? req.body.addDeliverable : JSON.parse(req.headers["data"] as string)
 		) as DeliverablesMaster;
-
-		// : JSON.parse(req.headers["data"] as string);
-
-		console.log("@addDeliverables fields", fields);
-		console.log("@addDeliverables fields name", fields.name);
 
 		await knexMySQL.raw(
 			`
@@ -42,14 +116,14 @@ export const addDeliverables = async (req: RequestWithMetrics, res: Response): P
 		handleServerResponse(res, req, 200, {
 			__typename: "sample",
 			success: true,
-			message: "Add Deliverables success",
-			data: "Add Deliverables success",
+			message: "Add Deliverable success",
+			data: "Add Deliverable success",
 		});
 	} catch (error) {
-		logger.error(`@addDeliverables Error ${error}`);
+		logger.error(`@addDeliverable Error ${error}`);
 		handleServerError(res, req, 500, {
 			success: false,
-			message: "Deliverables error",
+			message: "Deliverable error",
 			errorMessage: (error as Error).message,
 		});
 	}
@@ -62,11 +136,6 @@ export const addActivity = async (req: RequestWithMetrics, res: Response): Promi
 		const fields = (
 			req.body.addActivity ? req.body.addActivity : JSON.parse(req.headers["data"] as string)
 		) as ActivityMaster;
-
-		// : JSON.parse(req.headers["data"] as string);
-
-		console.log("@addActivity fields", fields);
-		console.log("@addActivity fields name", fields.name);
 
 		await knexMySQL.raw(
 			`
