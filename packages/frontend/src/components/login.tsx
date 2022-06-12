@@ -82,17 +82,25 @@ export const Login = (): JSX.Element => {
 					spacing={2}
 					direction="column"
 				>
-					{/* <Grid item xs={12}>
-						<Box
+					<Grid item xs={12}>
+						{/* <Box
 							component="img"
 							src={logo}
 							sx={{ width: "100%", height: "auto", m: "auto" }}
 							alignSelf="center"
-						/>
-					</Grid> */}
+						/> */}
+						<Typography
+							variant="h1"
+							align="center"
+							color="primary.main"
+							letterSpacing={4}
+						>
+							DIAXA
+						</Typography>
+					</Grid>
 
 					<Grid item xs={12}>
-						<Typography variant="h5" align="center" color="primary">
+						<Typography variant="h5" align="center" color="black !important">
 							Project Management System
 						</Typography>
 					</Grid>

@@ -29,6 +29,7 @@ const MainContainer = styled("main", { shouldForwardProp: (prop) => prop !== "op
 		}),
 		marginLeft: 0,
 	}),
+	backgroundColor: theme.palette.background.default,
 }));
 
 const DrawerHeader = styled("div")(({ theme }) => ({

@@ -3,6 +3,7 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import { styled, Toolbar, Typography, IconButton, Box } from "@mui/material";
 import { MenuOutlined } from "@mui/icons-material";
 import logo from "assets/logo-qpm-large.jpeg";
+import { theme } from "highcharts";
 
 interface AppBarProps extends MuiAppBarProps {
 	open?: boolean;
@@ -37,7 +38,10 @@ export const Header = ({ open, setOpen, width }: AppBarProps): JSX.Element => {
 			position="fixed"
 			open={open}
 			width={width}
-			sx={{ backgroundColor: "primary.contrastText", color: "primary.main" }}
+			sx={{
+				backgroundColor: (theme) => theme.palette.primary.main,
+				color: (theme) => theme.palette.primary.contrastText,
+			}}
 		>
 			<Toolbar>
 				<IconButton
@@ -50,10 +54,14 @@ export const Header = ({ open, setOpen, width }: AppBarProps): JSX.Element => {
 					<MenuOutlined />
 				</IconButton>
 
-				<Typography variant="body1" noWrap sx={{ width: "95%" }}>
+				<Typography variant="h6" noWrap sx={{ width: "95%" }}>
 					Project Management System
 				</Typography>
 				{/* <Box component="img" src={logo} sx={{ width: 72 }} /> */}
+
+				<Typography variant="h3" align="center" color="white" letterSpacing={4}>
+					DIAXA
+				</Typography>
 			</Toolbar>
 		</AppBar>
 	);
