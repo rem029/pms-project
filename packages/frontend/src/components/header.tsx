@@ -54,12 +54,12 @@ export const Header = ({ open, setOpen, width }: AppBarProps): JSX.Element => {
 					<MenuOutlined />
 				</IconButton>
 
-				<Typography variant="h6" noWrap sx={{ width: "95%" }}>
+				<Typography variant="body1" noWrap sx={{ width: "95%" }}>
 					Project Management System
 				</Typography>
 				{/* <Box component="img" src={logo} sx={{ width: 72 }} /> */}
 
-				<Typography variant="h3" align="center" color="white" letterSpacing={4}>
+				<Typography variant="h6" align="center" color="white" letterSpacing={4}>
 					DIAXA
 				</Typography>
 			</Toolbar>
