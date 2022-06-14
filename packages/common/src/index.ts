@@ -15,3 +15,4 @@ export type {
 
 export type { Token } from "./types/token";
 export type { UserInfo } from "./types/user";
+export type { InspectionEntry } from "./types/inspection";

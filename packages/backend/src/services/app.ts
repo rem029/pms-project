@@ -5,6 +5,7 @@ import { loginRoute } from "routes/loginRoutes";
 import { userRoutes } from "routes/userRoutes";
 import { reportRoutes } from "routes/reportRoutes";
 import { masterRoutes } from "routes/masterRoutes";
+import { projectRoutes } from "../routes/projectRoutes";
 import { RequestWithMetrics } from "types";
 
 const initializeAppExpress = (): Express => {
@@ -28,6 +29,7 @@ const initializeAppExpress = (): Express => {
 	app.use("/user", userRoutes);
 	app.use("/report", reportRoutes);
 	app.use("/master", masterRoutes);
+	app.use("/project", projectRoutes);
 
 	//Default routes
 	app.get("/test", async (_, res) => {
