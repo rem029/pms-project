@@ -206,12 +206,13 @@ export const Drawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element =>
 					</ListItemText>
 				</ListItem>
 
-				{collapsibleList(
-					"Projects (WIP)",
-					<InfoOutlined htmlColor={colorIcon} />,
-					undefined,
-					true
-				)}
+				{collapsibleList("Projects", <InfoOutlined htmlColor={colorIcon} />, [
+					{
+						label: "Inspection",
+						url: "projects/inspections/",
+						icon: <TableRowsOutlined htmlColor={colorIcon} fontSize="small" />,
+					},
+				])}
 
 				{collapsibleList("Masters", <InfoOutlined htmlColor={colorIcon} />, [
 					{

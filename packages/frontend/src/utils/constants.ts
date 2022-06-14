@@ -7,6 +7,10 @@ export const URL_USER = URL_BASE + "/user";
 export const URL_REPORTING_MASTER_DELIVERABLE = URL_BASE + "/master/deliverable";
 export const URL_REPORTING_MASTER_ACTIVITY = URL_BASE + "/master/activity";
 
+export const URL_REPORTING_PROJECT_INSPECTION_GET = URL_BASE + "/project/inspections";
+export const URL_REPORTING_PROJECT_INSPECTION_ADD =
+	URL_BASE + "/project/inspections/entry";
+
 export const URL_REPORTING_MASTER_DELIVERABLE_GET = URL_BASE + "/master/deliverables";
 export const URL_REPORTING_MASTER_ACTIVITY_GET = URL_BASE + "/master/activities";
 
