@@ -4,7 +4,7 @@ import { logger } from "utilities/logger";
 import { handleServerResponse, handleServerError } from "helpers/serverResponse";
 
 import { RequestAuthInterface } from "types";
-import { InspectionEntry } from "@wakra-project/common";
+import { Inspection } from "@wakra-project/common";
 
 export const getProjectInspectionsController = async (req: RequestAuthInterface, res: Response): Promise<void> => {
 	try {
@@ -29,10 +29,10 @@ export const getProjectInspectionsController = async (req: RequestAuthInterface,
 			[]
 		);
 
-		const response = results[0] as InspectionEntry[];
+		const response = results[0] as Inspection[];
 
 		handleServerResponse(res, req, 200, {
-			__typename: "InspectionEntry",
+			__typename: "Inspection",
 			success: true,
 			message: "Get report progress detail success",
 			data: response,

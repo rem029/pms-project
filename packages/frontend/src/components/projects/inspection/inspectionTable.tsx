@@ -26,7 +26,7 @@ import { getToken } from "utils/storage";
 import { PageContainer } from "components/utilities/pageContainer";
 import {
 	ActivityMaster as ActivityMasterInterface,
-	InspectionEntry,
+	Inspection,
 } from "@wakra-project/common";
 import { Add, RestartAlt, SaveAlt } from "@mui/icons-material";
 import { useSnackbar } from "notistack";
@@ -53,7 +53,7 @@ export const InspectionTable = (): JSX.Element => {
 		loading: getProjectInspectionLoading,
 		message: getProjectInspectionMessage,
 		success: getProjectInspectionSuccess,
-	} = useAxios<InspectionEntry[]>(URL_REPORTING_PROJECT_INSPECTION_GET);
+	} = useAxios<Inspection[]>(URL_REPORTING_PROJECT_INSPECTION_GET);
 
 	/**
 	 * API Posting
@@ -152,7 +152,7 @@ export const InspectionTable = (): JSX.Element => {
 								{ field: "owner", headerName: "Owner", flex: 1 },
 								{ field: "remarks", headerName: "Remarks", flex: 1 },
 							]}
-							rows={getProjectInspectionData as readonly InspectionEntry[]}
+							rows={getProjectInspectionData as readonly Inspection[]}
 						/>
 					)}
 				</Grid>

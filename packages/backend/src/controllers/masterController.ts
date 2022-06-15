@@ -47,6 +47,7 @@ export const getDeliverables = async (req: RequestWithMetrics, res: Response): P
 		});
 	}
 };
+
 export const getActivities = async (req: RequestWithMetrics, res: Response): Promise<void> => {
 	try {
 		logger.info("@getActivities");

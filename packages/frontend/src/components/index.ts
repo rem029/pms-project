@@ -28,6 +28,11 @@ export { SummaryProgressReport } from "./reports/summaryProgressReport";
 export { Dashboard } from "./dashboard";
 
 /**
+ * Projects
+ */
+export * from "./projects/inspection";
+
+/**
  * Masters
  */
 export { DeliverablesMaster } from "./master/deliverablesMaster";
