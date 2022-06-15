@@ -62,6 +62,13 @@ export interface ActivityMasterItemInfo {
 	isActive: number;
 }
 
+export interface ActivityByClassification {
+	__typename?: "ActivityByClassification";
+	activityOrder: number;
+	activityCode: string;
+	activityName: string;
+}
+
 export interface ReportFilter {
 	__typename?: "ReportFilter";
 	id: string;

@@ -4,7 +4,11 @@ import { logger } from "utilities/logger";
 import { handleServerResponse, handleServerError } from "helpers/serverResponse";
 import { ActivityMaster, DeliverablesMaster } from "@wakra-project/common";
 import { RequestWithMetrics } from "types";
-import { ActivityMasterItemInfo, DeliverablesMasterInfo } from "@wakra-project/common/src/types/report";
+import {
+	ActivityByClassification,
+	ActivityMasterItemInfo,
+	DeliverablesMasterInfo,
+} from "@wakra-project/common/src/types/report";
 
 export const getDeliverables = async (req: RequestWithMetrics, res: Response): Promise<void> => {
 	try {
@@ -80,6 +84,45 @@ export const getActivities = async (req: RequestWithMetrics, res: Response): Pro
 		handleServerError(res, req, 500, {
 			success: false,
 			message: "Activities error",
+			errorMessage: (error as Error).message,
+		});
+	}
+};
+
+export const getActivitiesByClassification = async (req: RequestWithMetrics, res: Response): Promise<void> => {
+	try {
+		logger.info("@getActivitiesByClassification");
+		const classificationCode = "TP";
+		const phaseCode = "06C";
+
+		const result = await knexMySQL.raw(
+			`
+				SELECT
+					Act_PosId as activityOrder,					
+					Act_Cd as activityCode,
+					Act_Name as activityName
+				FROM pmsysdb.activitym
+				WHERE
+					Cls_Cd=?
+				AND 
+					Phs_Cd=?
+			`,
+			[classificationCode, phaseCode]
+		);
+
+		const response = result[0] as ActivityByClassification[];
+
+		handleServerResponse(res, req, 200, {
+			__typename: "ActivityByClassification",
+			success: true,
+			message: "Get activities by classification success",
+			data: response,
+		});
+	} catch (error) {
+		logger.error(`@getActivitiesByClassification Error ${error}`);
+		handleServerError(res, req, 500, {
+			success: false,
+			message: "Get activities by classification error",
 			errorMessage: (error as Error).message,
 		});
 	}

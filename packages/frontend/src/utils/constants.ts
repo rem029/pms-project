@@ -13,6 +13,8 @@ export const URL_REPORTING_PROJECT_INSPECTION_ADD =
 
 export const URL_REPORTING_MASTER_DELIVERABLE_GET = URL_BASE + "/master/deliverables";
 export const URL_REPORTING_MASTER_ACTIVITY_GET = URL_BASE + "/master/activities";
+export const URL_REPORTING_MASTER_ACTIVITY_BY_CLASSIFICATION_GET =
+	URL_BASE + "/master/activities-by-classification";
 
 export const URL_REPORTING_PROGRESS_DETAILED = URL_BASE + "/report/progress-detail";
 export const URL_REPORTING_PROGRESS_SUMMARY = URL_BASE + "/report/progress-summary";

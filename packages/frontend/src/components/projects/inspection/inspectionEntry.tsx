@@ -12,12 +12,17 @@ import {
 	URL_REPORTING_FILTER_PROJECT,
 	URL_REPORTING_MASTER_ACTIVITY,
 	URL_REPORTING_PROJECT_INSPECTION_ADD,
+	URL_REPORTING_MASTER_ACTIVITY_BY_CLASSIFICATION_GET,
 } from "utils/constants";
 import { getToken } from "utils/storage";
 import { PageContainer } from "components/utilities/pageContainer";
-import { InspectionEntry as InspectionEntryInterface } from "@wakra-project/common";
+import {
+	ActivityByClassification,
+	InspectionEntry as InspectionEntryInterface,
+} from "@wakra-project/common";
 import { RestartAlt, SaveAlt } from "@mui/icons-material";
 import { useSnackbar } from "notistack";
+import { DataGrid } from "@mui/x-data-grid";
 
 const defaultFields = {
 	doumentDate: null,
@@ -55,13 +60,15 @@ export const InspectionEntry = (): JSX.Element => {
 		AutoCompleteInputOptions[]
 	>(URL_REPORTING_FILTER_PROJECT, axiosConfigReportFilter);
 
-	const { data: filterPhaseData, loading: filterPhaseDataLoading } = useAxios<
-		AutoCompleteInputOptions[]
-	>(URL_REPORTING_FILTER_PHASE, axiosConfigReportFilter);
-
 	const { data: filterClassificationData, loading: filterClassificationLoading } =
 		useAxios<AutoCompleteInputOptions[]>(
 			URL_REPORTING_FILTER_CLASSIFICATION,
+			axiosConfigReportFilter
+		);
+
+	const { data: activityByClassificationData, loading: activityByClassificationLoading } =
+		useAxios<ActivityByClassification[]>(
+			URL_REPORTING_MASTER_ACTIVITY_BY_CLASSIFICATION_GET,
 			axiosConfigReportFilter
 		);
 
@@ -191,6 +198,72 @@ export const InspectionEntry = (): JSX.Element => {
 
 						<Grid component={Box} item xs={12} sx={{ p: 1 }}>
 							<Divider sx={{ width: "100%" }} />
+						</Grid>
+
+						<Grid xs={12}>
+							{activityByClassificationData && (
+								<DataGrid
+									autoHeight
+									getRowId={(row) => row.activityOrder}
+									rowHeight={120}
+									columns={[
+										{
+											field: "activityCode",
+											headerName: "Code",
+											maxWidth: 120,
+											align: "center",
+											headerAlign: "center",
+										},
+										{
+											field: "activityName",
+											headerName: "Name",
+											flex: 1,
+											align: "center",
+											headerAlign: "center",
+										},
+										{
+											field: "progress",
+											headerName: "Progress",
+											flex: 1,
+											align: "center",
+											headerAlign: "center",
+											renderCell: (params) => {
+												return (
+													<TextField
+														fullWidth
+														sx={{ p: 1 }}
+														type="number"
+														label="Progress"
+														placeholder="Enter progress"
+													/>
+												);
+											},
+										},
+										{
+											field: "comments",
+											headerName: "Comments",
+											flex: 1,
+											align: "center",
+											headerAlign: "center",
+											renderCell: (params) => {
+												return (
+													<TextField
+														rows={2}
+														multiline
+														fullWidth
+														sx={{ p: 1 }}
+														label="Comments"
+														placeholder="Enter comments"
+													/>
+												);
+											},
+										},
+									]}
+									rows={
+										activityByClassificationData as readonly ActivityByClassification[]
+									}
+								></DataGrid>
+							)}
 						</Grid>
 
 						<Grid item lg={6} sm={6} xs={12}>
