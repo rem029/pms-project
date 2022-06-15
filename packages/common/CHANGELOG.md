@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-alpha.5](https://github.com/rem029/wakra-project/compare/v1.1.0-alpha.4...v1.1.0-alpha.5) (2022-06-15)
+
+
+### Bug Fixes
+
+* **APM-21:** Update naming of deliverables to deliverable (singular) ([#11](https://github.com/rem029/wakra-project/issues/11)) ([3dd733d](https://github.com/rem029/wakra-project/commit/3dd733d5b808f884be64f4a5945707a61a2b064d))
+
+
+### Features
+
+* **APM-14:** Create Activity Master ([#10](https://github.com/rem029/wakra-project/issues/10)) ([ae9dd5e](https://github.com/rem029/wakra-project/commit/ae9dd5e294855cda7cf69fa34c7c6e1fecbdbd28))
+* **APM-25:** Inspection Entry Table ([#12](https://github.com/rem029/wakra-project/issues/12)) ([a8af10a](https://github.com/rem029/wakra-project/commit/a8af10adcf3fdcff422bad5487d2fcbda8e603b2))
+
+
+
+
+
 # [1.1.0-alpha.4](https://github.com/rem029/wakra-project/compare/v1.1.0-alpha.3...v1.1.0-alpha.4) (2022-05-23)
 
 

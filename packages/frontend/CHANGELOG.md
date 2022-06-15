@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-alpha.5](https://github.com/rem029/wakra-project/compare/v1.1.0-alpha.4...v1.1.0-alpha.5) (2022-06-15)
+
+
+### Bug Fixes
+
+* **APM-21:** Update naming of deliverables to deliverable (singular) ([#11](https://github.com/rem029/wakra-project/issues/11)) ([3dd733d](https://github.com/rem029/wakra-project/commit/3dd733d5b808f884be64f4a5945707a61a2b064d))
+* **NO_TICKET:** removed qpm icons, disabled  projects link ([9ec2bc0](https://github.com/rem029/wakra-project/commit/9ec2bc0c721d5d2206282a1da641a83c3a7cdbaa))
+* **NO_TICKET:** updated logo ([5d029c8](https://github.com/rem029/wakra-project/commit/5d029c82fd4d058bc3610395bd004b0c874ecc5f))
+* **NO_TICKET:** updated logo to DIAXA ([a810d4e](https://github.com/rem029/wakra-project/commit/a810d4ea556e6155bd6519974c83b4d35c383fdc))
+
+
+### Features
+
+* **APM-14:** Create Activity Master ([#10](https://github.com/rem029/wakra-project/issues/10)) ([ae9dd5e](https://github.com/rem029/wakra-project/commit/ae9dd5e294855cda7cf69fa34c7c6e1fecbdbd28))
+* **APM-25:** Inspection Entry Table ([#12](https://github.com/rem029/wakra-project/issues/12)) ([a8af10a](https://github.com/rem029/wakra-project/commit/a8af10adcf3fdcff422bad5487d2fcbda8e603b2))
+* **NO_TICKET:** added datagrid ([b3969f7](https://github.com/rem029/wakra-project/commit/b3969f7528fc01f3b0c61743a228f83d96fd83a2))
+
+
+
+
+
 # [1.1.0-alpha.4](https://github.com/rem029/wakra-project/compare/v1.1.0-alpha.3...v1.1.0-alpha.4) (2022-05-23)
 
 
