@@ -142,17 +142,14 @@ const getReportSummaryColumns = (phaseId: string): string => {
 	return "";
 };
 
-export const getReportProgressDetailController = async (req: RequestAuthInterface, res: Response): Promise<void> => {
-	try {
-		logger.info("@reportProgressDetailController");
-		const filters = req.query.filter ? (JSON.parse(req.query.filter as string) as ReportFilters) : defaultReportFilters;
-		const { queryFilter, queryBindings } = getReportFilter(filters);
+export const getReportProgressDetailController = async (filters?: ReportFilters): Promise<ReportProgressDetail[]> => {
+	const { queryFilter, queryBindings } = getReportFilter(filters ? filters : defaultReportFilters);
 
-		logger.info(`@reportProgressDetailController queryFilter ${queryFilter}`);
-		logger.info(`@reportProgressDetailController queryBindings ${JSON.stringify(queryBindings)}`);
+	logger.info(`@reportProgressDetailController queryFilter ${queryFilter}`);
+	logger.info(`@reportProgressDetailController queryBindings ${JSON.stringify(queryBindings)}`);
 
-		const results = await knexMySQL.raw(
-			`
+	const results = await knexMySQL.raw(
+		`
 				SELECT 
 					InsH_No as inspectionNumber,
 					InsH_Dt as inspectionDate,   
@@ -208,40 +205,24 @@ export const getReportProgressDetailController = async (req: RequestAuthInterfac
 				ORDER BY
 					InsH_Dt DESC;
 			`,
-			queryBindings
-		);
+		queryBindings
+	);
 
-		const response = formatReportProgressDetailController(results[0] as ReportProgressDetail[]);
-
-		handleServerResponse(res, req, 200, {
-			__typename: response.length > 0 ? response[0].__typename : "",
-			success: true,
-			message: "Get report progress detail success",
-			data: response,
-		});
-	} catch (error) {
-		logger.error(`@reportProgressDetailController error ${error}`);
-		handleServerError(res, req, 500, {
-			success: false,
-			message: "Get report progress detail error",
-			errorMessage: (error as Error).message,
-		});
-	}
+	const response = formatReportProgressDetailController(results[0] as ReportProgressDetail[]);
+	return response;
 };
 
-export const getReportProgressSummaryController = async (req: RequestAuthInterface, res: Response): Promise<void> => {
-	try {
-		logger.info("@getReportProgressSummaryController");
-		const filters = req.query.filter ? (JSON.parse(req.query.filter as string) as ReportFilters) : defaultReportFilters;
-		const { queryFilter, queryBindings } = getReportFilter(filters);
+export const getReportProgressSummaryController = async (
+	filters?: ReportFilters
+): Promise<ReportProgressSummaryConstruction[] | ReportProgressSummaryTestingCommissioning[]> => {
+	const { queryFilter, queryBindings } = getReportFilter(filters ? filters : defaultReportFilters);
+	logger.info(`@getReportProgressSummaryController queryFilter ${queryFilter}`);
+	logger.info(`@getReportProgressSummaryController queryBindings ${JSON.stringify(queryBindings)}`);
 
-		logger.info(`@getReportProgressSummaryController queryFilter ${queryFilter}`);
-		logger.info(`@getReportProgressSummaryController queryBindings ${JSON.stringify(queryBindings)}`);
-
-		const results = await knexMySQL.raw(
-			`
+	const results = await knexMySQL.raw(
+		`
 			SELECT
-				${getReportSummaryColumns(filters.phase?.id || "")}
+				${getReportSummaryColumns(filters?.phase?.id || "")}
 				InsH_No as inspectionNumber,
 				InsH_Dt as inspectionDate,   
 				InsH_Bld as bldgCode,
@@ -285,60 +266,21 @@ export const getReportProgressSummaryController = async (req: RequestAuthInterfa
 			ORDER BY
 				InsH_Dt DESC;
 			`,
-			queryBindings
-		);
-		// ********TBD ZONE FILTER
-		// ********TBD SECTION FILTER
+		queryBindings
+	);
+	// ********TBD ZONE FILTER
+	// ********TBD SECTION FILTER
 
-		const success = true;
-		const message = "Get report progress summary success";
-		let data: ReportProgressSummaryConstruction[] | ReportProgressSummaryTestingCommissioning[] = [];
-
-		if (filters.phase?.id === "06C") {
-			data = results[0] as ReportProgressSummaryConstruction[];
-			handleServerResponse(res, req, 200, {
-				__typename: data.length > 0 ? data[0].__typename : "",
-				success: success,
-				message: message,
-				data: data,
-			});
-			return;
-		}
-
-		if (filters.phase?.id === "07T") {
-			data = results[0] as ReportProgressSummaryTestingCommissioning[];
-			handleServerResponse(res, req, 200, {
-				__typename: data.length > 0 ? data[0].__typename : "",
-				success: success,
-				message: message,
-				data: data,
-			});
-			return;
-		}
-
-		throw new Error("Unknown phase id");
-	} catch (error) {
-		logger.error(`@getReportProgressSummaryController error ${error}`);
-		handleServerError(res, req, 500, {
-			success: false,
-			message: "Get report progress summary error",
-			errorMessage: (error as Error).message,
-		});
-	}
+	return results[0];
 };
 
-export const getReportFilterController = async (req: RequestAuthInterface, res: Response): Promise<void> => {
-	try {
-		logger.info("@getReportFilterController");
+export const getReportFilterController = async (type: string): Promise<ReportFilter[]> => {
+	if (!type) throw new Error("<type> parameter is required in url");
+	if (!REPORT_FILTER[type]) throw new Error("Filter type not found");
 
-		const { type } = req.params;
-
-		if (!type) throw new Error("<type> parameter is required in url");
-		if (!REPORT_FILTER[type]) throw new Error("Filter type not found");
-
-		const { columnName, tableName } = REPORT_FILTER[type];
-		const results = await knexMySQL.raw(
-			`
+	const { columnName, tableName } = REPORT_FILTER[type];
+	const results = await knexMySQL.raw(
+		`
 			SELECT 					
 				${columnName}_Cd as id,
 				${columnName}_Name as name
@@ -347,21 +289,8 @@ export const getReportFilterController = async (req: RequestAuthInterface, res: 
 			WHERE
 				isActive = 1;
 			`
-		);
+	);
 
-		const response = results[0] as ReportFilter[];
-
-		handleServerResponse(res, req, 200, {
-			success: true,
-			message: "Get filters success",
-			data: response,
-		});
-	} catch (error) {
-		logger.error(`@getReportFilterController error ${error}`);
-		handleServerError(res, req, 500, {
-			success: false,
-			message: "Get filters error",
-			errorMessage: (error as Error).message,
-		});
-	}
+	const response = results[0] as ReportFilter[];
+	return response;
 };

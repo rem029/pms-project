@@ -1,18 +1,11 @@
-import { Response } from "express";
 import { knexMySQL } from "services/database";
-import { logger } from "utilities/logger";
-import { handleServerResponse, handleServerError } from "helpers/serverResponse";
 import { UserInfo } from "@wakra-project/common";
-import { RequestAuthInterface } from "types";
 
-export const getUserInfoController = async (req: RequestAuthInterface, res: Response): Promise<void> => {
-	try {
-		logger.info("@getUserInfoController");
+export const getUserInfoController = async (body: { userId: string }): Promise<UserInfo> => {
+	const { userId } = body;
 
-		const { userId } = req.user ? req.user : { userId: "" };
-
-		const results = await knexMySQL.raw(
-			`
+	const results = await knexMySQL.raw(
+		`
 			SELECT 
 				Usr_Id,
 				Usr_Name,
@@ -28,27 +21,12 @@ export const getUserInfoController = async (req: RequestAuthInterface, res: Resp
 				userm
 			WHERE
 				Usr_Id=?;`,
-			[userId]
-		);
+		[userId]
+	);
 
-		if (!results[0].length) throw new Error("No user found");
-		if (results.length && results[0][0].IsActive < 1) throw new Error("User not active.");
+	if (!results[0].length) throw new Error("No user found");
+	if (results.length && results[0][0].IsActive < 1) throw new Error("User not active.");
 
-		const returnUser = { ...results[0][0] } as UserInfo;
-
-		handleServerResponse(res, req, 200, {
-			__typename: returnUser.__typename,
-			success: true,
-			message: "Get user info success",
-			data: returnUser,
-		});
-	} catch (error) {
-		logger.error(`@getUserInfoController Error ${error}`);
-
-		handleServerError(res, req, 500, {
-			success: false,
-			message: "Get user info error",
-			errorMessage: (error as Error).message,
-		});
-	}
+	const response = { ...results[0][0] } as UserInfo;
+	return response;
 };
