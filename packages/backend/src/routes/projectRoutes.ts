@@ -9,57 +9,54 @@ import { InspectionEntry } from "@wakra-project/common";
 const initializeRouter = (): Router => {
 	const router = express.Router();
 
-	router.get("/inspections", authenticateToken, async (req: RequestAuthInterface, res: Response): Promise<void> => {
-		try {
-			logger.info("@getProjectInspectionsController");
-			const response = await getProjectInspectionsController();
+	router.get("/inspections", authenticateToken, (req: RequestAuthInterface, res: Response) => {
+		logger.info("@getProjectInspectionsController");
 
-			handleServerResponse(res, req, 200, {
-				__typename: "Inspection",
-				success: true,
-				message: "Get report progress detail success",
-				data: response,
+		getProjectInspectionsController()
+			.then((response) => {
+				handleServerResponse(res, req, 200, {
+					__typename: "Inspection",
+					success: true,
+					message: "Get report progress detail success",
+					data: response,
+				});
+			})
+			.catch((error) => {
+				logger.error(`@getProjectInspectionsController.Error ${error}`);
+				handleServerError(res, req, 500, {
+					success: false,
+					message: "Get report progress detail error",
+					errorMessage: (error as Error).message,
+				});
 			});
-		} catch (error) {
-			logger.error(`@getProjectInspectionsController error ${error}`);
-			handleServerError(res, req, 500, {
-				success: false,
-				message: "Get report progress detail error",
-				errorMessage: (error as Error).message,
-			});
-		}
 	});
 
-	router.post(
-		"/inspections/entry",
-		authenticateToken,
-		async (req: RequestAuthInterface, res: Response): Promise<void> => {
-			try {
-				logger.info("@addProjectInspectionsController");
-				logger.info(`@addProjectInspectionsController req.user ${req.user}`);
+	router.post("/inspections/entry", authenticateToken, async (req: RequestAuthInterface, res: Response) => {
+		logger.info("@addProjectInspectionsController");
+		logger.info(`@addProjectInspectionsController req.user ${req.user}`);
 
-				const fields = (
-					req.body.addInspectionEntry ? req.body.addInspectionEntry : JSON.parse(req.headers["data"] as string)
-				) as InspectionEntry;
+		const fields = (
+			req.body.addInspectionEntry ? req.body.addInspectionEntry : JSON.parse(req.headers["data"] as string)
+		) as InspectionEntry;
 
-				await addProjectInspectionsController(fields);
-
+		addProjectInspectionsController(fields)
+			.then((_) => {
 				handleServerResponse(res, req, 200, {
 					__typename: "string",
 					success: true,
 					message: "Add inspection entry success",
 					data: "Add inspection entry success",
 				});
-			} catch (error) {
-				logger.error(`@addProjectInspectionsController Error ${error}`);
+			})
+			.catch((error) => {
+				logger.error(`@addProjectInspectionsController.Error ${error}`);
 				handleServerError(res, req, 500, {
 					success: false,
 					message: "Add inspection entry error",
 					errorMessage: (error as Error).message,
 				});
-			}
-		}
-	);
+			});
+	});
 
 	return router;
 };
