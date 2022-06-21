@@ -14,6 +14,7 @@ export const handleServerResponse = <T>(
 	logger.info(`Start time: ${req.startTime}`);
 	logger.info(`End Time: ${endTime}`);
 	logger.info(`responseTime(ms): ${endTime.getTime() - startTime}`);
+	logger.info(`responseTime(ms): ${endTime.getTime() - startTime}`);
 	res.status(code).json(payload);
 };
 
