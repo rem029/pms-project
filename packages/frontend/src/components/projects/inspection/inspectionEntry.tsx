@@ -1,4 +1,12 @@
-import { Box, Button, Divider, Grid, Paper, TextField, Typography } from "@mui/material";
+import {
+	Box,
+	Button,
+	CircularProgress,
+	Divider,
+	Grid,
+	Paper,
+	TextField,
+} from "@mui/material";
 import { AxiosRequestConfig } from "axios";
 import {
 	AutoCompleteInput,
@@ -8,11 +16,11 @@ import { useAxios } from "hooks/useAxios";
 import { useEffect, useMemo, useState } from "react";
 import {
 	URL_REPORTING_FILTER_CLASSIFICATION,
-	URL_REPORTING_FILTER_PHASE,
 	URL_REPORTING_FILTER_PROJECT,
-	URL_REPORTING_MASTER_ACTIVITY,
 	URL_REPORTING_PROJECT_INSPECTION_ADD,
 	URL_REPORTING_MASTER_ACTIVITY_BY_CLASSIFICATION_GET,
+	URL_REPORTING_FILTER_BUILDING,
+	URL_REPORTING_FILTER_OWNER,
 } from "utils/constants";
 import { getToken } from "utils/storage";
 import { PageContainer } from "components/utilities/pageContainer";
@@ -25,21 +33,24 @@ import { useSnackbar } from "notistack";
 import { DataGrid } from "@mui/x-data-grid";
 
 const defaultFields = {
-	doumentDate: null,
-	inspectionDate: null,
-	inspectNo: "",
 	project: null,
+	inspectNo: null,
+	documentDate: null,
+	inspectionDate: null,
 	classification: null,
+	deliverable: null,
+	owner: null,
 	remarks: "",
 } as InspectionEntryInterface;
 
 export const InspectionEntry = (): JSX.Element => {
 	/**
 	 * States
-	 *
-	 *
 	 */
 	const [fields, setFields] = useState<InspectionEntryInterface>(defaultFields);
+	const [fieldsActivities, setFieldsActivities] = useState<ActivityByClassification[]>(
+		[]
+	);
 	const { enqueueSnackbar } = useSnackbar();
 
 	const axiosConfigReportFilter: AxiosRequestConfig = useMemo(() => {
@@ -53,8 +64,6 @@ export const InspectionEntry = (): JSX.Element => {
 
 	/**
 	 * API Fetching
-	 *
-	 *
 	 */
 	const { data: filterProjectData, loading: filterProjectLoading } = useAxios<
 		AutoCompleteInputOptions[]
@@ -66,16 +75,28 @@ export const InspectionEntry = (): JSX.Element => {
 			axiosConfigReportFilter
 		);
 
+	const { data: filterBuildingData, loading: filterBuildingLoading } = useAxios<
+		AutoCompleteInputOptions[]
+	>(URL_REPORTING_FILTER_BUILDING, axiosConfigReportFilter);
+
+	const { data: filterOwnerData, loading: filterOwnerLoading } = useAxios<
+		AutoCompleteInputOptions[]
+	>(URL_REPORTING_FILTER_OWNER, axiosConfigReportFilter);
+
 	const { data: activityByClassificationData, loading: activityByClassificationLoading } =
 		useAxios<ActivityByClassification[]>(
 			URL_REPORTING_MASTER_ACTIVITY_BY_CLASSIFICATION_GET,
 			axiosConfigReportFilter
 		);
 
+	useEffect(() => {
+		if (activityByClassificationData) {
+			setFieldsActivities(activityByClassificationData);
+		}
+	}, [activityByClassificationData]);
+
 	/**
 	 * API Posting
-	 *
-	 *
 	 */
 	const {
 		fetch: dataPost,
@@ -94,12 +115,11 @@ export const InspectionEntry = (): JSX.Element => {
 
 	/**
 	 * Event Handlers
-	 *
-	 *
 	 */
 	const handleFormReset = (event: React.FormEvent<HTMLDivElement>): void => {
 		event.preventDefault();
 		setFields(defaultFields);
+		setFieldsActivities([]);
 	};
 
 	const handleFormSubmit = (event: React.FormEvent<HTMLDivElement>): void => {
@@ -111,7 +131,12 @@ export const InspectionEntry = (): JSX.Element => {
 				Authorization: `Token ${getToken()}`,
 				Accept: "application/json",
 				"Content-type": "application/json",
-				data: JSON.stringify({ ...fields, doumentDate: new Date() }),
+				data: JSON.stringify({
+					...fields,
+					documentDate: new Date(),
+					inspectionDate: fields.inspectionDate ? fields.inspectionDate : new Date(),
+					activities: fieldsActivities,
+				} as InspectionEntryInterface),
 			},
 		});
 	};
@@ -120,10 +145,28 @@ export const InspectionEntry = (): JSX.Element => {
 		name: string,
 		value: AutoCompleteInputOptions | string | number | null
 	): void => {
-		setFields((currentFields) => ({
-			...currentFields,
-			[name]: value,
-		}));
+		setFields((currentFields) => ({ ...currentFields, [name]: value }));
+	};
+
+	const handleFormActivitiesChange = (
+		activityOrder: number,
+		name: string,
+		value: string | number
+	): void => {
+		setFieldsActivities((currentFields) => {
+			const fieldsCopy = currentFields.filter(
+				(field) => field.activityOrder !== activityOrder
+			);
+			const fieldToUpdate = currentFields.find(
+				(field) => field.activityOrder === activityOrder
+			) as ActivityByClassification;
+
+			fieldToUpdate[name as keyof ActivityByClassification] = value as never;
+
+			const returnValue: ActivityByClassification[] = [...fieldsCopy, fieldToUpdate];
+
+			return returnValue;
+		});
 	};
 
 	return (
@@ -164,6 +207,26 @@ export const InspectionEntry = (): JSX.Element => {
 								handleChange={handleFormChange}
 							/>
 						</Grid>
+						<Grid item lg={3} sm={6} xs={12}>
+							<AutoCompleteInput
+								name="deliverable"
+								label="Deliverable"
+								loading={filterBuildingLoading}
+								options={filterBuildingData as AutoCompleteInputOptions[]}
+								value={fields?.deliverable as AutoCompleteInputOptions}
+								handleChange={handleFormChange}
+							/>
+						</Grid>
+						<Grid item lg={6} sm={6} xs={12}>
+							<AutoCompleteInput
+								name="owner"
+								label="Owner"
+								loading={filterOwnerLoading}
+								options={filterOwnerData as AutoCompleteInputOptions[]}
+								value={fields?.owner as AutoCompleteInputOptions}
+								handleChange={handleFormChange}
+							/>
+						</Grid>
 						<Grid component={Box} item xs={12} sx={{ p: 1 }}>
 							<Divider sx={{ width: "100%" }} />
 						</Grid>
@@ -200,13 +263,34 @@ export const InspectionEntry = (): JSX.Element => {
 							<Divider sx={{ width: "100%" }} />
 						</Grid>
 
-						<Grid xs={12}>
+						<Grid item xs={12}>
+							{activityByClassificationLoading && (
+								<CircularProgress
+									sx={{
+										flexGrow: 1,
+										justifyContent: "center",
+										display: "flex",
+										m: "auto",
+										padding: 1,
+									}}
+									size={56}
+								/>
+							)}
 							{activityByClassificationData && (
 								<DataGrid
 									autoHeight
 									getRowId={(row) => row.activityOrder}
 									rowHeight={120}
+									hideFooter
 									columns={[
+										{
+											field: "activityOrder",
+											headerName: "Order",
+											maxWidth: 96,
+											align: "center",
+											headerAlign: "center",
+											type: "number",
+										},
 										{
 											field: "activityCode",
 											headerName: "Code",
@@ -226,6 +310,7 @@ export const InspectionEntry = (): JSX.Element => {
 											headerName: "Progress",
 											flex: 1,
 											align: "center",
+											maxWidth: 160,
 											headerAlign: "center",
 											renderCell: (params) => {
 												return (
@@ -233,8 +318,17 @@ export const InspectionEntry = (): JSX.Element => {
 														fullWidth
 														sx={{ p: 1 }}
 														type="number"
-														label="Progress"
-														placeholder="Enter progress"
+														name="progress"
+														value={params.value ? params.value : 0}
+														onChange={(e) => {
+															handleFormActivitiesChange(
+																params.id as number,
+																e.target.name,
+																e.target.value
+															);
+														}}
+														InputProps={{ style: { fontSize: 14 } }}
+														placeholder="Progress"
 													/>
 												);
 											},
@@ -252,8 +346,17 @@ export const InspectionEntry = (): JSX.Element => {
 														multiline
 														fullWidth
 														sx={{ p: 1 }}
-														label="Comments"
-														placeholder="Enter comments"
+														name="comments"
+														InputProps={{ style: { fontSize: 14 } }}
+														value={params.value ? params.value : ""}
+														onChange={(e) => {
+															handleFormActivitiesChange(
+																params.id as number,
+																e.target.name,
+																e.target.value
+															);
+														}}
+														placeholder="Comments"
 													/>
 												);
 											},
@@ -262,7 +365,7 @@ export const InspectionEntry = (): JSX.Element => {
 									rows={
 										activityByClassificationData as readonly ActivityByClassification[]
 									}
-								></DataGrid>
+								/>
 							)}
 						</Grid>
 

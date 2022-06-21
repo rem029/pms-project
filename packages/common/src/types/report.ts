@@ -67,6 +67,8 @@ export interface ActivityByClassification {
 	activityOrder: number;
 	activityCode: string;
 	activityName: string;
+	progress?: string;
+	comments?: string;
 }
 
 export interface ReportFilter {
