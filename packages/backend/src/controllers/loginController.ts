@@ -1,18 +1,14 @@
-import { Response } from "express";
 import { knexMySQL } from "services/database";
 import { logger } from "utilities/logger";
-import { handleServerResponse, handleServerError } from "helpers/serverResponse";
-import { UserInfo } from "@wakra-project/common";
-import { RequestAuthInterface } from "types";
+import { Token, UserInfo } from "@wakra-project/common";
 import { generateAccessToken } from "middlewares/authToken";
 
-export const loginController = async (req: RequestAuthInterface, res: Response): Promise<void> => {
-	try {
-		logger.info("@loginControllers");
-		const { userId, password } = req.user ? req.user : { userId: "", password: "" };
+export const loginController = async (body: { userId: string; password?: string | undefined }): Promise<Token> => {
+	logger.info("@loginControllers");
+	const { userId, password } = body;
 
-		const results = await knexMySQL.raw(
-			`
+	const results = await knexMySQL.raw(
+		`
 			SELECT 
 				Usr_Id,
 				Usr_Name,
@@ -28,27 +24,13 @@ export const loginController = async (req: RequestAuthInterface, res: Response):
 				userm
 			WHERE
 				Usr_Id=? AND Usr_pwd=?;`,
-			[userId, password ? password : ""]
-		);
+		[userId, password ? password : ""]
+	);
 
-		if (!results[0].length) throw new Error("No user found");
-		if (results.length && results[0][0].IsActive < 1) throw new Error("User not active.");
+	if (!results[0].length) throw new Error("No user found");
+	if (results.length && results[0][0].IsActive < 1) throw new Error("User not active.");
 
-		const returnUser = { ...results[0][0] } as UserInfo;
-		const returnToken = generateAccessToken(returnUser);
-
-		handleServerResponse(res, req, 200, {
-			__typename: returnToken.__typename,
-			success: true,
-			message: "Login success",
-			data: returnToken,
-		});
-	} catch (error) {
-		logger.error(`@loginControllers Error ${error}`);
-		handleServerError(res, req, 500, {
-			success: false,
-			message: "Login error",
-			errorMessage: (error as Error).message,
-		});
-	}
+	const returnUser = { ...results[0][0] } as UserInfo;
+	const returnToken = generateAccessToken(returnUser);
+	return returnToken;
 };

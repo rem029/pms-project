@@ -1,2 +1,2 @@
-export { InspectionEntry } from "./inspectionEntry";
-export { InspectionTable } from "./inspectionTable";
+export * from "./inspectionEntry";
+export * from "./inspectionTable";
