@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-alpha.6](https://github.com/rem029/wakra-project/compare/v1.1.0-alpha.5...v1.1.0-alpha.6) (2022-06-22)
+
+
+### Features
+
+* **APM-22:** Inspection entry and backend architecture update ([#13](https://github.com/rem029/wakra-project/issues/13)) ([182fa1b](https://github.com/rem029/wakra-project/commit/182fa1b545c3f2d4c3ba02ce5a41f839c41be0bb))
+
+
+
+
+
+
 # [1.1.0-alpha.5](https://github.com/rem029/wakra-project/compare/v1.1.0-alpha.4...v1.1.0-alpha.5) (2022-06-15)
 
 
