@@ -38,7 +38,7 @@
 	"scripts": {
 		"start": "react-scripts start",
 		"build": "react-scripts build --max_old_space_size=512",
-		"build:staging": "yarn build && scp -r ./build/* root@sb.rem029.com:/var/www/pm.rem029.com/html",
+		"build:staging": "yarn build && scp -r ./build/* root@sb.rem029.com:/var/www/pm.rem029.com/packages/frontend/build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
 		"lint": "eslint src/**/*.ts src/**/*.tsx"
