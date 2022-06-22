@@ -13,7 +13,7 @@
     "bootstrap": "lerna bootstrap",
     "start": "yarn kill-ports && lerna run start --parallel --scope @wakra-project/*",
     "start:staging": "lerna run start --parallel --scope @wakra-project/backend --scope @wakra-project/common",
-    "start:pm2:staging": "pm2 start yarn --name pm-app-staging -- start:staging",
+    "start:pm2:staging": "pm2 start server.sh --interpreter=bash --name=pm-app-staging",
     "build": "yarn kill-ports && lerna run build --parallel --scope @wakra-project/*",
     "build:frontend": "yarn kill-ports && lerna run build:staging --scope @wakra-project/frontend",
     "eslint": "lerna eslint"
