@@ -13,6 +13,7 @@
     "bootstrap": "lerna bootstrap",
     "start": "yarn kill-ports && lerna run start --parallel --scope @wakra-project/*",
     "build": "yarn kill-ports && lerna run build --parallel --scope @wakra-project/*",
+    "start:prod": "pm2 start yarn --name pm-app -- start",
     "eslint": "lerna eslint"
   },
   "devDependencies": {
