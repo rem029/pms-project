@@ -1,3 +1,5 @@
+export const APP_NAME = process.env.REACT_APP_APP_NAME || "PM";
+
 export const URL_BASE = process.env.REACT_APP_API_URL;
 export const URL_OPEN_WEATHER = "https://api.openweathermap.org/data/2.5/weather";
 

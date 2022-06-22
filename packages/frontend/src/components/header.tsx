@@ -4,6 +4,7 @@ import { styled, Toolbar, Typography, IconButton, Box } from "@mui/material";
 import { MenuOutlined } from "@mui/icons-material";
 import logo from "assets/logo-qpm-large.jpeg";
 import { theme } from "highcharts";
+import { APP_NAME } from "utils/constants";
 
 interface AppBarProps extends MuiAppBarProps {
 	open?: boolean;
@@ -60,7 +61,7 @@ export const Header = ({ open, setOpen, width }: AppBarProps): JSX.Element => {
 				{/* <Box component="img" src={logo} sx={{ width: 72 }} /> */}
 
 				<Typography variant="h6" align="center" color="white" letterSpacing={4}>
-					DIAXA
+					{APP_NAME}
 				</Typography>
 			</Toolbar>
 		</AppBar>
