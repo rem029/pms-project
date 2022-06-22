@@ -38,6 +38,7 @@
 	"scripts": {
 		"start": "react-scripts start",
 		"build": "react-scripts build",
+		"build:staging": "react-scripts build && scp -r ./build/* root@sb.rem029.com:/var/www/pm.rem029.com/html",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
 		"lint": "eslint src/**/*.ts src/**/*.tsx"

@@ -12,9 +12,10 @@
     "kill-ports": "kill-port --port 3030 && kill-port --port 6060",
     "bootstrap": "lerna bootstrap",
     "start": "yarn kill-ports && lerna run start --parallel --scope @wakra-project/*",
-    "start:prod": "yarn kill-ports && lerna run start --parallel --scope @wakra-project/backend --scope @wakra-project/common",
+    "start:prod": "yarn build:staging && yarn kill-ports && lerna run start --parallel --scope @wakra-project/backend --scope @wakra-project/common",
     "start:pm2": "pm2 start yarn --name pm-app -- start:prod",
     "build": "yarn kill-ports && lerna run build --parallel --scope @wakra-project/*",
+    "build:staging": "yarn kill-ports && lerna run build:staging --scope @wakra-project/frontend",
     "eslint": "lerna eslint"
   },
   "devDependencies": {
