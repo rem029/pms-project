@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
       SSH_KEY: ${{ secrets.SSH_KEY }}
       SSH_HOST: ${{ secrets.SSH_HOST }}
       HOST_PATH: ${{ secrets.HOST_PATH }}
@@ -20,6 +21,7 @@ jobs:
         with:
           host: $SSH_HOST
           username: $SSH_USER
+          password: $SSH_PASSWORD
           key: $SSH_KEY
           script: whoami
       - uses: actions/checkout@v3
