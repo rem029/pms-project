@@ -34,7 +34,6 @@ jobs:
               User $SSH_USER
               IdentityFile ~/.ssh/staging.key
               StrictHostKeyChecking no
-            END
       - run: yarn install
       - run: yarn build:frontend
       - run: yarn build:backend
