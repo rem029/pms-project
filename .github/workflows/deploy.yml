@@ -13,6 +13,7 @@ jobs:
       SSH_KEY: ${{ secrets.SSH_KEY }}
       SSH_HOST: ${{ secrets.SSH_HOST }}
       HOST_PATH: ${{ secrets.HOST_PATH }}
+      TEST_ENV: This is my own ENV FF
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js 16
@@ -20,6 +21,7 @@ jobs:
         with:
           node-version: 16
           cache: 'yarn'
+      - run: echo "finished $TEST_ENV"
       - run: yarn install
       - run: yarn build:frontend
       - run: yarn build:backend
