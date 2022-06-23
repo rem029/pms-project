@@ -34,11 +34,8 @@ jobs:
               User $SSH_USER
               IdentityFile ~/.ssh/staging.key
               StrictHostKeyChecking no
-      - name: Running ESLint
       - run: yarn eslint
-      - name: Installing dependencies
       - run: yarn install
-      - name: Building packages
       - run: yarn build:frontend
       - run: yarn build:backend
       - name: Deploy
