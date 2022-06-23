@@ -15,7 +15,6 @@ jobs:
       SSH_HOST: ${{ secrets.SSH_HOST }}
       SSH_PORT: ${{ secrets.SSH_PORT }}
       HOST_PATH: ${{ secrets.HOST_PATH }}
-      TEST_ENV: This is my own ENV FF
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js 16
@@ -27,13 +26,13 @@ jobs:
       - name: Test SSH
         uses: appleboy/ssh-action@master
         with:
-          host: $SSH_HOST
-          username: $SSH_USER
-          key: $SSH_KEY
-          port: $SSH_PORT
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           script: |
             whoami
-            cd $HOST_PATH
+            cd ${{ secrets.HOST_PATH }}
             git fetch
             git reset --hard origin/main
             pm2 reload all
