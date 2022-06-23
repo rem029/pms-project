@@ -7,6 +7,7 @@
 	"scripts": {
 		"start": "yarn clean-logs && ts-node-dev --respawn -r tsconfig-paths/register ./src/index.ts DEBUG=knex:query",
 		"build": "tsc",
+		"build:staging": "yarn build && scp -r ./build/* root@pm.rem029.com:/var/www/pm.rem029.com/packages/backend/dist",
 		"dev": "nodemon --exec ts-node-dev -r tsconfig-paths/register ./src/index.ts DEBUG=knex:query",
 		"clean-logs": "rimraf ./src/__logs",
 		"lint": "eslint src/**/*.ts"
