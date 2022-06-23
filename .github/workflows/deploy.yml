@@ -14,7 +14,6 @@ jobs:
       SSH_HOST: ${{ secrets.SSH_HOST }}
       HOST_PATH: ${{ secrets.HOST_PATH }}
     steps:
-      - shell: bash
       - uses: actions/checkout@v3
       - name: Use Node.js 16
         uses: actions/setup-node@v2
