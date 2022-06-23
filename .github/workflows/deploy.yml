@@ -33,8 +33,7 @@ jobs:
           script: |
             whoami
             cd ~/../var/www/pm.rem029.com/
-            git pull origin main
-            pm2 reload all
+            bash deploy.sh
 #       - run: yarn install
 #       - run: yarn build:frontend
 #       - run: yarn build:backend
