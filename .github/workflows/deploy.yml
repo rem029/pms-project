@@ -23,9 +23,19 @@ jobs:
           node-version: 16
           cache: 'yarn'
       - run: yarn install
+      - name: Create frontend .env file
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          PORT: 1357
+          REACT_APP_API_URL: "http://api.pm.rem029.com/"
+          REACT_APP_APP_NAME: "R.PM"
+          REACT_APP_OPEN_WEATHER_API_KEY: ${{ secrets.OPEN_WEATHER_API_KEY }}
+          directory: 'packages/frontend/'
+          file_name: .env
+          fail_on_empty: false
+      - run: ls -a frontend/
       - run: yarn build:frontend
       - run: yarn build:backend
-      - run: ls
       - name: Deploy frontend
         uses: appleboy/scp-action@master
         with:
