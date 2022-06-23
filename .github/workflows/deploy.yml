@@ -15,6 +15,14 @@ jobs:
       HOST_PATH: ${{ secrets.HOST_PATH }}
       TEST_ENV: This is my own ENV FF
     steps:
+      - name: Test SSH
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: $SSH_HOST
+          username: $SSH_USER
+          key: $SSH_KEY
+          script: |
+            cd ../
       - uses: actions/checkout@v3
       - name: Use Node.js 16
         uses: actions/setup-node@v2
