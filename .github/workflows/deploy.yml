@@ -22,8 +22,10 @@ jobs:
         with:
           node-version: 16
           cache: 'yarn'
-      - run: echo "finished $TEST_ENV"
-      - name: Test SSH
+      - run: yarn install
+      - name: Running ESLint
+      - run: yarn lint
+      - name: Deploy
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -35,7 +37,6 @@ jobs:
             PATH=$PATH:/${{secrets.SSH_USER}}/.npm-global/bin
             cd ~/../var/www/pm.rem029.com/
             bash deploy.sh
-#       - run: yarn install
 #       - run: yarn build:frontend
 #       - run: yarn build:backend
 #       - name: Configure SSH
