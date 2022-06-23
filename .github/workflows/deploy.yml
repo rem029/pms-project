@@ -25,6 +25,7 @@ jobs:
       - run: yarn install
       - run: yarn build:frontend
       - run: yarn build:backend
+      - run: echo "ls"
       - name: Deploy frontend
         uses: appleboy/scp-action@master
         with:
