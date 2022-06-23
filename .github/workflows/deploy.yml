@@ -20,6 +20,9 @@ jobs:
       - run: yarn install
       - run: yarn build:frontend
       - run: yarn build:backend
+      - run: echo "$SSH_KEY"
+      - run: echo "$SSH_HOST"      
+      - run: echo "$SSH_USER"
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh/
