@@ -36,7 +36,7 @@ jobs:
               User $SSH_USER
               IdentityFile ~/.ssh/staging.key
               StrictHostKeyChecking no
-            END
+              END
       - name: Check out the source
         run: ssh staging 'cd $HOST_PATH && git fetch && git reset --hard origin/master'
 
