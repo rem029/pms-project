@@ -21,7 +21,7 @@ jobs:
         with:
           host: $SSH_HOST
           username: $SSH_USER
-          password: $SSH_PASSWORD
+          key: $SSH_KEY
           script: whoami
       - uses: actions/checkout@v3
       - name: Use Node.js 16
@@ -50,7 +50,7 @@ jobs:
         with:
           host: $SSH_HOST
           username: $SSH_USER
-          password: $SSH_PASSWORD
+          key: $SSH_KEY
           script: |
             cd $HOST_PATH
             git fetch
