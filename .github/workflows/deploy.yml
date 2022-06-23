@@ -32,6 +32,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             whoami
+            PATH=$PATH:/${{secrets.SSH_USER}}/.npm-global/bin
             cd ~/../var/www/pm.rem029.com/
             bash deploy.sh
 #       - run: yarn install
