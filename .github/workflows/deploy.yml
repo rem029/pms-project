@@ -13,6 +13,7 @@ jobs:
       SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
       SSH_KEY: ${{ secrets.SSH_KEY }}
       SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_PORT: ${{ secrets.SSH_PORT }}
       HOST_PATH: ${{ secrets.HOST_PATH }}
       TEST_ENV: This is my own ENV FF
     steps:
@@ -22,6 +23,7 @@ jobs:
           host: $SSH_HOST
           username: $SSH_USER
           key: $SSH_KEY
+          port: $SSH_PORT
           script: whoami
       - uses: actions/checkout@v3
       - name: Use Node.js 16
@@ -51,6 +53,7 @@ jobs:
           host: $SSH_HOST
           username: $SSH_USER
           key: $SSH_KEY
+          port: $SSH_PORT
           script: |
             cd $HOST_PATH
             git fetch
