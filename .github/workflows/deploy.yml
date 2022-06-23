@@ -6,7 +6,7 @@ on:
 
 jobs:
   build-and-deploy:
-    name: "Deploy to staging"
+    name: "build and deploy"
     runs-on: ubuntu-latest
     env:
       SSH_USER: ${{ secrets.SSH_USER }}
@@ -14,7 +14,8 @@ jobs:
       SSH_HOST: ${{ secrets.SSH_HOST }}
       HOST_PATH: ${{ secrets.HOST_PATH }}
     steps:
-      - uses: actions/checkout@v2
+      - shell: bash
+      - uses: actions/checkout@v3
       - name: Use Node.js 16
         uses: actions/setup-node@v2
         with:
