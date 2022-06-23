@@ -22,9 +22,19 @@ jobs:
         with:
           node-version: 16
           cache: 'yarn'
-#       - run: yarn install
-#       - run: yarn lint
-      - name: Deploy
+      - run: yarn install
+      - run: yarn build:frontend
+      - run: yarn build:backend
+      - name: Deploy frontend
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: 'packages/frontend/build'
+          target: '/var/www/pm.rem029.com/frontend/build'
+      - name: Deploy backend
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -36,19 +46,3 @@ jobs:
             PATH=$PATH:/${{secrets.SSH_USER}}/.npm-global/bin
             cd ~/../var/www/pm.rem029.com/
             bash deploy.sh
-#       - run: yarn build:frontend
-#       - run: yarn build:backend
-#       - name: Configure SSH
-#         run: |
-#           mkdir -p ~/.ssh/
-#             echo "$SSH_KEY" > ~/.ssh/staging.key
-#             cat ~/.ssh/staging.key
-#             chmod 600 ~/.ssh/staging.key
-#             cat >>~/.ssh/config <<END
-#             Host sb-droplet
-#               HostName $SSH_HOST
-#               User $SSH_USER
-#               IdentityFile ~/.ssh/staging.key
-#               StrictHostKeyChecking no
-#       - name: Deploy
-#         run: ssh sb-droplet 'cd $HOST_PATH && git fetch && git reset --hard origin/master'
