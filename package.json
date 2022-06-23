@@ -16,6 +16,7 @@
     "start:pm2:staging": "pm2 start server.sh --interpreter=bash --name=pm-app-staging",
     "build": "lerna run build --parallel --scope @wakra-project/*",
     "build:frontend": "lerna run build:staging --scope @wakra-project/frontend",
+    "build:backend": "lerna run build:staging --scope @wakra-project/backend",
     "eslint": "lerna eslint"
   },
   "devDependencies": {
