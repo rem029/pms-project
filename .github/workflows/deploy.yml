@@ -26,14 +26,15 @@ jobs:
       - name: Create frontend .env file
         uses: SpicyPizza/create-envfile@v1.3
         with:
-          PORT: 1357
-          REACT_APP_API_URL: "http://api.pm.rem029.com/"
-          REACT_APP_APP_NAME: "R.PM"
-          REACT_APP_OPEN_WEATHER_API_KEY: ${{ secrets.OPEN_WEATHER_API_KEY }}
+          envkey_PORT: 1357
+          envkey_REACT_APP_API_URL: "http://api.pm.rem029.com/"
+          envkey_REACT_APP_APP_NAME: "R.PM"
+          envkey_REACT_APP_OPEN_WEATHER_API_KEY: ${{ secrets.OPEN_WEATHER_API_KEY }}
           directory: 'packages/frontend/'
           file_name: .env
           fail_on_empty: false
-      - run: ls -a frontend/
+      - run: ls -a packages/frontend/
+      - run: cat packages/frontend/.env
       - run: yarn build:frontend
       - run: yarn build:backend
       - name: Deploy frontend
