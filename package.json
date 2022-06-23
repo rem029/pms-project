@@ -17,7 +17,7 @@
     "build": "lerna run build --parallel --scope @wakra-project/*",
     "build:frontend": "lerna run build --scope @wakra-project/frontend",
     "build:backend": "lerna run build --scope @wakra-project/backend",
-    "eslint": "lerna eslint"
+    "lint": "lerna run lint --parallel --scope @wakra-project/*"
   },
   "devDependencies": {
     "kill-port": "^1.6.1",
