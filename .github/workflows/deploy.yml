@@ -9,7 +9,10 @@ jobs:
     name: "Deploy to staging"
     runs-on: ubuntu-latest
     env:
-      SSH_KEY: ${{secrets.SSH_KEY}}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_KEY: ${{ secrets.SSH_KEY }}
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      HOST_PATH: ${{secrets.HOST_PATH}}
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 16
@@ -35,10 +38,6 @@ jobs:
               IdentityFile ~/.ssh/staging.key
               StrictHostKeyChecking no
             END
-        env:
-          SSH_USER: ${{ secrets.STAGING_SSH_USER }}
-          SSH_KEY: ${{ secrets.STAGING_SSH_KEY }}
-          SSH_HOST: ${{ secrets.STAGING_SSH_HOST }}
       - name: Check out the source
-        run: ssh staging 'cd ~/../var/www/pm.rem029.com/ && git fetch && git reset --hard origin/master'
+        run: ssh staging 'cd $HOST_PATH && git fetch && git reset --hard origin/master'
 
