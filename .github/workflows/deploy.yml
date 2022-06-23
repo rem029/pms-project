@@ -23,6 +23,7 @@ jobs:
           node-version: 16
           cache: 'yarn'
       - run: yarn install
+      - run: yarn bootstrap
       - run: yarn lint
       - name: Create frontend .env file
         uses: SpicyPizza/create-envfile@v1.3
