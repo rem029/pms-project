@@ -23,7 +23,6 @@ jobs:
           node-version: 16
           cache: 'yarn'
       - run: yarn install
-      - name: Running ESLint
       - run: yarn lint
       - name: Deploy
         uses: appleboy/ssh-action@master
