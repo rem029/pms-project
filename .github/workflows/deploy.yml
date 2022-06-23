@@ -34,7 +34,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           source: 'packages/frontend/build'
-          target: '/var/www/pm.rem029.com/frontend/build'
+          target: '/var/www/pm.rem029.com/frontend/packages/build'
       - name: Deploy backend
         uses: appleboy/ssh-action@master
         with:
@@ -45,5 +45,5 @@ jobs:
           script: |
             whoami
             PATH=$PATH:/${{secrets.SSH_USER}}/.npm-global/bin
-            cd ~/../var/www/pm.rem029.com/
+            cd /var/www/pm.rem029.com/
             bash deploy.sh
