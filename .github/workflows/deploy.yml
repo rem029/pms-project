@@ -16,9 +16,6 @@ jobs:
         with:
           node-version: 16
           cache: 'yarn'
-      - run: 'Installing dependencies...'
       - run: yarn install
-      - run: 'Building frontend...'
       - run: yarn build:frontend
-      - run: 'Building backend...'
       - run: yarn build:backend
