@@ -22,13 +22,11 @@ jobs:
           node-version: 16
           cache: 'yarn'
       - run: echo "finished $TEST_ENV"
-      - run: yarn install
-      - run: yarn build:frontend
-      - run: yarn build:backend
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh/
             echo "$SSH_KEY" > ~/.ssh/staging.key
+            cat ~/.ssh/staging.key
             chmod 600 ~/.ssh/staging.key
             cat >>~/.ssh/config <<END
             Host staging
@@ -36,7 +34,10 @@ jobs:
               User $SSH_USER
               IdentityFile ~/.ssh/staging.key
               StrictHostKeyChecking no
-              END
+            END
+      - run: yarn install
+      - run: yarn build:frontend
+      - run: yarn build:backend
       - name: Check out the source
         run: ssh staging 'cd $HOST_PATH && git fetch && git reset --hard origin/master'
 
