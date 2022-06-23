@@ -17,14 +17,6 @@ jobs:
       HOST_PATH: ${{ secrets.HOST_PATH }}
       TEST_ENV: This is my own ENV FF
     steps:
-      - name: Test SSH
-        uses: appleboy/ssh-action@v0.1.4
-        with:
-          host: $SSH_HOST
-          username: $SSH_USER
-          key: $SSH_KEY
-          port: $SSH_PORT
-          script: whoami
       - uses: actions/checkout@v3
       - name: Use Node.js 16
         uses: actions/setup-node@v2
@@ -44,6 +36,14 @@ jobs:
               User $SSH_USER
               IdentityFile ~/.ssh/staging.key
               StrictHostKeyChecking no
+      - name: Test SSH
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: $SSH_HOST
+          username: $SSH_USER
+          password: $SSH_PASSWORD
+          port: $SSH_PORT
+          script: whoami
       - run: yarn install
       - run: yarn build:frontend
       - run: yarn build:backend
