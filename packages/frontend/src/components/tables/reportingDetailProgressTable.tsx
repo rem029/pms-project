@@ -14,8 +14,8 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { TABLE_HEADER_REPORTING_DETAIL_PROGRESS } from "utils/constants";
 
-import { parse } from "json2csv";
-import { CSVLink } from "react-csv";
+// import { parse } from "json2csv";
+// import { CSVLink } from "react-csv";
 
 import { ReportProgressDetail } from "@wakra-project/common";
 

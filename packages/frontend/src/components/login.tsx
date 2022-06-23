@@ -15,7 +15,6 @@ import { useAxios } from "../hooks/useAxios";
 import { Token } from "@wakra-project/common";
 import { saveToken } from "utils/storage";
 import { APP_NAME, URL_LOGIN } from "utils/constants";
-import logo from "assets/logo-qpm-large.jpeg";
 
 // ADD SHOW PASSWORD TO TEXT
 export const Login = (): JSX.Element => {

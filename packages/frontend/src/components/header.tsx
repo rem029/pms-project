@@ -1,9 +1,7 @@
 import * as React from "react";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-import { styled, Toolbar, Typography, IconButton, Box } from "@mui/material";
+import { styled, Toolbar, Typography, IconButton } from "@mui/material";
 import { MenuOutlined } from "@mui/icons-material";
-import logo from "assets/logo-qpm-large.jpeg";
-import { theme } from "highcharts";
 import { APP_NAME } from "utils/constants";
 
 interface AppBarProps extends MuiAppBarProps {

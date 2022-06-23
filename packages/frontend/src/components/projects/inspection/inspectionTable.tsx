@@ -1,35 +1,12 @@
-import {
-	Box,
-	Button,
-	CircularProgress,
-	Divider,
-	Grid,
-	Link,
-	Paper,
-	TextField,
-	Typography,
-} from "@mui/material";
-import { AxiosRequestConfig } from "axios";
-import { AutoCompleteInputOptions } from "components/utilities/autoCompleteInput";
+import { Button, CircularProgress, Grid, Paper } from "@mui/material";
 import { useAxios } from "hooks/useAxios";
-import { useEffect, useMemo, useState } from "react";
-import {
-	URL_REPORTING_FILTER_CLASSIFICATION,
-	URL_REPORTING_FILTER_PHASE,
-	URL_REPORTING_FILTER_PROJECT,
-	URL_REPORTING_MASTER_ACTIVITY,
-	URL_REPORTING_PROJECT_INSPECTION_ADD,
-	URL_REPORTING_PROJECT_INSPECTION_GET,
-} from "utils/constants";
+import { useEffect } from "react";
+import { URL_REPORTING_PROJECT_INSPECTION_GET } from "utils/constants";
 import { getToken } from "utils/storage";
-
 import { PageContainer } from "components/utilities/pageContainer";
-import {
-	ActivityMaster as ActivityMasterInterface,
-	Inspection,
-} from "@wakra-project/common";
-import { Add, RestartAlt, SaveAlt } from "@mui/icons-material";
-import { useSnackbar } from "notistack";
+import { Inspection } from "@wakra-project/common";
+import { Add } from "@mui/icons-material";
+// import { useSnackbar } from "notistack";
 import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 
@@ -40,7 +17,7 @@ export const InspectionTable = (): JSX.Element => {
 	 *
 	 *
 	 */
-	const { enqueueSnackbar } = useSnackbar();
+	// const { enqueueSnackbar } = useSnackbar();
 
 	/**
 	 * API Fetching
@@ -51,8 +28,8 @@ export const InspectionTable = (): JSX.Element => {
 		fetch: getProjectInspectionFetch,
 		data: getProjectInspectionData,
 		loading: getProjectInspectionLoading,
-		message: getProjectInspectionMessage,
-		success: getProjectInspectionSuccess,
+		// message: getProjectInspectionMessage,
+		// success: getProjectInspectionSuccess,
 	} = useAxios<Inspection[]>(URL_REPORTING_PROJECT_INSPECTION_GET);
 
 	/**
