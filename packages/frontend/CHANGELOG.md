@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-alpha.7](https://github.com/rem029/wakra-project/compare/v1.1.0-alpha.6...v1.1.0-alpha.7) (2022-06-23)
+
+**Note:** Version bump only for package @wakra-project/frontend
+
+
+
+
+
 # [1.1.0-alpha.6](https://github.com/rem029/wakra-project/compare/v1.1.0-alpha.5...v1.1.0-alpha.6) (2022-06-22)
 
 
