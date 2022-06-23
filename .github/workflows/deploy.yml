@@ -24,31 +24,31 @@ jobs:
           node-version: 16
           cache: 'yarn'
       - run: echo "finished $TEST_ENV"
-      - name: Configure SSH
-        run: |
-          mkdir -p ~/.ssh/
-            echo "$SSH_KEY" > ~/.ssh/staging.key
-            cat ~/.ssh/staging.key
-            chmod 600 ~/.ssh/staging.key
-            cat >>~/.ssh/config <<END
-            Host sb-droplet
-              HostName $SSH_HOST
-              User $SSH_USER
-              IdentityFile ~/.ssh/staging.key
-              StrictHostKeyChecking no
-      - name: Check out the source
-        run: ssh sb-droplet 'cd $HOST_PATH && git fetch && git reset --hard origin/master'
-#       - name: Test SSH
-#         uses: appleboy/ssh-action@v0.1.4
-#         with:
-#           host: $SSH_HOST
-#           username: $SSH_USER
-#           password: $SSH_PASSWORD
-#           port: $SSH_PORT
-#           script: |
-#             cd $HOST_PATH
-#             git fetch
-#             git reset --hard origin/main
+#       - name: Configure SSH
+#         run: |
+#           mkdir -p ~/.ssh/
+#             echo "$SSH_KEY" > ~/.ssh/staging.key
+#             cat ~/.ssh/staging.key
+#             chmod 600 ~/.ssh/staging.key
+#             cat >>~/.ssh/config <<END
+#             Host sb-droplet
+#               HostName $SSH_HOST
+#               User $SSH_USER
+#               IdentityFile ~/.ssh/staging.key
+#               StrictHostKeyChecking no
+#       - name: Deploy
+#         run: ssh sb-droplet 'cd $HOST_PATH && git fetch && git reset --hard origin/master'
+      - name: Test SSH
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: $SSH_HOST
+          username: $SSH_USER
+          password: $SSH_PASSWORD
+          port: $SSH_PORT
+          script: |
+            cd $HOST_PATH
+            git fetch
+            git reset --hard origin/main
 #       - run: yarn install
 #       - run: yarn build:frontend
 #       - run: yarn build:backend
