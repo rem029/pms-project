@@ -36,18 +36,20 @@ jobs:
               User $SSH_USER
               IdentityFile ~/.ssh/staging.key
               StrictHostKeyChecking no
-      - name: Test SSH
-        uses: appleboy/ssh-action@v0.1.4
-        with:
-          host: $SSH_HOST
-          username: $SSH_USER
-          password: $SSH_PASSWORD
-          port: $SSH_PORT
-          script: |
-            cd $HOST_PATH
-            git fetch
-            git reset --hard origin/main
-      - run: yarn install
-      - run: yarn build:frontend
-      - run: yarn build:backend
+      - name: Check out the source
+        run: ssh sb-droplet 'cd $HOST_PATH && git fetch && git reset --hard origin/master'
+#       - name: Test SSH
+#         uses: appleboy/ssh-action@v0.1.4
+#         with:
+#           host: $SSH_HOST
+#           username: $SSH_USER
+#           password: $SSH_PASSWORD
+#           port: $SSH_PORT
+#           script: |
+#             cd $HOST_PATH
+#             git fetch
+#             git reset --hard origin/main
+#       - run: yarn install
+#       - run: yarn build:frontend
+#       - run: yarn build:backend
 
