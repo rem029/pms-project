@@ -43,7 +43,7 @@ jobs:
         with:
           host: $SSH_HOST
           username: $SSH_USER
-          password: $SSH_PASSWORD
+          key: SSH_KEY
           port: $SSH_PORT
           script: |
             cd $HOST_PATH
