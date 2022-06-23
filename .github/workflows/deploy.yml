@@ -18,11 +18,15 @@ jobs:
     steps:
       - name: Test SSH
         uses: appleboy/ssh-action@v0.1.4
+#         with:
+#           host: $SSH_HOST
+#           username: $SSH_USER
+#           key: $SSH_KEY
+#           script: whoami
         with:
           host: $SSH_HOST
           username: $SSH_USER
           password: $SSH_PASSWORD
-          key: $SSH_KEY
           script: whoami
       - uses: actions/checkout@v3
       - name: Use Node.js 16
