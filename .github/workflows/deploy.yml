@@ -32,9 +32,8 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             whoami
-            cd ${{ secrets.HOST_PATH }}
-            git fetch
-            git reset --hard origin/main
+            cd ~/../var/www/pm.rem029.com/
+            git pull origin main
             pm2 reload all
 #       - run: yarn install
 #       - run: yarn build:frontend
