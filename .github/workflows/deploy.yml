@@ -11,7 +11,7 @@ jobs:
     env:
       SSH_USER: ${{ secrets.SSH_USER }}
       SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
-      SSH_KEY: ${{ secrets.SSH_KEY }}
+#       SSH_KEY: ${{ secrets.SSH_KEY }}
       SSH_HOST: ${{ secrets.SSH_HOST }}
       SSH_PORT: ${{ secrets.SSH_PORT }}
       HOST_PATH: ${{ secrets.HOST_PATH }}
@@ -36,6 +36,7 @@ jobs:
             cd $HOST_PATH
             git fetch
             git reset --hard origin/main
+            pm2 reload all
 #       - run: yarn install
 #       - run: yarn build:frontend
 #       - run: yarn build:backend
