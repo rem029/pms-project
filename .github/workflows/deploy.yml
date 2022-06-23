@@ -34,7 +34,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           source: 'packages/frontend/build'
-          target: '/var/www/pm.rem029.com/packages/frontend/build'
+          target: '/var/www/pm.rem029.com/'
       - name: Deploy backend
         uses: appleboy/ssh-action@master
         with:
