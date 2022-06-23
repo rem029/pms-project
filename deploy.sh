@@ -1,3 +1,3 @@
 echo "Deploying update"
 git pull origin main
-pm2 reload all
+pm2 reload pm-app-staging
