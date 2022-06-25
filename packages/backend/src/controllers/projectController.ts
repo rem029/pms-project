@@ -1,9 +1,5 @@
-import { Response } from "express";
 import { knexMySQL } from "services/database";
 import { logger } from "utilities/logger";
-import { handleServerResponse, handleServerError } from "helpers/serverResponse";
-
-import { RequestAuthInterface } from "types";
 import { Inspection, InspectionEntry } from "@wakra-project/common";
 
 export const getProjectInspectionsController = async (): Promise<Inspection[]> => {

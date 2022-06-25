@@ -1,7 +1,5 @@
-import { Response } from "express";
 import { knexMySQL } from "services/database";
 import { logger } from "utilities/logger";
-import { handleServerResponse, handleServerError } from "helpers/serverResponse";
 import { REPORT_FILTER } from "utilities/constants";
 import {
 	ReportFilter,
@@ -10,8 +8,6 @@ import {
 	ReportProgressSummaryConstruction,
 	ReportProgressSummaryTestingCommissioning,
 } from "@wakra-project/common";
-
-import { RequestAuthInterface } from "types";
 
 const formatReportProgressDetailController = (response: ReportProgressDetail[]): ReportProgressDetail[] => {
 	let returnArray: ReportProgressDetail[] = [];

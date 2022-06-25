@@ -23,7 +23,7 @@ const initializeRouter = (): Router => {
 		) as DeliverablesMaster;
 
 		addDeliverable(fields)
-			.then((_) => {
+			.then(() => {
 				handleServerResponse(res, req, 200, {
 					__typename: "sample",
 					success: true,
@@ -70,7 +70,7 @@ const initializeRouter = (): Router => {
 		) as ActivityMaster;
 
 		addActivity(fields)
-			.then((_) => {
+			.then(() => {
 				handleServerResponse(res, req, 200, {
 					__typename: "sample",
 					success: true,

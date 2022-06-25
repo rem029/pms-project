@@ -40,7 +40,7 @@ const initializeRouter = (): Router => {
 		) as InspectionEntry;
 
 		addProjectInspectionsController(fields)
-			.then((_) => {
+			.then(() => {
 				handleServerResponse(res, req, 200, {
 					__typename: "string",
 					success: true,
