@@ -1,16 +1,16 @@
-name: Deploy
+name: Build and deploy
 
 on:
   push:
     branches: [ main ]
-
+  workflow_dispatch:
+  
 jobs:  
   build-and-deploy:
     name: "build and deploy"
     runs-on: ubuntu-latest
     env:
       SSH_USER: ${{ secrets.SSH_USER }}
-#       SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
       SSH_KEY: ${{ secrets.SSH_KEY }}
       SSH_HOST: ${{ secrets.SSH_HOST }}
       SSH_PORT: ${{ secrets.SSH_PORT }}
@@ -35,8 +35,6 @@ jobs:
           directory: 'packages/frontend/'
           file_name: .env
           fail_on_empty: false
-      - run: ls -a packages/frontend/
-      - run: cat packages/frontend/.env
       - run: yarn build:frontend
       - run: yarn build:backend
       - name: Deploy frontend
