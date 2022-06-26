@@ -18,6 +18,7 @@ export const useAxios = <T>(
 	success: boolean;
 	loading: boolean;
 	config: AxiosRequestCustomConfig | undefined;
+	// eslint-disable-next-line no-unused-vars
 	fetch: (config?: AxiosRequestCustomConfig) => void;
 	fetchCancel: () => void;
 } => {
