@@ -15,9 +15,6 @@ jobs:
           node-version: 16
           cache: 'yarn'
       - run: yarn install
-      - run: cd packages/frontend/
-      - run: yarn lint
-      - run: cd packages/backend/
-      - run: yarn lint
-      - run: cd packages/common/
-      - run: yarn lint
+      - run: cd packages/frontend/ && yarn lint
+      - run: cd packages/backend/ && yarn lint
+      - run: cd packages/common/ && yarn lint
