@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-alpha.8](https://github.com/rem029/wakra-project/compare/v1.1.0-alpha.7...v1.1.0-alpha.8) (2022-06-27)
+
+
+### Bug Fixes
+
+* Report filters not displaying value fix ([000c276](https://github.com/rem029/wakra-project/commit/000c27686b8dc9de8b629ff8d676d4297f75dc66))
+
+
+
+
+
 # [1.1.0-alpha.7](https://github.com/rem029/wakra-project/compare/v1.1.0-alpha.6...v1.1.0-alpha.7) (2022-06-23)
 
 **Note:** Version bump only for package @wakra-project/frontend
