@@ -12,6 +12,7 @@ export interface AutoCompleteInputProps {
 	label?: string;
 	loading?: boolean;
 
+	// eslint-disable-next-line no-unused-vars
 	handleChange?: (name: string, value: AutoCompleteInputOptions | null) => void;
 }
 

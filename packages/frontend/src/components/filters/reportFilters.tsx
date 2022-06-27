@@ -51,6 +51,7 @@ const defaultReportFilters = {
 
 interface ReportFiltersInterface {
 	filter?: ReportFilterFields;
+	// eslint-disable-next-line no-unused-vars
 	onSubmit?: (filter: ReportFilterFields) => void;
 	disableButtonApply?: boolean;
 }
