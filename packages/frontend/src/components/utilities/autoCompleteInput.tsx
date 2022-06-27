@@ -29,7 +29,8 @@ export const AutoCompleteInput = ({
 			disablePortal
 			options={options ? options : []}
 			getOptionLabel={(option) => option.name}
-			value={value !== undefined ? value : null}
+			// value={value !== undefined ? value : null}
+			value={value && value}
 			isOptionEqualToValue={(option, value) => option.id === value.id}
 			onChange={(_, value) => {
 				handleChange && handleChange(name || _.currentTarget.nodeName, value);

@@ -51,7 +51,7 @@ const initializeRouter = (): Router => {
 				let data: ReportProgressSummaryConstruction[] | ReportProgressSummaryTestingCommissioning[] = [];
 
 				if (filters?.phase?.id === "06C") {
-					data = response[0] as unknown as ReportProgressSummaryConstruction[];
+					data = response as unknown as ReportProgressSummaryConstruction[];
 					handleServerResponse(res, req, 200, {
 						__typename: data?.length > 0 ? data[0].__typename : "",
 						success: success,
@@ -62,7 +62,7 @@ const initializeRouter = (): Router => {
 				}
 
 				if (filters?.phase?.id === "07T") {
-					data = response[0] as unknown as ReportProgressSummaryTestingCommissioning[];
+					data = response as unknown as ReportProgressSummaryTestingCommissioning[];
 					handleServerResponse(res, req, 200, {
 						__typename: data?.length > 0 ? data[0].__typename : "",
 						success: success,
@@ -91,6 +91,7 @@ const initializeRouter = (): Router => {
 		getReportFilterController(type)
 			.then((response) => {
 				handleServerResponse(res, req, 200, {
+					__typename: "[ReportFilter]",
 					success: true,
 					message: "Get filters success",
 					data: response,
