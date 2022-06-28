@@ -117,11 +117,7 @@ export const Drawer = ({ open, setOpen, width }: AppDrawerProps): JSX.Element =>
 					}
 				>
 					<ListItemIcon>{linkTextIcon}</ListItemIcon>
-					<ListItemText>
-						<Link sx={{ textDecoration: "none", color: colorLabel }}>
-							<Typography variant="body1">{linkText}</Typography>
-						</Link>
-					</ListItemText>
+					<ListItemText primary={<Typography variant="body1">{linkText}</Typography>} />
 					{hasSublist && (
 						<>{subMenuCollapsed[linkText] ? <ExpandLess /> : <ExpandMore />}</>
 					)}
