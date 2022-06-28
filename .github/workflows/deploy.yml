@@ -57,4 +57,5 @@ jobs:
             whoami
             PATH=$PATH:/${{secrets.SSH_USER}}/.npm-global/bin
             cd /var/www/pm.rem029.com/
+            git pull origin main
             bash deploy.sh
