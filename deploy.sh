@@ -1,6 +1,3 @@
-echo "Deploying update"
-git pull origin main
-
 echo "Update packages"
 yarn bootstrap
 
