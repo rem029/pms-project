@@ -12,7 +12,7 @@
     "kill-ports": "kill-port --port 3030 && kill-port --port 6060",
     "bootstrap": "lerna bootstrap",
     "start": "lerna run start --parallel --scope @wakra-project/*",
-    "start:staging": "lerna run start --parallel --scope @wakra-project/backend --scope @wakra-project/common",
+    "start:staging": "lerna run build:run --parallel --scope @wakra-project/backend",
     "start:pm2:staging": "pm2 start server.sh --interpreter=bash --name=pm-app-staging",
     "build": "lerna run build --parallel --scope @wakra-project/*",
     "build:frontend": "lerna run build --scope @wakra-project/frontend",

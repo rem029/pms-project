@@ -6,7 +6,8 @@
 	"private": true,
 	"scripts": {
 		"start": "yarn clean-logs && ts-node-dev --respawn -r tsconfig-paths/register ./src/index.ts DEBUG=knex:query",
-		"build": "tsc -b",
+		"build": "tsc -b && resolve-tspaths",
+		"build:run": "node ./dist/index.js",
 		"dev": "nodemon --exec ts-node-dev -r tsconfig-paths/register ./src/index.ts DEBUG=knex:query",
 		"clean-logs": "rimraf ./src/__logs",
 		"lint": "eslint src/**/*.ts"
@@ -42,11 +43,12 @@
 		"eslint": "^8.13.0",
 		"nodemon": "^2.0.15",
 		"prettier": "^2.6.2",
+		"resolve-tspaths": "^0.6.0",
 		"rimraf": "^3.0.2",
 		"ts-node": "^10.7.0",
 		"ts-node-dev": "^1.1.8",
 		"tsconfig-paths": "^3.14.0",
-		"typescript": "^4.6.3"
+		"typescript": "^4.7.4"
 	},
 	"changelog": {
 		"labels": {
