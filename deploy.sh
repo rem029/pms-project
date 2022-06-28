@@ -1,6 +1,9 @@
 echo "Deploying update"
 git pull origin main
 
+echo "Update packages"
+yarn bootstrap
+
 echo "Build backend"
 yarn build:backend
 
