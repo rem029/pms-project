@@ -1,6 +1,6 @@
 {
 	"name": "@wakra-project/common",
-	"version": "1.1.0-alpha.8",
+	"version": "1.1.0-alpha.9",
 	"description": "common types/functions for frontend and backend",
 	"main": "src/index.ts",
 	"files": [
