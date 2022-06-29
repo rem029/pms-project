@@ -32,6 +32,7 @@ export const addProjectInspectionsController = async (fields: InspectionEntry): 
 	/**
 	 * to insentryh
 	 */
+	console.log("@addProjectInspectionsController", fields);
 	await knexMySQL.raw(
 		`
 			INSERT INTO
@@ -52,8 +53,8 @@ export const addProjectInspectionsController = async (fields: InspectionEntry): 
 		`,
 		[
 			fields.inspectNo as unknown as string,
-			fields.inspectionDate,
-			fields.documentDate,
+			new Date(fields.inspectionDate ? fields.inspectionDate : new Date()),
+			new Date(fields.documentDate ? fields.documentDate : new Date()),
 			fields.project?.id as unknown as string,
 			phaseCode,
 			fields.classification?.id as unknown as string,
@@ -92,8 +93,8 @@ export const addProjectInspectionsController = async (fields: InspectionEntry): 
 			`,
 			[
 				fields.inspectNo as unknown as string,
-				fields.inspectionDate,
-				fields.documentDate,
+				new Date(fields.inspectionDate ? fields.inspectionDate : new Date()),
+				new Date(fields.documentDate ? fields.documentDate : new Date()),
 				fields.project?.id as unknown as string,
 				phaseCode,
 				fields.classification?.id as unknown as string,

@@ -1,7 +1,6 @@
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "./theme";
 import { Routing } from "./components";
-import { useEffect } from "react";
 
 const App = (): JSX.Element => {
 	return (
