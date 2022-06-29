@@ -34,7 +34,31 @@ yarn start
    - Prettier
    - ESLint
 
-## Branch naming and commit message (MUST FOLLOW)
+## Usage
+
+```sh
+yarn start
+```
+
+## Note
+### .env file location
+```
+wakra-project/
+```
+### .env format
+```
+GITHUB_AUTH=<github auth api key for lerna version> Generated from Github settings
+```
+
+### .env sample usage
+```
+GITHUB_AUTH=123456
+```
+### .env format each package
+#### [Frontend package](packages/frontend/README.md#env-format)
+#### [Backend package](packages/backend/README.md#env-format)
+
+# Branch naming and commit message (MUST FOLLOW)
 
 Types
 
@@ -42,7 +66,7 @@ Types
 - fix - improvement/bug fix on existing features.
 - tech - refactor code, etc.
 
-# Branch naming
+## Branch naming
 
 ```sh
 <type>/<title>
@@ -59,7 +83,7 @@ fix/login-performance
 tech/user-input
 ```
 
-# Commit messages
+## Commit messages
 
 To easily generate changelog we must follow branch naming as per below:
 
@@ -82,7 +106,7 @@ fix(login): improve performance login.
 tech(user-input): refactor debounce.
 ```
 
-## Packages guide
+# Packages guide
 
 Path
 
@@ -97,16 +121,10 @@ wakra-project/packages/
 - common
   - Shared types between backend and frontend. Mostly used to API response data types.
 
-## Usage
-
-```sh
-yarn start
-```
-
-## Jira Link
+# Jira Link
 https://elawrenceponce.atlassian.net/jira/software/projects/APM/boards/3/roadmap
 
-## Author
+# Author
 
 - Website: https://github.com/rem029
 - Github: [@rem029](https://github.com/rem029)
