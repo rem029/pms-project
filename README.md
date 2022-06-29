@@ -44,6 +44,11 @@ yarn start
 ```sh
 yarn publish:version [major | minor | patch | prerelease]
 ```
+## App theme config
+
+Font family and color palette to be configure here.
+### [MUI theme file](/packages/frontend/src/theme/index.ts)
+
 
 ## Note
 ### .env file location
@@ -111,7 +116,7 @@ fix(login): improve performance login.
 tech(user-input): refactor debounce.
 ```
 
-# Packages guide
+## Packages
 
 Path
 
@@ -119,11 +124,11 @@ Path
 wakra-project/packages/
 ```
 
-- backend
+### [backend](packages/backend/)
   - Backend server for wakra-project
-- frontend
+### [frontend](packages/frontend/)
   - Frontend UI for wakra-project
-- common
+### [common](packages/common/)
   - Shared types between backend and frontend. Mostly used to API response data types.
 
 # Jira Link
