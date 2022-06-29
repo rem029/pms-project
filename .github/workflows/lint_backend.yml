@@ -1,7 +1,9 @@
-name: Run lint
+name: Backend run lint
 
 on:
   pull_request:
+      paths:
+      - packages/backend/**
   workflow_dispatch:
 
 jobs:
@@ -15,6 +17,4 @@ jobs:
           node-version: 16
           cache: 'yarn'
       - run: yarn install
-      - run: cd packages/frontend/ && yarn lint
       - run: cd packages/backend/ && yarn lint
-      - run: cd packages/common/ && yarn lint
