@@ -33,7 +33,7 @@ const initializeAppExpress = (): Express => {
 
 	//Default routes
 	app.get("/test", async (_, res) => {
-		res.send("<h1>Its online!!!</h1>");
+		res.json({ status: "running" });
 	});
 
 	app.get("/favicon.ico", async (_, res) => {

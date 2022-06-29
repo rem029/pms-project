@@ -4,9 +4,6 @@ import { Routing } from "./components";
 import { useEffect } from "react";
 
 const App = (): JSX.Element => {
-	useEffect(() => {
-		console.log("App rendered");
-	}, []);
 	return (
 		<ThemeProvider theme={theme}>
 			<Routing />
