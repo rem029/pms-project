@@ -17,7 +17,8 @@
     "build": "lerna run build --parallel --scope @wakra-project/*",
     "build:frontend": "lerna run build --scope @wakra-project/frontend",
     "build:backend": "lerna run build --scope @wakra-project/backend",
-    "lint": "lerna run lint --parallel --scope @wakra-project/*"
+    "lint": "lerna run lint --parallel --scope @wakra-project/*",
+    "publish:version": "lerna version --conventional-commits"
   },
   "devDependencies": {
     "kill-port": "^1.6.1",
