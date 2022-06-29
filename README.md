@@ -39,6 +39,11 @@ yarn start
 ```sh
 yarn start
 ```
+## Publish new version
+
+```sh
+yarn publish:version [major | minor | patch | prerelease]
+```
 
 ## Note
 ### .env file location
