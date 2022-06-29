@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-alpha.10](https://github.com/rem029/wakra-project/compare/v1.1.0-alpha.9...v1.1.0-alpha.10) (2022-06-29)
+
+
+### Features
+
+* Font changed to Poppins and README update ([7811840](https://github.com/rem029/wakra-project/commit/7811840f57b3c7daf8cbc5dbcd2a971a4830f942))
+
+
+
+
+
 # [1.1.0-alpha.9](https://github.com/rem029/wakra-project/compare/v1.1.0-alpha.8...v1.1.0-alpha.9) (2022-06-29)
 
 **Note:** Version bump only for package @wakra-project/wakra-project
