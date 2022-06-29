@@ -3,6 +3,8 @@ name: Build and deploy
 on:
   push:
     branches: [ main ]
+    paths:
+      - packages/frontend/**
   workflow_dispatch:
   
 jobs:  
@@ -45,39 +47,3 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           source: 'packages/frontend/build'
           target: '/var/www/pm.rem029.com/'
-      - name: Create backend .env file
-        uses: SpicyPizza/create-envfile@v1.3
-        with:
-          envkey_DB_HOST: ${{ secrets.DB_HOST }}
-          envkey_DB_PORT: ${{ secrets.DB_PORT }}
-          envkey_DB_USER: ${{ secrets.DB_USER }}
-          envkey_DB_PW: ${{ secrets.DB_PW }}
-          envkey_DB_DB: ${{ secrets.DB_DB }}
-          envkey_PORT: 1367
-          envkey_API_TOKEN_SECRET: ${{ secrets.API_TOKEN_SECRET }}
-          envkey_API_TOKEN_REFRESH: ${{ secrets.API_TOKEN_REFRESH }}
-          directory: 'packages/backend/'
-          file_name: .env
-          fail_on_empty: false
-      - run: yarn build:backend
-      - name: Deploy backend
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          source: 'packages/backend/dist'
-          target: '/var/www/pm.rem029.com/'
-      - name: Reload server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          script: |
-            whoami
-            PATH=$PATH:/${{secrets.SSH_USER}}/.npm-global/bin
-            cd /var/www/pm.rem029.com/
-            pm2 reload ${{ secrets.PM2_APP_NAME }}
