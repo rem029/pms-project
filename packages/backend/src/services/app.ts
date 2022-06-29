@@ -7,6 +7,7 @@ import { reportRoutes } from "routes/reportRoutes";
 import { masterRoutes } from "routes/masterRoutes";
 import { projectRoutes } from "../routes/projectRoutes";
 import { RequestWithMetrics } from "types";
+import { elapsedTime } from "helpers/now";
 
 const initializeAppExpress = (): Express => {
 	const app = express();
@@ -30,10 +31,14 @@ const initializeAppExpress = (): Express => {
 	app.use("/report", reportRoutes);
 	app.use("/master", masterRoutes);
 	app.use("/project", projectRoutes);
-
+	const startDate = new Date();
 	//Default routes
 	app.get("/test", async (_, res) => {
-		res.json({ status: "running" });
+		res.json({
+			status: "running",
+			started: startDate.toUTCString(),
+			upTime: elapsedTime(startDate.getTime(), new Date().getTime()),
+		});
 	});
 
 	app.get("/favicon.ico", async (_, res) => {
