@@ -286,12 +286,22 @@ export const InspectionEntry = (): JSX.Element => {
 											key={activity.activityCode + index}
 											item
 											lg={3}
+											md={4}
+											sm={12}
+											xs={12}
 											justifyContent="center"
 											alignItems="center"
 										>
 											<Typography variant="h6">{activity.activityName}</Typography>
 										</Grid>
-										<Grid key={activity.activityCode + index} item lg={1}>
+										<Grid
+											key={activity.activityCode + index}
+											item
+											lg={1}
+											md={1}
+											sm={3}
+											xs={3}
+										>
 											<TextField
 												fullWidth
 												type="number"
@@ -309,7 +319,14 @@ export const InspectionEntry = (): JSX.Element => {
 												placeholder="Enter Progress"
 											/>
 										</Grid>
-										<Grid key={activity.activityCode + index} item lg={8}>
+										<Grid
+											key={activity.activityCode + index}
+											item
+											lg={8}
+											md={7}
+											sm={9}
+											xs={9}
+										>
 											<TextField
 												rows={2}
 												multiline
