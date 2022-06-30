@@ -6,7 +6,6 @@ import {
 	Grid,
 	Paper,
 	TextField,
-	Typography,
 } from "@mui/material";
 import { AxiosRequestConfig } from "axios";
 import {
@@ -185,7 +184,7 @@ export const InspectionEntry = (): JSX.Element => {
 					onReset={handleFormReset}
 					onSubmit={handleFormSubmit}
 				>
-					<Grid container spacing={2} justifyContent="flex-start">
+					<Grid container spacing={1} justifyContent="flex-start">
 						<Grid item lg={9} sm={12} xs={12}>
 							<AutoCompleteInput
 								name="project"
@@ -227,11 +226,8 @@ export const InspectionEntry = (): JSX.Element => {
 								handleChange={handleFormChange}
 							/>
 						</Grid>
-						<Grid component={Box} item xs={12} sx={{ p: 1 }}>
-							<Divider sx={{ width: "100%" }} />
-						</Grid>
 
-						<Grid item lg={6} sm={12} xs={12}>
+						<Grid item lg={3} sm={12} xs={12}>
 							<TextField
 								fullWidth
 								name="inspectNo"
@@ -243,12 +239,10 @@ export const InspectionEntry = (): JSX.Element => {
 								}
 							/>
 						</Grid>
-						<Grid item lg={12} sm={12} xs={12} />
-						<Grid item lg={6} sm={12} xs={12}>
+						<Grid item lg={9} sm={12} xs={12}>
 							<TextField
 								fullWidth
 								multiline
-								rows={5}
 								name="remarks"
 								label="Remarks"
 								value={fields.remarks || ""}
@@ -285,14 +279,22 @@ export const InspectionEntry = (): JSX.Element => {
 										<Grid
 											key={activity.activityCode + index}
 											item
-											lg={3}
+											lg={5}
 											md={4}
 											sm={12}
 											xs={12}
+											sx={{
+												display: "flex",
+											}}
 											justifyContent="center"
 											alignItems="center"
 										>
-											<Typography variant="h6">{activity.activityName}</Typography>
+											<TextField
+												fullWidth
+												value={activity.activityName}
+												disabled
+												InputProps={{ style: { fontSize: 12, fontWeight: 600 } }}
+											/>
 										</Grid>
 										<Grid
 											key={activity.activityCode + index}
@@ -306,7 +308,6 @@ export const InspectionEntry = (): JSX.Element => {
 												fullWidth
 												type="number"
 												name="progress"
-												label="Progress"
 												value={activity.progress ? activity.progress : 0}
 												onChange={(e) => {
 													handleFormActivitiesChange(
@@ -322,13 +323,12 @@ export const InspectionEntry = (): JSX.Element => {
 										<Grid
 											key={activity.activityCode + index}
 											item
-											lg={8}
+											lg={6}
 											md={7}
 											sm={9}
 											xs={9}
 										>
 											<TextField
-												rows={2}
 												multiline
 												fullWidth
 												name="comments"
@@ -344,9 +344,6 @@ export const InspectionEntry = (): JSX.Element => {
 												}}
 												placeholder="Enter Comments"
 											/>
-										</Grid>
-										<Grid component={Box} item xs={12} sx={{ p: 1 }}>
-											<Divider sx={{ width: "100%" }} />
 										</Grid>
 									</>
 								);
