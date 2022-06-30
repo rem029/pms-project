@@ -30,7 +30,6 @@ import {
 } from "@wakra-project/common";
 import { RestartAlt, SaveAlt } from "@mui/icons-material";
 import { useSnackbar } from "notistack";
-import { DataGrid } from "@mui/x-data-grid";
 
 const defaultFields = {
 	project: null,
@@ -227,11 +226,8 @@ export const InspectionEntry = (): JSX.Element => {
 								handleChange={handleFormChange}
 							/>
 						</Grid>
-						<Grid component={Box} item xs={12} sx={{ p: 1 }}>
-							<Divider sx={{ width: "100%" }} />
-						</Grid>
 
-						<Grid item lg={6} sm={12} xs={12}>
+						<Grid item lg={3} sm={12} xs={12}>
 							<TextField
 								fullWidth
 								name="inspectNo"
@@ -243,12 +239,10 @@ export const InspectionEntry = (): JSX.Element => {
 								}
 							/>
 						</Grid>
-						<Grid item lg={12} sm={12} xs={12} />
-						<Grid item lg={6} sm={12} xs={12}>
+						<Grid item lg={9} sm={12} xs={12}>
 							<TextField
 								fullWidth
 								multiline
-								rows={5}
 								name="remarks"
 								label="Remarks"
 								value={fields.remarks || ""}
@@ -276,98 +270,84 @@ export const InspectionEntry = (): JSX.Element => {
 									size={56}
 								/>
 							)}
-							{activityByClassificationData && (
-								<DataGrid
-									autoHeight
-									getRowId={(row) => row.activityOrder}
-									rowHeight={120}
-									hideFooter
-									columns={[
-										{
-											field: "activityOrder",
-											headerName: "Order",
-											maxWidth: 96,
-											align: "center",
-											headerAlign: "center",
-											type: "number",
-										},
-										{
-											field: "activityCode",
-											headerName: "Code",
-											maxWidth: 120,
-											align: "center",
-											headerAlign: "center",
-										},
-										{
-											field: "activityName",
-											headerName: "Name",
-											flex: 1,
-											align: "center",
-											headerAlign: "center",
-										},
-										{
-											field: "progress",
-											headerName: "Progress",
-											flex: 1,
-											align: "center",
-											maxWidth: 160,
-											headerAlign: "center",
-											renderCell: (params) => {
-												return (
-													<TextField
-														fullWidth
-														sx={{ p: 1 }}
-														type="number"
-														name="progress"
-														value={params.value ? params.value : 0}
-														onChange={(e) => {
-															handleFormActivitiesChange(
-																params.id as number,
-																e.target.name,
-																e.target.value
-															);
-														}}
-														InputProps={{ style: { fontSize: 14 } }}
-														placeholder="Progress"
-													/>
-												);
-											},
-										},
-										{
-											field: "comments",
-											headerName: "Comments",
-											flex: 1,
-											align: "center",
-											headerAlign: "center",
-											renderCell: (params) => {
-												return (
-													<TextField
-														rows={2}
-														multiline
-														fullWidth
-														sx={{ p: 1 }}
-														name="comments"
-														InputProps={{ style: { fontSize: 14 } }}
-														value={params.value ? params.value : ""}
-														onChange={(e) => {
-															handleFormActivitiesChange(
-																params.id as number,
-																e.target.name,
-																e.target.value
-															);
-														}}
-														placeholder="Comments"
-													/>
-												);
-											},
-										},
-									]}
-									rows={
-										activityByClassificationData as readonly ActivityByClassification[]
-									}
-								/>
-							)}
 						</Grid>
+
+						{activityByClassificationData &&
+							activityByClassificationData.map((activity, index) => {
+								return (
+									<>
+										<Grid
+											key={activity.activityCode + index}
+											item
+											lg={5}
+											md={4}
+											sm={12}
+											xs={12}
+											sx={{
+												display: "flex",
+											}}
+											justifyContent="center"
+											alignItems="center"
+										>
+											<TextField
+												fullWidth
+												value={activity.activityName}
+												disabled
+												InputProps={{ style: { fontSize: 12, fontWeight: 600 } }}
+											/>
+										</Grid>
+										<Grid
+											key={activity.activityCode + index}
+											item
+											lg={1}
+											md={1}
+											sm={3}
+											xs={3}
+										>
+											<TextField
+												fullWidth
+												type="number"
+												name="progress"
+												value={activity.progress ? activity.progress : 0}
+												onChange={(e) => {
+													handleFormActivitiesChange(
+														activity.activityOrder as number,
+														e.target.name,
+														e.target.value
+													);
+												}}
+												InputProps={{ style: { fontSize: 14 } }}
+												placeholder="Enter Progress"
+											/>
+										</Grid>
+										<Grid
+											key={activity.activityCode + index}
+											item
+											lg={6}
+											md={7}
+											sm={9}
+											xs={9}
+										>
+											<TextField
+												multiline
+												fullWidth
+												name="comments"
+												label="Comments"
+												InputProps={{ style: { fontSize: 14 } }}
+												value={activity.comments ? activity.comments : ""}
+												onChange={(e) => {
+													handleFormActivitiesChange(
+														activity.activityOrder as number,
+														e.target.name,
+														e.target.value
+													);
+												}}
+												placeholder="Enter Comments"
+											/>
+										</Grid>
+									</>
+								);
+							})}
 
 						<Grid item lg={6} sm={6} xs={12}>
 							<Button
