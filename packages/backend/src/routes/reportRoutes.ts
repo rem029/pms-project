@@ -12,7 +12,7 @@ import {
 	ReportFilters,
 	ReportProgressSummaryConstruction,
 	ReportProgressSummaryTestingCommissioning,
-} from "@wakra-project/common";
+} from "@pms-project/common";
 
 const initializeRouter = (): Router => {
 	const router = express.Router();

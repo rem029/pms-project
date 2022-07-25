@@ -27,7 +27,7 @@ import { PageContainer } from "components/utilities/pageContainer";
 import {
 	ActivityByClassification,
 	InspectionEntry as InspectionEntryInterface,
-} from "@wakra-project/common";
+} from "@pms-project/common";
 import { RestartAlt, SaveAlt } from "@mui/icons-material";
 import { useSnackbar } from "notistack";
 

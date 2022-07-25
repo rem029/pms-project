@@ -1,7 +1,7 @@
 import { NextFunction, Response } from "express";
 import jwt from "jsonwebtoken";
 import { logger } from "utilities/logger";
-import { UserInfo, Token } from "@wakra-project/common";
+import { UserInfo, Token } from "@pms-project/common";
 import { RequestAuthInterface } from "types";
 import { handleServerError } from "helpers/serverResponse";
 

@@ -1,6 +1,6 @@
 import { Box, Table, TableHead, TableRow, TableCell, TableBody } from "@mui/material";
 import { LinearProgressWithLabel } from "components/utilities/linearProgressWithLabel";
-import { ReportProgressDetailActivity } from "@wakra-project/common";
+import { ReportProgressDetailActivity } from "@pms-project/common";
 import { TABLE_HEADER_REPORTING_DETAIL_PROGRESS } from "utils/constants";
 
 export const ReportingDetailProgressActivityTable = (props: {

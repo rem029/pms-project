@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 
 import { useAxios } from "../hooks/useAxios";
-import { Token } from "@wakra-project/common";
+import { Token } from "@pms-project/common";
 import { saveToken } from "utils/storage";
 import { APP_NAME, URL_LOGIN } from "utils/constants";
 

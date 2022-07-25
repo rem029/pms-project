@@ -10,7 +10,7 @@ import {
 	ReportFilters as ReportFieldFields,
 	ReportProgressSummaryConstruction,
 	ReportProgressSummaryTestingCommissioning,
-} from "@wakra-project/common";
+} from "@pms-project/common";
 import { getToken } from "utils/storage";
 import { useState } from "react";
 

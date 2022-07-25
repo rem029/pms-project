@@ -4,7 +4,7 @@ import { addProjectInspectionsController, getProjectInspectionsController } from
 import { handleServerResponse, handleServerError } from "helpers/serverResponse";
 import { RequestAuthInterface } from "types";
 import { logger } from "utilities/logger";
-import { InspectionEntry } from "@wakra-project/common";
+import { InspectionEntry } from "@pms-project/common";
 
 const initializeRouter = (): Router => {
 	const router = express.Router();

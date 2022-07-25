@@ -1,6 +1,6 @@
 import { knexMySQL } from "services/database";
 import { logger } from "utilities/logger";
-import { Token, UserInfo } from "@wakra-project/common";
+import { Token, UserInfo } from "@pms-project/common";
 import { generateAccessToken } from "middlewares/authToken";
 
 export const loginController = async (body: { userId: string; password?: string | undefined }): Promise<Token> => {

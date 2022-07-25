@@ -12,7 +12,7 @@ import {
 import { getToken } from "utils/storage";
 import { AutoCompleteInput } from "..";
 import { PageContainer } from "../utilities/pageContainer";
-import { ActivityMaster as ActivityMasterInterface } from "@wakra-project/common";
+import { ActivityMaster as ActivityMasterInterface } from "@pms-project/common";
 import { RestartAlt, SaveAlt } from "@mui/icons-material";
 import { useSnackbar } from "notistack";
 

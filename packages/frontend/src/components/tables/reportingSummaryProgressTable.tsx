@@ -18,7 +18,7 @@ import {
 import {
 	ReportProgressSummaryConstruction,
 	ReportProgressSummaryTestingCommissioning,
-} from "@wakra-project/common";
+} from "@pms-project/common";
 
 import {
 	Button,

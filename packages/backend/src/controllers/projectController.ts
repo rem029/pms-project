@@ -1,6 +1,6 @@
 import { knexMySQL } from "services/database";
 import { logger } from "utilities/logger";
-import { Inspection, InspectionEntry } from "@wakra-project/common";
+import { Inspection, InspectionEntry } from "@pms-project/common";
 
 export const getProjectInspectionsController = async (): Promise<Inspection[]> => {
 	const results = await knexMySQL.raw(

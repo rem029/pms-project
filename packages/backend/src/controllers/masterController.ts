@@ -1,12 +1,12 @@
 import { knexMySQL } from "services/database";
 import { logger } from "utilities/logger";
-import { ActivityMaster, DeliverablesMaster } from "@wakra-project/common";
+import { ActivityMaster, DeliverablesMaster } from "@pms-project/common";
 
 import {
 	ActivityByClassification,
 	ActivityMasterItemInfo,
 	DeliverablesMasterInfo,
-} from "@wakra-project/common/src/types/report";
+} from "@pms-project/common/src/types/report";
 
 export const getDeliverables = async (): Promise<DeliverablesMasterInfo[]> => {
 	logger.info("@getDeliverables");

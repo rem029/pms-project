@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { URL_REPORTING_PROJECT_INSPECTION_GET } from "utils/constants";
 import { getToken } from "utils/storage";
 import { PageContainer } from "components/utilities/pageContainer";
-import { Inspection } from "@wakra-project/common";
+import { Inspection } from "@pms-project/common";
 import { Add } from "@mui/icons-material";
 // import { useSnackbar } from "notistack";
 import { DataGrid } from "@mui/x-data-grid";

@@ -29,7 +29,7 @@ import {
 	URL_REPORTING_FILTER_TYPE,
 	URL_REPORTING_FILTER_ZONE,
 } from "utils/constants";
-import { ReportFilters as ReportFilterFields, ReportFilter } from "@wakra-project/common";
+import { ReportFilters as ReportFilterFields, ReportFilter } from "@pms-project/common";
 import { getToken } from "utils/storage";
 import { AxiosRequestConfig } from "axios";
 import { AutoCompleteInput } from "components";

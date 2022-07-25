@@ -1,5 +1,5 @@
 {
-	"name": "@wakra-project/common",
+	"name": "@pms-project/common",
 	"version": "1.1.0-alpha.9",
 	"description": "common types/functions for frontend and backend",
 	"main": "src/index.ts",

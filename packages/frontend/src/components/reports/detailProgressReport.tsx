@@ -9,7 +9,7 @@ import { useAxios } from "hooks/useAxios";
 import {
 	ReportFilters as ReportFilterFields,
 	ReportProgressDetail,
-} from "@wakra-project/common";
+} from "@pms-project/common";
 import { getToken } from "utils/storage";
 
 export const DetailProgressReport = (): JSX.Element => {

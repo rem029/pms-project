@@ -7,7 +7,7 @@ import {
 	getActivitiesByClassification,
 	getDeliverables,
 } from "controllers/masterController";
-import { ActivityMaster, DeliverablesMaster } from "@wakra-project/common";
+import { ActivityMaster, DeliverablesMaster } from "@pms-project/common";
 import { handleServerResponse, handleServerError } from "helpers/serverResponse";
 import { RequestWithMetrics } from "types";
 import { logger } from "utilities/logger";

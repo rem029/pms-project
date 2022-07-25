@@ -7,7 +7,7 @@ import {
 	ReportProgressDetail,
 	ReportProgressSummaryConstruction,
 	ReportProgressSummaryTestingCommissioning,
-} from "@wakra-project/common";
+} from "@pms-project/common";
 
 const formatReportProgressDetailController = (response: ReportProgressDetail[]): ReportProgressDetail[] => {
 	let returnArray: ReportProgressDetail[] = [];

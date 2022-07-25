@@ -1,8 +1,8 @@
 {
-  "name": "@wakra-project/wakra-project",
+  "name": "@pms-project/pms-project",
   "description": "Project Management System",
   "private": true,
-  "repository": "https://github.com/rem029/wakra-project",
+  "repository": "https://github.com/rem029/pms-project",
   "workspaces": {
     "packages": [
       "packages/*"
@@ -11,13 +11,13 @@
   "scripts": {
     "kill-ports": "kill-port --port 3030 && kill-port --port 6060",
     "bootstrap": "lerna bootstrap",
-    "start": "lerna run start --parallel --scope @wakra-project/*",
-    "start:staging": "lerna run build:run --parallel --scope @wakra-project/backend",
+    "start": "lerna run start --parallel --scope @pms-project/*",
+    "start:staging": "lerna run build:run --parallel --scope @pms-project/backend",
     "start:pm2:staging": "pm2 start server.sh --interpreter=bash --name=pm-app-staging",
-    "build": "lerna run build --parallel --scope @wakra-project/*",
-    "build:frontend": "lerna run build --scope @wakra-project/frontend",
-    "build:backend": "lerna run build --scope @wakra-project/backend",
-    "lint": "lerna run lint --parallel --scope @wakra-project/*",
+    "build": "lerna run build --parallel --scope @pms-project/*",
+    "build:frontend": "lerna run build --scope @pms-project/frontend",
+    "build:backend": "lerna run build --scope @pms-project/backend",
+    "lint": "lerna run lint --parallel --scope @pms-project/*",
     "publish:version": "lerna version --conventional-commits"
   },
   "devDependencies": {

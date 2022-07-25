@@ -16,7 +16,7 @@ import {
 import { getToken } from "utils/storage";
 import { AutoCompleteInput } from "..";
 import { PageContainer } from "../utilities/pageContainer";
-import { DeliverablesMaster as DeliverablesMasterInterface } from "@wakra-project/common";
+import { DeliverablesMaster as DeliverablesMasterInterface } from "@pms-project/common";
 import { RestartAlt, SaveAlt } from "@mui/icons-material";
 
 const defaultFields = {

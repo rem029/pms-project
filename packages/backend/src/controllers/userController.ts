@@ -1,5 +1,5 @@
 import { knexMySQL } from "services/database";
-import { UserInfo } from "@wakra-project/common";
+import { UserInfo } from "@pms-project/common";
 
 export const getUserInfoController = async (body: { userId: string }): Promise<UserInfo> => {
 	const { userId } = body;

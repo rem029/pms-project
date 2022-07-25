@@ -1,5 +1,5 @@
 {
-	"name": "@wakra-project/frontend",
+	"name": "@pms-project/frontend",
 	"description": "Frontend for wakra project",
 	"version": "1.1.0-alpha.10",
 	"private": true,
@@ -19,7 +19,7 @@
 		"@types/react": "^18.0.5",
 		"@types/react-csv": "^1.1.2",
 		"@types/react-dom": "^18.0.0",
-		"@wakra-project/common": "^1.1.0-alpha.9",
+		"@pms-project/common": "^1.1.0-alpha.9",
 		"axios": "^0.26.1",
 		"buffer": "^6.0.3",
 		"date-fns": "^2.28.0",
