@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-alpha.11](https://github.com/rem029/pms-project/compare/v1.1.0-alpha.10...v1.1.0-alpha.11) (2023-01-03)
+
+
+### Bug Fixes
+
+* **APM-22-fix:** Inspection entry activities UI update ([#16](https://github.com/rem029/pms-project/issues/16)) ([6dce021](https://github.com/rem029/pms-project/commit/6dce021b26311bffb5e0701e070ae35f54594c0a))
+* **Github Actions:** updated deploy naming and separated lint run for each packages ([153640b](https://github.com/rem029/pms-project/commit/153640b33015dfa1c321574d75505bf7599f0d41))
+* **NO_TICKET:** update project name ([fb26950](https://github.com/rem029/pms-project/commit/fb26950268143f24a982cc67b8226e7c58f28598))
+
+
+### Features
+
+* **test API:** provides start time and up time ([6783332](https://github.com/rem029/pms-project/commit/67833323891c81deae8d827b4cb1b61948d7ffe9))
+
+
+
+
+
 # [1.1.0-alpha.10](https://github.com/rem029/wakra-project/compare/v1.1.0-alpha.9...v1.1.0-alpha.10) (2022-06-29)
 
 
