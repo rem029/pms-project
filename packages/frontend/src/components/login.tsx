@@ -145,6 +145,39 @@ export const Login = (): JSX.Element => {
 							{loading ? <CircularProgress size={36} /> : "Login"}
 						</Button>
 					</Grid>
+					<Grid
+						item
+						container
+						alignItems="center"
+						justifyContent="center"
+						flexDirection="column"
+						xs={12}
+					>
+						<Typography
+							variant="caption"
+							color="primary.main"
+							align="center"
+							fontSize={12}
+						>
+							Demo account
+						</Typography>
+						<Typography
+							variant="caption"
+							color="primary.main"
+							align="center"
+							fontSize={12}
+						>
+							User: sahar
+						</Typography>
+						<Typography
+							variant="caption"
+							color="primary.main"
+							align="center"
+							fontSize={12}
+						>
+							Password: 789
+						</Typography>
+					</Grid>
 					<Grid item container alignItems="center" justifyContent="center" xs={12}>
 						<Typography
 							variant="caption"
