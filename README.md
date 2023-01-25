@@ -1,4 +1,4 @@
-# Welcome to wakra-project 👋
+# Welcome to pms-project 👋
 
 > Typescript React + Node
 
@@ -53,7 +53,7 @@ Font family and color palette to be configure here.
 ## Note
 ### .env file location
 ```
-wakra-project/
+pms-project/.env
 ```
 ### .env format
 ```
@@ -121,7 +121,7 @@ tech(user-input): refactor debounce.
 Path
 
 ```
-wakra-project/packages/
+pms-project/packages/
 ```
 
 ### [backend](packages/backend/)
